@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../../lib/config";
 import Link from "next/link";
 import RoleSidebar from "../../components/RoleSidebar";
 import Topbar from "../../components/Topbar";
@@ -7,15 +8,30 @@ import Topbar from "../../components/Topbar";
 export default function HomePage() {
   const [halls, setHalls] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  const [guests, setGuests] = useState("");
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/halls")
+    fetch(`${BACKEND_URL}/api/halls`)
       .then(res => res.json())
       .then(data => {
         setHalls(data);
         setLoading(false);
       });
   }, []);
+
+  const handleSearch = async () => {
+    setLoading(true);
+    let url = `${BACKEND_URL}/api/halls?`;
+    if (location) url += `location=${encodeURIComponent(location)}&`;
+    if (date) url += `date=${encodeURIComponent(date)}&`;
+    if (guests) url += `guests=${encodeURIComponent(guests)}&`;
+    const res = await fetch(url);
+    const data = await res.json();
+    setHalls(data);
+    setLoading(false);
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -29,10 +45,32 @@ export default function HomePage() {
             <p className="text-lg text-blue-700 mb-6">Book top-rated halls for your events, weddings, and celebrations!</p>
             {/* Search Bar */}
             <div className="flex flex-wrap gap-4 justify-center mb-4">
-              <input type="text" placeholder="Location" className="px-4 py-2 rounded-lg border w-40" />
-              <input type="date" className="px-4 py-2 rounded-lg border w-40" />
-              <input type="number" placeholder="Guests" className="px-4 py-2 rounded-lg border w-32" />
-              <button className="bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition">Search</button>
+              <input
+                type="text"
+                placeholder="Location"
+                className="px-4 py-2 rounded-lg border w-40"
+                value={location}
+                onChange={e => setLocation(e.target.value)}
+              />
+              <input
+                type="date"
+                className="px-4 py-2 rounded-lg border w-40"
+                value={date}
+                onChange={e => setDate(e.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="Guests"
+                className="px-4 py-2 rounded-lg border w-32"
+                value={guests}
+                onChange={e => setGuests(e.target.value)}
+              />
+              <button
+                className="bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition"
+                onClick={handleSearch}
+              >
+                Search
+              </button>
             </div>
           </section>
 
