@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
 import Link from "next/link";
 import RoleSidebar from "../../components/RoleSidebar";
@@ -11,15 +12,26 @@ export default function HomePage() {
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
   const [guests, setGuests] = useState("");
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/halls`)
+    setLoading(true);
+    let url = `${BACKEND_URL}/api/halls?`;
+    if (searchQuery) {
+      url += `name=${encodeURIComponent(searchQuery)}&`;
+    } else {
+      if (location) url += `location=${encodeURIComponent(location)}&`;
+    }
+    if (date) url += `date=${encodeURIComponent(date)}&`;
+    if (guests) url += `guests=${encodeURIComponent(guests)}&`;
+    fetch(url)
       .then(res => res.json())
       .then(data => {
         setHalls(data);
         setLoading(false);
       });
-  }, []);
+  }, [searchQuery, location, date, guests]);
 
   const handleSearch = async () => {
     setLoading(true);
@@ -118,3 +130,4 @@ export default function HomePage() {
     </div>
   );
 }
+
