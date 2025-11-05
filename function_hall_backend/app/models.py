@@ -9,6 +9,7 @@ class FunctionHall(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    owner_name = db.Column(db.String(100))
     location = db.Column(db.String(150))
     capacity = db.Column(db.Integer)
     contact_number = db.Column(db.String(20))
@@ -19,9 +20,22 @@ class FunctionHall(db.Model):
     packages = db.relationship('Package', backref='hall', lazy=True)
     bookings = db.relationship('Booking', backref='hall', lazy=True)
     calendar_entries = db.relationship('Calendar', backref='hall', lazy=True)
+    photos = db.relationship('HallPhoto', backref='hall', lazy=True)
 
     def __repr__(self):
         return f'<FunctionHall {self.name}>'
+# -------------------------
+# Hall Photo Model
+# -------------------------
+class HallPhoto(db.Model):
+    __tablename__ = 'hall_photos'
+
+    id = db.Column(db.Integer, primary_key=True)
+    hall_id = db.Column(db.Integer, db.ForeignKey('function_halls.id'), nullable=False)
+    url = db.Column(db.String(300), nullable=False)
+
+    def __repr__(self):
+        return f'<HallPhoto {self.url}>'
 
 
 # -------------------------

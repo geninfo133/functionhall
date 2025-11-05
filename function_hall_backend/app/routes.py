@@ -16,6 +16,7 @@ def get_halls():
         result.append({
             'id': hall.id,
             'name': hall.name,
+            'owner_name': hall.owner_name,
             'location': hall.location,
             'capacity': hall.capacity,
             'price_per_day': hall.price_per_day,
@@ -28,14 +29,17 @@ def get_halls():
 @main.route('/api/halls/<int:hall_id>', methods=['GET'])
 def get_hall(hall_id):
     hall = FunctionHall.query.get_or_404(hall_id)
+    photos = [photo.url for photo in hall.photos]
     return jsonify({
         'id': hall.id,
         'name': hall.name,
+        'owner_name': hall.owner_name,
         'location': hall.location,
         'capacity': hall.capacity,
         'price_per_day': hall.price_per_day,
         'contact_number': hall.contact_number,
-        'description': hall.description
+        'description': hall.description,
+        'photos': photos
     })
 
 
