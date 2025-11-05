@@ -10,8 +10,7 @@ export default function MainNavbar() {
       </div>
       <div className="flex items-center space-x-4">
         <Link href="/booking" className="text-gray-700 hover:text-blue-600 font-medium">Book</Link>
-        <Link href="/auth/login" className="text-gray-700 hover:text-blue-600 font-medium">Login</Link>
-        <Link href="/my-bookings" className="text-gray-700 hover:text-blue-600 font-medium">Dashboard</Link>
+        <Link href="/auth/login" className="font-bold text-indigo-900 px-5 py-2 rounded-lg bg-indigo-800 hover:bg-indigo-900 text-white transition shadow" style={{textDecoration: 'none'}}>Get started</Link>
       </div>
     </nav>
   );
