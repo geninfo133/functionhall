@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { BACKEND_URL } from "../../../lib/config";
 
 import Sidebar from "../../../components/Sidebar";
 import Topbar from "../../../components/Topbar";
@@ -13,13 +14,13 @@ export default function HallDetailsPage() {
   // TODO: partners, services, dates
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/api/halls/${id}`)
+    fetch(`${BACKEND_URL}/api/halls/${id}`)
       .then(res => res.json())
       .then(data => {
         setHall(data);
         setLoading(false);
       });
-    fetch(`http://127.0.0.1:5000/api/halls/${id}/packages`)
+    fetch(`${BACKEND_URL}/api/halls/${id}/packages`)
       .then(res => res.json())
       .then(data => setPackages(data));
     // TODO: fetch partners, services, dates

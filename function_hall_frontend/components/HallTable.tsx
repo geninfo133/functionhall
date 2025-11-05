@@ -3,14 +3,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-// import { getHalls } from "../lib/data";
+import { BACKEND_URL } from "../lib/config";
 
 
 export default function HallTable() {
   const [halls, setHalls] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/api/halls")
+    fetch(`${BACKEND_URL}/api/halls`)
       .then(res => res.json())
       .then(data => setHalls(data));
   }, []);
