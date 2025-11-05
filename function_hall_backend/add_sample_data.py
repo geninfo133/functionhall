@@ -15,9 +15,11 @@ with app.app_context():
 
     # Sample Function Halls
     halls = [
-        FunctionHall(name="Grand Palace", owner_name="Mr. Reddy", location="Hyderabad", capacity=500, contact_number="1234567890", price_per_day=25000, description="Spacious and elegant hall for weddings and events."),
-        FunctionHall(name="Lotus Banquet", owner_name="Mrs. Sharma", location="Vijayawada", capacity=300, contact_number="9876543210", price_per_day=18000, description="Modern banquet hall with premium amenities."),
-        FunctionHall(name="Crystal Hall", owner_name="Mr. Khan", location="Chennai", capacity=700, contact_number="5556667777", price_per_day=32000, description="Luxurious hall for large gatherings.")
+        FunctionHall(name="GenS", owner_name="Ch.Lkshith", location="Tanuku", capacity=500, contact_number="1234567890", price_per_day=25000, description="Spacious and elegant hall for weddings and events."),
+        FunctionHall(name="Lakshmi Kalyana Manadapam", owner_name="K.Meenakshi", location="Tanuku", capacity=500, contact_number="1234567890", price_per_day=25000, description="Spacious and elegant hall for weddings and events."),
+        FunctionHall(name="Grand Palace", owner_name="Ravi Kumar", location="Vijayawada", capacity=300, contact_number="0987654321", price_per_day=20000, description="Perfect venue for corporate events and parties."),
+        FunctionHall(name="Royal Banquets", owner_name="Sita Reddy", location="Hyderabad", capacity=400, contact_number="1122334455", price_per_day=30000, description="Luxurious hall with modern amenities."),
+        FunctionHall(name="Elite Events Center", owner_name="Anil Sharma", location="Chennai", capacity=600, contact_number="6677889900", price_per_day=35000, description="Ideal for large gatherings and celebrations.")
     ]
     db.session.add_all(halls)
     db.session.commit()
@@ -39,9 +41,7 @@ with app.app_context():
     # Sample Packages
     packages = [
         Package(hall_id=halls[0].id, package_name="Silver", price=5000, details="Basic decoration and sound system."),
-        Package(hall_id=halls[0].id, package_name="Gold", price=10000, details="Premium decoration, sound, and lighting."),
-        Package(hall_id=halls[1].id, package_name="Standard", price=7000, details="Standard amenities and catering."),
-        Package(hall_id=halls[2].id, package_name="Platinum", price=15000, details="All-inclusive package with luxury services.")
+        Package(hall_id=halls[0].id, package_name="Gold", price=10000, details="Premium decoration, sound, and lighting.")
     ]
     db.session.add_all(packages)
     db.session.commit()
@@ -56,8 +56,7 @@ with app.app_context():
 
     # Sample Bookings
     bookings = [
-        Booking(customer_id=customers[0].id, hall_id=halls[0].id, event_date=date(2025, 12, 25), status="Confirmed", total_amount=30000),
-        Booking(customer_id=customers[1].id, hall_id=halls[1].id, event_date=date(2025, 11, 20), status="Pending", total_amount=20000)
+        Booking(customer_id=customers[0].id, hall_id=halls[0].id, event_date=date(2025, 12, 25), status="Confirmed", total_amount=30000)
     ]
     db.session.add_all(bookings)
     db.session.commit()
