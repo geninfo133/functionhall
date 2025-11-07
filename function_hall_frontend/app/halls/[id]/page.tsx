@@ -38,7 +38,7 @@ export default function HallDetailsPage() {
           <div className="bg-white rounded-2xl shadow p-8 mb-8">
             {/* Photo Gallery */}
             <div className="mb-8">
-              <h1 className="text-4xl font-bold text-blue-900 mb-4">{hall.name}</h1>
+              <h1 className="text-4xl font-bold text-orange-700 mb-4">{hall.name}</h1>
               <div className="mb-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {(hall.photos && hall.photos.length > 0 ? hall.photos : ["https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"]).map((url: string, idx: number) => (
@@ -52,21 +52,21 @@ export default function HallDetailsPage() {
                   <span className="text-gray-700">Location: <b>{hall.location}</b></span>
                   <span className="text-gray-700">Capacity: <b>{hall.capacity}</b></span>
                   <span className="text-gray-700">Contact: <b>{hall.contact_number}</b></span>
-                  <span className="text-blue-700 font-bold">₹{hall.price_per_day}</span>
+                  <span className="text-orange-700 font-bold">₹{hall.price_per_day}</span>
               </div>
               <p className="text-gray-700 mb-4">{hall.description}</p>
             </div>
 
             {/* Packages */}
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-blue-800 mb-2">Packages</h2>
+              <h2 className="text-2xl font-bold text-orange-700 mb-2">Packages</h2>
               {packages.length === 0 ? (
                 <p className="text-gray-500">No packages available.</p>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {packages.map((pkg: any) => (
                     <div key={pkg.id} className="border rounded-lg p-4 bg-gray-50">
-                      <h3 className="font-bold text-blue-700 mb-1">{pkg.package_name}</h3>
+                      <h3 className="font-bold text-orange-700 mb-1">{pkg.package_name}</h3>
                       <p className="text-gray-700 mb-1">₹{pkg.price}</p>
                       <p className="text-gray-500 text-sm">{pkg.details}</p>
                     </div>
@@ -77,13 +77,13 @@ export default function HallDetailsPage() {
 
             {/* Partners, Services, Dates - Placeholders */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-blue-800 mb-2">Partners & Services</h2>
+              <h2 className="text-xl font-semibold text-orange-700 mb-2">Partners & Services</h2>
               <p className="text-gray-500">Coming soon: partners, services, and available dates.</p>
             </div>
 
             {/* Book Button */}
             <div className="flex justify-end">
-              <button className="bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold shadow hover:bg-blue-800 transition">Book Now</button>
+              <button className="bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold shadow hover:bg-orange-700 transition">Book Now</button>
             </div>
           </div>
         </main>

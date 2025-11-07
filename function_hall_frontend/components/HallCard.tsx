@@ -18,10 +18,10 @@ export default function HallCard({ hall }: Props) {
         <p className="text-gray-800 mb-1">
           Capacity: {hall.capacity} guests
         </p>
-        <p className="text-green-600 font-semibold mb-3">
+        <p className="text-orange-600 font-semibold mb-3">
           ₹{hall.price_per_day.toLocaleString()} per day
         </p>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+        <button className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700">
           View Details
         </button>
       </div>

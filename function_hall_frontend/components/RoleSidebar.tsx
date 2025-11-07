@@ -40,13 +40,13 @@ export default function RoleSidebar({ role }: SidebarProps) {
   return (
     <aside className="w-64 bg-white h-screen shadow-lg flex flex-col p-6 rounded-r-2xl">
       <div className="mb-10 flex items-center space-x-2">
-        <span className="text-2xl font-bold text-blue-700 tracking-tight">FunctionHall</span>
+        <span className="text-2xl font-bold text-orange-500 tracking-tight">FunctionHall</span>
       </div>
       <nav className="flex-1">
         <ul className="space-y-2">
           {sidebarOptions[role].map((item) => (
             <li key={item.href}>
-              <Link href={item.href} className="block px-4 py-2 rounded-lg hover:bg-blue-50 text-gray-700 font-medium transition">
+              <Link href={item.href} className="block px-4 py-2 rounded-lg hover:bg-orange-50 text-gray-700 font-medium transition">
                 {item.label}
               </Link>
             </li>

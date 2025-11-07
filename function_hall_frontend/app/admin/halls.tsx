@@ -75,12 +75,12 @@ export default function AdminHallsPage() {
 
   return (
     <main className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-blue-900">Manage Halls</h1>
+      <h1 className="text-3xl font-bold mb-6 text-orange-500">Manage Halls</h1>
       <div className="mb-6 flex justify-end">
-        <button className="bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition" onClick={() => setShowModal(true)}>+ Add New Hall</button>
+        <button className="bg-orange-500 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-orange-600 transition" onClick={() => setShowModal(true)}>+ Add New Hall</button>
       </div>
-      {error && <div className="mb-4 text-red-600 font-semibold">{error}</div>}
-      {success && <div className="mb-4 text-green-600 font-semibold">{success}</div>}
+      {error && <div className="mb-4 text-orange-600 font-semibold">{error}</div>}
+      {success && <div className="mb-4 text-orange-500 font-semibold">{success}</div>}
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -98,16 +98,16 @@ export default function AdminHallsPage() {
           </thead>
           <tbody>
             {halls.map((hall, idx) => (
-              <tr key={hall.id} className="border-b border-gray-200 last:border-b-0 hover:bg-blue-50 transition">
-                <td className="px-6 py-4 font-semibold text-blue-700">{hall.name}</td>
+              <tr key={hall.id} className="border-b border-gray-200 last:border-b-0 hover:bg-orange-50 transition">
+                <td className="px-6 py-4 font-semibold text-orange-700">{hall.name}</td>
                 <td className="px-6 py-4">{hall.owner_name}</td>
                 <td className="px-6 py-4">{hall.location}</td>
                 <td className="px-6 py-4 text-center">{hall.capacity}</td>
                 <td className="px-6 py-4">{hall.contact_number}</td>
-                <td className="px-6 py-4 text-right font-bold text-blue-700">₹{hall.price_per_day}</td>
+                <td className="px-6 py-4 text-right font-bold text-orange-700">₹{hall.price_per_day}</td>
                 <td className="px-6 py-4 text-center">
-                  <button className="text-green-700 font-semibold hover:underline mr-4">Edit</button>
-                  <button className="text-red-700 font-semibold hover:underline">Delete</button>
+                  <button className="text-orange-600 font-semibold hover:underline mr-4">Edit</button>
+                  <button className="text-orange-400 font-semibold hover:underline">Delete</button>
                 </td>
               </tr>
             ))}
@@ -119,8 +119,8 @@ export default function AdminHallsPage() {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg border border-gray-200 relative">
-            <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onClick={() => setShowModal(false)}>&times;</button>
-            <h2 className="text-2xl font-bold mb-4 text-blue-900">Add New Hall</h2>
+            <button className="absolute top-4 right-4 text-gray-500 hover:text-orange-700 text-2xl" onClick={() => setShowModal(false)}>&times;</button>
+            <h2 className="text-2xl font-bold mb-4 text-orange-700">Add New Hall</h2>
             <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
               <input name="name" value={form.name} onChange={handleInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border" required />
               <input name="owner_name" value={form.owner_name} onChange={handleInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border" required />
@@ -129,7 +129,7 @@ export default function AdminHallsPage() {
               <input name="contact_number" value={form.contact_number} onChange={handleInput} placeholder="Contact Number" className="px-4 py-2 rounded-lg border" required />
               <input name="price_per_day" value={form.price_per_day} onChange={handleInput} type="number" placeholder="Price Per Day" className="px-4 py-2 rounded-lg border" required />
               <textarea name="description" value={form.description} onChange={handleInput} placeholder="Description" className="px-4 py-2 rounded-lg border" />
-              <button type="submit" className="bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-800 transition mt-2">Add Hall</button>
+              <button type="submit" className="bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-700 transition mt-2">Add Hall</button>
             </form>
           </div>
         </div>

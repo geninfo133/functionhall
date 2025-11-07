@@ -9,7 +9,7 @@ import HallTable from "@/components/HallTable";
 export default function HallsPage() {
   return (
     <div>
-      <h1 className="text-2xl font-semibold text-gray-800 mb-4">Function Halls</h1>
+      
       <HallTable />
     </div>
   );

@@ -6,50 +6,93 @@ import Link from "next/link";
 import { BACKEND_URL } from "../lib/config";
 
 
-export default function HallTable() {
-  const [halls, setHalls] = useState<any[]>([]);
+
+type HallTableProps = {
+  halls?: any[];
+  loading?: boolean;
+};
+
+export default function HallTable({ halls: propHalls, loading: propLoading }: HallTableProps) {
+  const [halls, setHalls] = useState<any[]>(propHalls || []);
+  const [loading, setLoading] = useState<boolean>(propLoading ?? true);
 
   useEffect(() => {
-    fetch(`${BACKEND_URL}/api/halls`)
-      .then(res => res.json())
-      .then(data => setHalls(data));
-  }, []);
+    if (typeof propHalls === 'undefined') {
+      setLoading(true);
+      fetch(`${BACKEND_URL}/api/halls`)
+        .then(res => res.json())
+        .then(data => {
+          setHalls(data);
+          setLoading(false);
+        });
+    } else {
+      setHalls(propHalls);
+      setLoading(!!propLoading);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [propHalls, propLoading]);
 
-  // Color palette for initials
+  // Color palette for initials (consistent with home page)
   const colors = [
-    "bg-blue-500", "bg-red-500", "bg-purple-500", "bg-green-500", "bg-pink-500", "bg-yellow-500", "bg-teal-500", "bg-blue-400", "bg-purple-400", "bg-red-400", "bg-blue-600", "bg-green-400"
+    "bg-orange-500",
+    "bg-blue-500",
+    "bg-green-500",
+    "bg-red-500",
+    "bg-purple-500",
+    "bg-pink-500",
+    "bg-yellow-500",
+    "bg-teal-500",
+    "bg-indigo-500",
+    "bg-cyan-500"
   ];
 
   return (
     <div className="mt-8">
       <div className="mb-4">
-        <h2 className="text-xl font-semibold text-gray-800">Fnction Halls</h2>
+        <h2 className="text-xl font-semibold text-gray-800">Function Halls</h2>
         <span className="text-gray-500 text-sm">{halls.length} Function Halls</span>
       </div>
-      <div className="bg-white shadow rounded-xl overflow-hidden">
-        <table className="w-full text-sm text-left text-gray-700">
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-xl shadow border border-gray-200">
           <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
             <tr>
-              <th className="px-8 py-4 font-semibold tracking-wide">Name</th>
-              <th className="px-8 py-4 font-semibold tracking-wide">Location</th>
-              <th className="px-8 py-4 font-semibold tracking-wide">Capacity</th>
-              <th className="px-8 py-4 font-semibold tracking-wide">Contact number</th>
-              <th className="px-8 py-4 font-semibold tracking-wide">Price</th>
+              <th className="px-6 py-4 text-left font-semibold text-lg tracking-wide">Name</th>
+              <th className="px-6 py-4 text-left font-semibold text-lg tracking-wide">Owner</th>
+              <th className="px-6 py-4 text-left font-semibold text-lg tracking-wide">Location</th>
+              <th className="px-6 py-4 text-center font-semibold text-lg tracking-wide">Capacity</th>
+              <th className="px-6 py-4 text-left font-semibold text-lg tracking-wide">Contact</th>
+              <th className="px-6 py-4 text-right font-semibold text-lg tracking-wide">Price</th>
             </tr>
           </thead>
           <tbody>
-            {halls.map((hall, idx) => (
-              <tr key={hall.id} className="border-t hover:bg-gray-50 transition">
-                <td className="px-8 py-4 flex items-center space-x-3">
-                  <span className={`w-7 h-7 flex items-center justify-center rounded-full text-white font-bold text-base ${colors[idx % colors.length]}`}>{hall.name[0]}</span>
-                  <Link href={`/halls/${hall.id}`} className="font-medium text-blue-700 hover:underline">{hall.name}</Link>
-                </td>
-                <td className="px-8 py-4">{hall.location}</td>
-                <td className="px-8 py-4">{hall.capacity}</td>
-                <td className="px-8 py-4">{hall.contact_number}</td>
-                <td className="px-8 py-4">₹{hall.price_per_day}</td>
+            {loading ? (
+              <tr>
+                <td colSpan={6} className="text-center py-8">Loading...</td>
               </tr>
-            ))}
+            ) : halls.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="text-center py-8">No halls found.</td>
+              </tr>
+            ) : (
+              halls.map((hall, idx) => (
+                <tr key={hall.id} className="border-b border-gray-200 last:border-b-0 hover:bg-orange-50 transition">
+                  <td className="px-6 py-4 flex items-center space-x-3">
+                    <span className={`w-11 h-11 flex items-center justify-center rounded-full text-white font-black text-2xl border-2 border-white shadow ${colors[idx % colors.length]}`}
+                      style={{lineHeight: '2.5rem'}}>
+                      {typeof hall.name === 'string' && hall.name.length > 0 ? hall.name[0].toUpperCase() : '?'}
+                    </span>
+                    <Link href={`/halls/${hall.id}`} className="text-orange-700 font-semibold hover:underline">
+                      {hall.name}
+                    </Link>
+                  </td>
+                  <td className="px-6 py-4 align-middle">{hall.owner_name || "-"}</td>
+                  <td className="px-6 py-4 align-middle">{hall.location}</td>
+                  <td className="px-6 py-4 text-center align-middle">{hall.capacity}</td>
+                  <td className="px-6 py-4 align-middle">{hall.contact_number}</td>
+                  <td className="px-6 py-4 text-right align-middle font-bold text-orange-700">₹{hall.price_per_day}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
