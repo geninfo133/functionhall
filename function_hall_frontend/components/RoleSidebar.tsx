@@ -44,7 +44,13 @@ export default function RoleSidebar({ role }: SidebarProps) {
       </div>
       <nav className="flex-1">
         <ul className="space-y-2">
-          {sidebarOptions[role].map((item) => (
+          {(role === "customer"
+            ? [
+                { label: "Enquiry", href: "/customer/enquiry" },
+                ...sidebarOptions[role]
+              ]
+            : sidebarOptions[role]
+          ).map((item) => (
             <li key={item.href}>
               <Link href={item.href} className="block px-4 py-2 rounded-lg hover:bg-orange-50 text-gray-700 font-medium transition">
                 {item.label}

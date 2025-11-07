@@ -10,9 +10,11 @@ import { BACKEND_URL } from "../lib/config";
 type HallTableProps = {
   halls?: any[];
   loading?: boolean;
+  onEdit?: (hall: any) => void;
+  onDelete?: (hall: any) => void;
 };
 
-export default function HallTable({ halls: propHalls, loading: propLoading }: HallTableProps) {
+export default function HallTable({ halls: propHalls, loading: propLoading, onEdit, onDelete }: HallTableProps) {
   const [halls, setHalls] = useState<any[]>(propHalls || []);
   const [loading, setLoading] = useState<boolean>(propLoading ?? true);
 
@@ -90,6 +92,12 @@ export default function HallTable({ halls: propHalls, loading: propLoading }: Ha
                   <td className="px-6 py-4 text-center align-middle">{hall.capacity}</td>
                   <td className="px-6 py-4 align-middle">{hall.contact_number}</td>
                   <td className="px-6 py-4 text-right align-middle font-bold text-orange-700">₹{hall.price_per_day}</td>
+                  {(onEdit || onDelete) && (
+                    <td className="px-6 py-4 text-center align-middle space-x-2">
+                      {onEdit && <button className="text-blue-600 font-semibold hover:underline" onClick={() => onEdit(hall)}>Edit</button>}
+                      {onDelete && <button className="text-red-600 font-semibold hover:underline" onClick={() => onDelete(hall)}>Delete</button>}
+                    </td>
+                  )}
                 </tr>
               ))
             )}
