@@ -1,4 +1,5 @@
 import { Hall } from "../types/hall";
+import Link from "next/link";
 
 interface Props {
   hall: Hall;
@@ -21,9 +22,11 @@ export default function HallCard({ hall }: Props) {
         <p className="text-orange-600 font-semibold mb-3">
           ₹{hall.price_per_day.toLocaleString()} per day
         </p>
-        <button className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700">
-          View Details
-        </button>
+        <Link href={`/halls/${hall.id}`}>
+          <button className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 w-full">
+            View Details
+          </button>
+        </Link>
       </div>
     </div>
   );

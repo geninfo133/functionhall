@@ -17,10 +17,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   return (
     <aside className="w-64 bg-white h-screen shadow-lg flex flex-col p-6 rounded-r-2xl border-r border-gray-200">
-      <div className="mb-10 flex items-center space-x-2">
-        <img src="/31530356_bird_2.jpg" alt="Logo" className="w-8 h-8" />
-        <span className="text-2xl font-bold text-black tracking-tight"><span className="text-black">GenS</span><span className="text-orange-500">150</span></span>
-      </div>
+      
       <nav className="flex-1">
         <ul className="space-y-2">
           <li>

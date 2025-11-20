@@ -37,8 +37,9 @@ export default function HomePage() {
     let url = `${BACKEND_URL}/api/halls?`;
     if (searchQuery) {
       url += `name=${encodeURIComponent(searchQuery)}&`;
-    } else {
-      if (location) url += `location=${encodeURIComponent(location)}&`;
+    }
+    if (location) {
+      url += `location=${encodeURIComponent(location)}&`;
     }
     if (date) url += `date=${encodeURIComponent(date)}&`;
     if (guests) url += `guests=${encodeURIComponent(guests)}&`;
