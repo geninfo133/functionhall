@@ -33,13 +33,22 @@ export default function AdminLoginPage() {
       console.log("📦 Response data:", data);
 
       if (response.ok) {
-        console.log("✅ Admin login successful, redirecting to dashboard...");
-        // Don't reset loading state here - let redirect happen
-        // Small delay to ensure cookie is set
-        setTimeout(() => {
-          console.log("🚀 Navigating to /admin/dashboard");
-          window.location.href = "/admin/dashboard";
-        }, 150);
+        console.log("✅ Admin login successful!");
+        // Verify the session was set by checking auth
+        const authCheck = await fetch(`${BACKEND_URL}/api/admin/check-auth`, {
+          credentials: "include"
+        });
+        const authData = await authCheck.json();
+        console.log("🔍 Auth check after login:", authData);
+        
+        if (authData.authenticated) {
+          console.log("🚀 Session confirmed, navigating to dashboard");
+          router.push("/admin/dashboard");
+        } else {
+          console.error("❌ Session not set after login");
+          setError("Login successful but session failed. Please try again.");
+          setLoading(false);
+        }
       } else {
         console.error("❌ Login failed:", data.error);
         setError(data.error || "Login failed. Please try again.");
