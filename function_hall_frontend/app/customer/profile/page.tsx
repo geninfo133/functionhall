@@ -1,15 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { BACKEND_URL } from "../../lib/config";
-import RoleSidebar from "../../components/RoleSidebar";
-import Topbar from "../../components/Topbar";
+import { BACKEND_URL } from "../../../lib/config";
+import RoleSidebar from "../../../components/RoleSidebar";
+import Topbar from "../../../components/Topbar";
 
-export default function ProfilePage() {
-  const router = useRouter();
+export default function CustomerProfilePage() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string>("");
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
     name: "",
@@ -19,67 +16,38 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    // First check if user is authenticated
-    fetch(`${BACKEND_URL}/api/check-auth`, {
+    // Fetch logged-in customer profile
+    fetch(`${BACKEND_URL}/api/customer/profile`, {
       credentials: "include"
     })
-      .then(res => res.json())
-      .then(authData => {
-        if (!authData.authenticated) {
-          // User not logged in, redirect immediately
-          setError("Please log in to view your profile.");
-          setLoading(false);
-          router.push("/auth/login");
-          return;
-        }
-        
-        // User is authenticated, now fetch profile
-        return fetch(`${BACKEND_URL}/api/profile`, {
-          credentials: "include"
-        });
-      })
       .then(res => {
-        if (!res) return null;
-        if (res.status === 401) {
-          // Session expired, redirect to login
-          setError("Session expired. Please log in again.");
-          setLoading(false);
-          router.push("/auth/login");
-          return null;
+        if (!res.ok) {
+          throw new Error("Failed to fetch profile");
         }
         return res.json();
       })
       .then(data => {
-        if (data) {
-          if (data.error) {
-            setError(data.error);
-            setLoading(false);
-          } else {
-            setProfile(data);
-            setEditForm({
-              name: data.name || "",
-              email: data.email || "",
-              phone: data.phone || "",
-              address: data.address || ""
-            });
-            setLoading(false);
-          }
-        }
+        setProfile(data);
+        setEditForm({
+          name: data.name || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          address: data.address || ""
+        });
+        setLoading(false);
       })
       .catch(error => {
         console.error("Error fetching profile:", error);
-        setError("Failed to load profile. Please log in.");
         setLoading(false);
-        router.push("/auth/login");
       });
-  }, [router]);
+  }, []);
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditForm({ ...editForm, [e.target.name]: e.target.value });
   };
 
   const handleSave = () => {
-    fetch(`${BACKEND_URL}/api/profile`, {
+    fetch(`${BACKEND_URL}/api/customer/profile`, {
       method: "PUT",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -104,18 +72,11 @@ export default function ProfilePage() {
         <Topbar />
         <main className="p-8">
           <div className="max-w-2xl mx-auto bg-white rounded-xl shadow p-8">
-            <h2 className="text-3xl font-bold mb-6 text-orange-600">My Profile</h2>
+            <h2 className="text-3xl font-bold mb-6 text-orange-600">Customer Profile</h2>
             {loading ? (
               <div className="text-center text-gray-500">Loading profile...</div>
-            ) : error ? (
-              <div className="text-center">
-                <div className="text-red-500 mb-4">{error}</div>
-                {error.includes("log in") && (
-                  <p className="text-gray-600">Redirecting to login page...</p>
-                )}
-              </div>
             ) : !profile ? (
-              <div className="text-center text-red-500">Profile not found.</div>
+              <div className="text-center text-red-500">Please log in to view your profile.</div>
             ) : (
               <div className="space-y-4">
                 {isEditing ? (
@@ -137,7 +98,7 @@ export default function ProfilePage() {
                         name="email"
                         value={editForm.email}
                         onChange={handleEditChange}
-                        className="w-full px-4 py-2 rounded-lg border"
+                        className="w-full px-4 py-2 rounded-lg border bg-gray-100"
                         disabled
                       />
                     </div>
@@ -178,17 +139,21 @@ export default function ProfilePage() {
                   </>
                 ) : (
                   <>
-                    <div>
-                      <span className="font-semibold text-gray-700">Name:</span> {profile.name}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <span className="font-semibold text-gray-700">Name:</span>
+                      <p className="text-gray-900 mt-1">{profile.name}</p>
                     </div>
-                    <div>
-                      <span className="font-semibold text-gray-700">Email:</span> {profile.email}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <span className="font-semibold text-gray-700">Email:</span>
+                      <p className="text-gray-900 mt-1">{profile.email}</p>
                     </div>
-                    <div>
-                      <span className="font-semibold text-gray-700">Phone:</span> {profile.phone || "N/A"}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <span className="font-semibold text-gray-700">Phone:</span>
+                      <p className="text-gray-900 mt-1">{profile.phone || "Not provided"}</p>
                     </div>
-                    <div>
-                      <span className="font-semibold text-gray-700">Address:</span> {profile.address || "N/A"}
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <span className="font-semibold text-gray-700">Address:</span>
+                      <p className="text-gray-900 mt-1">{profile.address || "Not provided"}</p>
                     </div>
                     <button
                       onClick={() => setIsEditing(true)}

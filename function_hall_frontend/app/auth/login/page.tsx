@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "../../../lib/config";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,18 +15,39 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  // Mock login function
+  // Real login function
   const handleLogin = async (e: any) => {
     e.preventDefault();
     setError("");
-    // Replace with real authentication logic
-    if (email === "admin@example.com" && password === "admin123") {
-      // Mock role check
-      setEmail("");
-      setPassword("");
-      router.push("/admin/dashboard");
-    } else {
-      setError("Invalid credentials or not an admin.");
+    
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Login successful
+        console.log("Login successful, data:", data);
+        
+        // Small delay to ensure cookie is set before redirect
+        setTimeout(() => {
+          router.push("/home");
+        }, 100);
+      } else {
+        setError(data.error || "Invalid credentials.");
+        setEmail("");
+        setPassword("");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Failed to connect to server.");
       setEmail("");
       setPassword("");
     }
@@ -47,7 +69,8 @@ export default function LoginPage() {
             onChange={e => setEmail(e.target.value)}
             className="px-4 py-2 rounded-lg border bg-blue-50"
             required
-            autoComplete="off"
+            autoComplete="new-email"
+            name="email"
           />
           <label className="text-sm text-gray-700 font-medium">Enter password</label>
           <input
@@ -57,7 +80,8 @@ export default function LoginPage() {
             onChange={e => setPassword(e.target.value)}
             className="px-4 py-2 rounded-lg border bg-blue-50"
             required
-            autoComplete="off"
+            autoComplete="new-password"
+            name="password"
           />
           <button type="submit" className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-600 transition mt-2">Login</button>
         </form>
@@ -66,6 +90,11 @@ export default function LoginPage() {
         </div>
         <div className="mt-2 text-center text-sm">
           New here? <a href="/auth/signup" className="text-orange-600 font-semibold hover:underline">Register
+          </a>
+        </div>
+        <div className="mt-6 pt-4 border-t border-gray-200 text-center text-sm">
+          <a href="/admin/login" className="text-gray-600 hover:text-orange-600 font-medium transition">
+            🔐 Admin Portal
           </a>
         </div>
       </div>

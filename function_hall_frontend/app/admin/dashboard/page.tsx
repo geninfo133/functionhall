@@ -1,11 +1,56 @@
 "use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Sidebar from "../../../components/Sidebar";
 import Topbar from "../../../components/Topbar";
+import { BACKEND_URL } from "../../../lib/config";
 import { FaUsers, FaBuilding, FaClipboardList, FaRupeeSign } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 
 export default function AdminDashboard() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [admin, setAdmin] = useState<any>(null);
+
+  useEffect(() => {
+    console.log("🔍 Admin Dashboard: Checking authentication...");
+    // Check admin authentication
+    fetch(`${BACKEND_URL}/api/admin/check-auth`, {
+      credentials: "include"
+    })
+      .then(res => {
+        console.log("📡 Admin auth check response status:", res.status);
+        return res.json();
+      })
+      .then(data => {
+        console.log("📦 Admin auth check data:", data);
+        if (!data.authenticated) {
+          console.log("❌ Not authenticated, redirecting to admin login");
+          router.push("/admin/login");
+        } else {
+          console.log("✅ Admin authenticated:", data.name);
+          setAdmin(data);
+          setLoading(false);
+        }
+      })
+      .catch(err => {
+        console.error("💥 Auth check error:", err);
+        router.push("/admin/login");
+      });
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-orange-500"></div>
+          <p className="text-gray-500 mt-4">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   // Dummy stats for now; replace with real API data later
   const stats = [
     { label: "Total Halls", value: 12, icon: <FaBuilding className="text-orange-600 text-3xl" /> },
@@ -22,12 +67,12 @@ export default function AdminDashboard() {
           {/* Welcome Banner */}
           <div className="flex items-center justify-between bg-orange-500 text-white rounded-2xl shadow-lg px-8 py-6 mb-10 animate-fade-in">
             <div>
-              <h1 className="text-4xl font-extrabold mb-2 drop-shadow">Welcome, Admin!</h1>
+              <h1 className="text-4xl font-extrabold mb-2 drop-shadow">Welcome, {admin?.name || 'Admin'}!</h1>
               <p className="text-lg font-medium opacity-90">Manage your function halls, bookings, and more with ease.</p>
             </div>
             <div className="flex items-center gap-4">
               <FaUserCircle className="text-orange-500 bg-white rounded-full text-6xl drop-shadow p-1" />
-              <span className="text-xl font-bold">Admin</span>
+              <span className="text-xl font-bold">{admin?.role || 'Admin'}</span>
             </div>
           </div>
           {/* Stat Cards with Glassmorphism and Hover Animation */}

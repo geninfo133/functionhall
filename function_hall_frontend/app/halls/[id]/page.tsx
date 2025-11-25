@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../../lib/config";
 
 import Sidebar from "../../../components/Sidebar";
@@ -8,23 +8,96 @@ import Topbar from "../../../components/Topbar";
 
 export default function HallDetailsPage() {
   const { id } = useParams();
+  const router = useRouter();
   const [hall, setHall] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [packages, setPackages] = useState<any[]>([]);
-  // TODO: partners, services, dates
+  const [user, setUser] = useState<any>(null);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingData, setBookingData] = useState({
+    event_date: "",
+    guests: "",
+    package_id: "",
+    notes: ""
+  });
+  const [bookingError, setBookingError] = useState("");
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
   useEffect(() => {
+    // Check if user is logged in
+    fetch(`${BACKEND_URL}/api/check-auth`, {
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.authenticated) {
+          setUser(data);
+        }
+      });
+
+    // Fetch hall details
     fetch(`${BACKEND_URL}/api/halls/${id}`)
       .then(res => res.json())
       .then(data => {
         setHall(data);
         setLoading(false);
       });
+    
+    // Fetch packages
     fetch(`${BACKEND_URL}/api/halls/${id}/packages`)
       .then(res => res.json())
       .then(data => setPackages(data));
-    // TODO: fetch partners, services, dates
   }, [id]);
+
+  const handleBookNow = () => {
+    if (!user) {
+      // Not logged in, redirect to login
+      router.push(`/auth/login?redirect=/halls/${id}`);
+      return;
+    }
+    setShowBookingModal(true);
+  };
+
+  const handleBookingSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBookingError("");
+
+    if (!bookingData.event_date) {
+      setBookingError("Please select an event date");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/bookings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          hall_id: id,
+          event_date: bookingData.event_date,
+          package_id: bookingData.package_id || null,
+          notes: bookingData.notes
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setBookingSuccess(true);
+        setTimeout(() => {
+          setShowBookingModal(false);
+          router.push("/my-bookings");
+        }, 2000);
+      } else {
+        setBookingError(data.error || "Booking failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Booking error:", error);
+      setBookingError("Failed to create booking. Please try again.");
+    }
+  };
 
   if (loading) return <div className="p-8">Loading...</div>;
   if (!hall) return <div className="p-8">Hall not found.</div>;
@@ -83,11 +156,138 @@ export default function HallDetailsPage() {
 
             {/* Book Button */}
             <div className="flex justify-end">
-              <button className="bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold shadow hover:bg-orange-700 transition">Book Now</button>
+              <button 
+                onClick={handleBookNow}
+                className="bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold shadow hover:bg-orange-700 transition"
+              >
+                {user ? "Book Now" : "Login to Book"}
+              </button>
             </div>
           </div>
         </main>
       </div>
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <h2 className="text-2xl font-bold text-orange-600 mb-6">Book {hall.name}</h2>
+            
+            {bookingSuccess ? (
+              <div className="text-center py-8">
+                <div className="text-green-600 text-5xl mb-4">✓</div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Booking Successful!</h3>
+                <p className="text-gray-600">Redirecting to your bookings...</p>
+              </div>
+            ) : (
+              <form onSubmit={handleBookingSubmit} className="space-y-4">
+                {bookingError && (
+                  <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+                    {bookingError}
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Event Date *
+                  </label>
+                  <input
+                    type="date"
+                    value={bookingData.event_date}
+                    onChange={(e) => setBookingData({...bookingData, event_date: e.target.value})}
+                    min={new Date().toISOString().split('T')[0]}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Number of Guests (Optional)
+                  </label>
+                  <input
+                    type="number"
+                    value={bookingData.guests}
+                    onChange={(e) => setBookingData({...bookingData, guests: e.target.value})}
+                    placeholder="e.g., 200"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  />
+                </div>
+
+                {packages.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Select Package (Optional)
+                    </label>
+                    <select
+                      value={bookingData.package_id}
+                      onChange={(e) => setBookingData({...bookingData, package_id: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    >
+                      <option value="">No package</option>
+                      {packages.map((pkg) => (
+                        <option key={pkg.id} value={pkg.id}>
+                          {pkg.package_name} - ₹{pkg.price}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Additional Notes (Optional)
+                  </label>
+                  <textarea
+                    value={bookingData.notes}
+                    onChange={(e) => setBookingData({...bookingData, notes: e.target.value})}
+                    placeholder="Any special requirements..."
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="bg-orange-50 border border-orange-200 p-4 rounded-lg">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-gray-700">Hall Price:</span>
+                    <span className="font-bold text-orange-600">₹{hall.price_per_day}</span>
+                  </div>
+                  {bookingData.package_id && (
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-700">Package:</span>
+                      <span className="font-bold text-orange-600">
+                        ₹{packages.find(p => p.id === parseInt(bookingData.package_id))?.price || 0}
+                      </span>
+                    </div>
+                  )}
+                  <div className="border-t border-orange-300 pt-2 mt-2 flex justify-between">
+                    <span className="font-bold text-gray-800">Total:</span>
+                    <span className="font-bold text-orange-600 text-xl">
+                      ₹{hall.price_per_day + (bookingData.package_id ? (packages.find(p => p.id === parseInt(bookingData.package_id))?.price || 0) : 0)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowBookingModal(false)}
+                    className="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-700 transition"
+                  >
+                    Confirm Booking
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
