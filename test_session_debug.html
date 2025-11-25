@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Debug - Function Hall</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+        .success { border-left: 4px solid #28a745; }
+        .error { border-left: 4px solid #dc3545; }
+        pre { white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Session Debug Tool</h1>
+    <p><strong>Backend:</strong> http://127.0.0.1:5000</p>
+    
+    <div>
+        <button onclick="testLogin()">1. Login</button>
+        <button onclick="checkAuth()">2. Check Auth</button>
+        <button onclick="getProfile()">3. Get Profile</button>
+        <button onclick="getBookings()">4. Get Bookings</button>
+        <button onclick="logout()">5. Logout</button>
+        <button onclick="showCookies()">Show Cookies</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        const BACKEND = 'http://127.0.0.1:5000';
+
+        function showResult(title, data, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result ' + (isError ? 'error' : 'success');
+            resultDiv.innerHTML = `
+                <h3>${title}</h3>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        function showCookies() {
+            const cookies = document.cookie;
+            showResult('📋 Current Cookies', { 
+                cookies: cookies || 'No cookies found',
+                allCookies: document.cookie.split(';').map(c => c.trim())
+            });
+        }
+
+        async function testLogin() {
+            try {
+                const response = await fetch(`${BACKEND}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({
+                        email: 'alice@example.com',
+                        password: 'password123'
+                    })
+                });
+                const data = await response.json();
+                showResult(`✅ Login (Status: ${response.status})`, data);
+                
+                // Show cookies after login
+                setTimeout(() => {
+                    console.log('Cookies after login:', document.cookie);
+                }, 100);
+            } catch (error) {
+                showResult('❌ Login Error', { error: error.message }, true);
+            }
+        }
+
+        async function checkAuth() {
+            try {
+                const response = await fetch(`${BACKEND}/api/check-auth`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                showResult(`🔐 Check Auth (Status: ${response.status})`, data);
+            } catch (error) {
+                showResult('❌ Auth Check Error', { error: error.message }, true);
+            }
+        }
+
+        async function getProfile() {
+            try {
+                const response = await fetch(`${BACKEND}/api/profile`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                showResult(`👤 Profile (Status: ${response.status})`, data, response.status !== 200);
+            } catch (error) {
+                showResult('❌ Profile Error', { error: error.message }, true);
+            }
+        }
+
+        async function getBookings() {
+            try {
+                const response = await fetch(`${BACKEND}/api/my-bookings`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                showResult(`📅 My Bookings (Status: ${response.status})`, data, response.status !== 200);
+            } catch (error) {
+                showResult('❌ Bookings Error', { error: error.message }, true);
+            }
+        }
+
+        async function logout() {
+            try {
+                const response = await fetch(`${BACKEND}/api/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                showResult(`🚪 Logout (Status: ${response.status})`, data);
+            } catch (error) {
+                showResult('❌ Logout Error', { error: error.message }, true);
+            }
+        }
+
+        // Show cookies on load
+        window.onload = () => {
+            console.log('Page loaded. Cookies:', document.cookie);
+        };
+    </script>
+</body>
+</html>

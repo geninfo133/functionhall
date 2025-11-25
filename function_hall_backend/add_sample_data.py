@@ -1,5 +1,5 @@
 from app import create_app, db
-from app.models import FunctionHall, HallPhoto, Package, Customer, Booking
+from app.models import FunctionHall, HallPhoto, Package, Customer, Booking, AdminUser
 from datetime import date
 
 app = create_app()
@@ -48,11 +48,12 @@ with app.app_context():
 
     # Sample Customers
     customers = [
-        Customer(name="Alice", email="alice@example.com", phone="1112223333", address="Hyderabad"),
-        Customer(name="Bob", email="bob@example.com", phone="4445556666", address="Vijayawada")
+        Customer(name="Alice", email="alice@example.com", password="password123", phone="1112223333", address="Hyderabad"),
+        Customer(name="Bob", email="bob@example.com", password="password123", phone="4445556666", address="Vijayawada")
     ]
     db.session.add_all(customers)
     db.session.commit()
+    print("Sample customers added: alice@example.com / password123, bob@example.com / password123")
 
     # Sample Bookings
     bookings = [
@@ -60,5 +61,13 @@ with app.app_context():
     ]
     db.session.add_all(bookings)
     db.session.commit()
+
+    # Adding sample admin user
+    if not AdminUser.query.filter_by(email="admin@example.com").first():
+        admin = AdminUser(name="Super Admin", email="admin@example.com", role="admin")
+        admin.set_password("admin123")
+        db.session.add(admin)
+        db.session.commit()
+        print("Sample admin user added: admin@example.com / admin123")
 
     print("Sample data added to all tables.")

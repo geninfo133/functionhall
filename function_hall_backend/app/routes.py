@@ -2,9 +2,10 @@
 from flask import Blueprint, jsonify, request
 from twilio.rest import Client
 import os
-from app.twilio_config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
+#from app.twilio_config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
 from app import db
 from datetime import datetime, date
+from flask import session
 
 # Create blueprint FIRST
 main = Blueprint('main', __name__)
@@ -116,7 +117,43 @@ def delete_hall(hall_id):
 # -------------------------
 @main.route('/api/halls', methods=['GET'])
 def get_halls():
-    halls = FunctionHall.query.all()
+    # Get query params
+    location = request.args.get('location')
+    name = request.args.get('name')
+    guests = request.args.get('guests')
+    date_str = request.args.get('date')
+    sort = request.args.get('sort')
+    query = FunctionHall.query
+    if location:
+        query = query.filter(FunctionHall.location.ilike(f"%{location}%"))
+    if name:
+        query = query.filter(FunctionHall.name.ilike(f"%{name}%"))
+    if guests:
+        try:
+            guests_int = int(guests)
+            query = query.filter(FunctionHall.capacity >= guests_int)
+        except (ValueError, TypeError):
+            pass  # Ignore invalid guest input
+    if date_str:
+        try:
+            from datetime import datetime
+            date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+            from app.models import Booking
+            booked_hall_ids = [b.hall_id for b in Booking.query.filter_by(event_date=date_obj).all()]
+            if booked_hall_ids:
+                query = query.filter(~FunctionHall.id.in_(booked_hall_ids))
+        except Exception:
+            pass  # Ignore invalid date input
+    # Sorting
+    if sort == "price_asc":
+        query = query.order_by(FunctionHall.price_per_day.asc())
+    elif sort == "price_desc":
+        query = query.order_by(FunctionHall.price_per_day.desc())
+    elif sort == "capacity_asc":
+        query = query.order_by(FunctionHall.capacity.asc())
+    elif sort == "capacity_desc":
+        query = query.order_by(FunctionHall.capacity.desc())
+    halls = query.all()
     result = []
     for hall in halls:
         result.append({
@@ -207,17 +244,58 @@ def add_package():
 
 @main.route('/api/bookings', methods=['POST'])
 def add_booking():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized. Please log in.'}), 401
+    
     data = request.get_json()
+    hall_id = data.get('hall_id')
+    event_date = data.get('event_date')
+    package_id = data.get('package_id')
+    
+    if not hall_id or not event_date:
+        return jsonify({'error': 'Hall ID and event date are required'}), 400
+    
+    # Get hall details
+    hall = FunctionHall.query.get(hall_id)
+    if not hall:
+        return jsonify({'error': 'Hall not found'}), 404
+    
+    # Calculate total amount
+    total_amount = hall.price_per_day
+    if package_id:
+        package = Package.query.get(package_id)
+        if package:
+            total_amount += package.price
+    
+    # Check if date is already booked
+    existing_booking = Booking.query.filter_by(
+        hall_id=hall_id,
+        event_date=datetime.strptime(event_date, "%Y-%m-%d").date()
+    ).filter(Booking.status.in_(['Pending', 'Confirmed'])).first()
+    
+    if existing_booking:
+        return jsonify({'error': 'This hall is already booked for the selected date'}), 400
+    
+    # Create booking
     booking = Booking(
-        customer_id=data['customer_id'],
-        hall_id=data['hall_id'],
-        event_date=datetime.strptime(data['event_date'], "%Y-%m-%d").date(),
-        status=data.get('status', 'Pending'),
-        total_amount=data.get('total_amount')
+        customer_id=user_id,
+        hall_id=hall_id,
+        event_date=datetime.strptime(event_date, "%Y-%m-%d").date(),
+        status='Pending',
+        total_amount=total_amount
     )
     db.session.add(booking)
     db.session.commit()
-    return jsonify({"message": "Booking created successfully!", "id": booking.id}), 201
+    
+    print(f"✅ Booking created: ID={booking.id}, Customer={user_id}, Hall={hall_id}, Date={event_date}")
+    
+    return jsonify({
+        "message": "Booking created successfully!",
+        "id": booking.id,
+        "total_amount": total_amount,
+        "status": "Pending"
+    }), 201
 
 
 @main.route('/api/bookings/<int:booking_id>', methods=['PUT'])
@@ -237,6 +315,118 @@ def get_inquiries():
     inquiries = Inquiry.query.all()
     result = [{'id': i.id, 'customer_name': i.customer_name, 'email': i.email, 'hall_id': i.hall_id, 'message': i.message} for i in inquiries]
     return jsonify(result)
+
+
+@main.route('/api/my-bookings', methods=['GET'])
+def get_my_bookings():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    bookings = Booking.query.filter_by(customer_id=user_id).all()
+    result = []
+    for booking in bookings:
+        result.append({
+            'id': booking.id,
+            'hall_name': booking.hall.name,
+            'event_date': booking.event_date.strftime('%Y-%m-%d'),
+            'status': booking.status,
+            'total_amount': booking.total_amount
+        })
+    return jsonify(result)
+
+
+@main.route('/api/profile', methods=['GET'])
+def get_profile():
+    user_id = session.get('user_id')
+    print(f"🔍 Profile request - Session: {dict(session)}, user_id: {user_id}")
+    if not user_id:
+        print("❌ No user_id in session - Unauthorized")
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    customer = Customer.query.get(user_id)
+    if not customer:
+        print(f"❌ Customer not found for user_id: {user_id}")
+        return jsonify({'error': 'User not found'}), 404
+
+    print(f"✅ Profile returned for: {customer.email}")
+    return jsonify({
+        'id': customer.id,
+        'name': customer.name,
+        'email': customer.email,
+        'phone': customer.phone,
+        'address': customer.address
+    })
+
+
+@main.route('/api/profile', methods=['PUT'])
+def update_profile():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    customer = Customer.query.get(user_id)
+    if not customer:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.get_json()
+    customer.name = data.get('name', customer.name)
+    customer.phone = data.get('phone', customer.phone)
+    customer.address = data.get('address', customer.address)
+    db.session.commit()
+
+    return jsonify({
+        'id': customer.id,
+        'name': customer.name,
+        'email': customer.email,
+        'phone': customer.phone,
+        'address': customer.address
+    })
+
+
+# Customer-specific profile endpoints
+@main.route('/api/customer/profile', methods=['GET'])
+def get_customer_profile():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    customer = Customer.query.get(user_id)
+    if not customer:
+        return jsonify({'error': 'User not found'}), 404
+
+    return jsonify({
+        'id': customer.id,
+        'name': customer.name,
+        'email': customer.email,
+        'phone': customer.phone,
+        'address': customer.address
+    })
+
+
+@main.route('/api/customer/profile', methods=['PUT'])
+def update_customer_profile():
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    customer = Customer.query.get(user_id)
+    if not customer:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.get_json()
+    customer.name = data.get('name', customer.name)
+    customer.phone = data.get('phone', customer.phone)
+    customer.address = data.get('address', customer.address)
+    db.session.commit()
+
+    return jsonify({
+        'id': customer.id,
+        'name': customer.name,
+        'email': customer.email,
+        'phone': customer.phone,
+        'address': customer.address
+    })
 
 
 

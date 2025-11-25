@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Login Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .success { border-left: 4px solid #28a745; }
+        .error { border-left: 4px solid #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Frontend Login Flow Test</h1>
+    <p><strong>Backend:</strong> http://127.0.0.1:5000</p>
+    <p><strong>Testing from:</strong> <span id="currentUrl"></span></p>
+
+    <div class="step">
+        <h3>Step 1: Login</h3>
+        <input type="email" id="email" value="alice@example.com" placeholder="Email">
+        <input type="password" id="password" value="password123" placeholder="Password">
+        <button onclick="doLogin()">Login</button>
+        <div id="loginResult" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="step">
+        <h3>Step 2: Check Cookies</h3>
+        <button onclick="checkCookies()">Check Cookies</button>
+        <div id="cookieResult" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="step">
+        <h3>Step 3: Get Profile</h3>
+        <button onclick="getProfile()">Get Profile</button>
+        <div id="profileResult" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="step">
+        <h3>Step 4: Check Authentication</h3>
+        <button onclick="checkAuth()">Check Auth Status</button>
+        <div id="authResult" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const BACKEND = 'http://127.0.0.1:5000';
+        
+        document.getElementById('currentUrl').textContent = window.location.href;
+
+        function showResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = 'result ' + (isError ? 'error' : 'success');
+            element.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+        }
+
+        async function doLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                console.log('Attempting login...');
+                const response = await fetch(`${BACKEND}/api/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                console.log('Login response:', data);
+                console.log('Response headers:', [...response.headers.entries()]);
+                
+                if (response.ok) {
+                    showResult('loginResult', `✅ Login Success!\n\n${JSON.stringify(data, null, 2)}`);
+                    // Auto-check cookies after login
+                    setTimeout(checkCookies, 500);
+                } else {
+                    showResult('loginResult', `❌ Login Failed!\n\n${JSON.stringify(data, null, 2)}`, true);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showResult('loginResult', `❌ Error: ${error.message}`, true);
+            }
+        }
+
+        function checkCookies() {
+            const cookies = document.cookie;
+            const allCookies = cookies.split(';').map(c => c.trim());
+            
+            const result = {
+                raw: cookies || 'No cookies found',
+                parsed: allCookies,
+                count: allCookies.filter(c => c).length,
+                hasSession: cookies.includes('session')
+            };
+            
+            console.log('Current cookies:', result);
+            showResult('cookieResult', result);
+        }
+
+        async function getProfile() {
+            try {
+                console.log('Fetching profile...');
+                console.log('Current cookies before request:', document.cookie);
+                
+                const response = await fetch(`${BACKEND}/api/profile`, {
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                console.log('Profile response:', data);
+                
+                if (response.ok) {
+                    showResult('profileResult', `✅ Profile Retrieved!\n\n${JSON.stringify(data, null, 2)}`);
+                } else {
+                    showResult('profileResult', `❌ Failed (Status ${response.status})\n\n${JSON.stringify(data, null, 2)}`, true);
+                }
+            } catch (error) {
+                console.error('Profile error:', error);
+                showResult('profileResult', `❌ Error: ${error.message}`, true);
+            }
+        }
+
+        async function checkAuth() {
+            try {
+                console.log('Checking auth...');
+                const response = await fetch(`${BACKEND}/api/check-auth`, {
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                console.log('Auth check response:', data);
+                
+                showResult('authResult', data);
+            } catch (error) {
+                console.error('Auth check error:', error);
+                showResult('authResult', `❌ Error: ${error.message}`, true);
+            }
+        }
+
+        // Check cookies on page load
+        window.onload = () => {
+            console.log('Page loaded');
+            console.log('Current URL:', window.location.href);
+            console.log('Cookies:', document.cookie);
+        };
+    </script>
+</body>
+</html>
