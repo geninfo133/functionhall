@@ -46,8 +46,11 @@ def get_hall(hall_id):
 @main.route('/api/halls', methods=['POST'])
 def add_hall():
     data = request.get_json()
+    print(f"📝 Adding new hall: {data}")
+    
     hall = FunctionHall(
-        name=data['name'],
+        name=data.get('name'),
+        owner_name=data.get('owner_name'),
         location=data.get('location'),
         capacity=data.get('capacity'),
         price_per_day=data.get('price_per_day'),
@@ -56,6 +59,8 @@ def add_hall():
     )
     db.session.add(hall)
     db.session.commit()
+    
+    print(f"✅ Hall added successfully! ID: {hall.id}")
     return jsonify({"message": "Hall added successfully!", "id": hall.id}), 201
 
 
@@ -188,3 +193,23 @@ def add_inquiry():
     db.session.add(inquiry)
     db.session.commit()
     return jsonify({"message": "Inquiry submitted successfully!", "id": inquiry.id}), 201
+
+# -------------------------
+# ADMIN DASHBOARD STATS
+# -------------------------
+@main.route('/api/admin/stats', methods=['GET'])
+def get_admin_stats():
+    total_halls = FunctionHall.query.count()
+    total_bookings = Booking.query.count()
+    total_customers = Customer.query.count()
+    
+    # Calculate total revenue from all bookings
+    bookings = Booking.query.all()
+    total_revenue = sum(booking.total_amount for booking in bookings if booking.total_amount)
+    
+    return jsonify({
+        'total_halls': total_halls,
+        'total_bookings': total_bookings,
+        'total_customers': total_customers,
+        'total_revenue': total_revenue
+    })
