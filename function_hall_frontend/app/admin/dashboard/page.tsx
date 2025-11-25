@@ -1,17 +1,105 @@
 "use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Sidebar from "../../../components/Sidebar";
 import Topbar from "../../../components/Topbar";
 import { FaUsers, FaBuilding, FaClipboardList, FaRupeeSign } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import { BACKEND_URL } from "../../../lib/config";
 
 export default function AdminDashboard() {
-  // Dummy stats for now; replace with real API data later
-  const stats = [
-    { label: "Total Halls", value: 12, icon: <FaBuilding className="text-orange-600 text-3xl" /> },
-    { label: "Total Bookings", value: 34, icon: <FaClipboardList className="text-orange-400 text-3xl" /> },
-    { label: "Total Customers", value: 20, icon: <FaUsers className="text-orange-300 text-3xl" /> },
-    { label: "Revenue", value: "₹1,20,000", icon: <FaRupeeSign className="text-orange-500 text-3xl" /> },
+  const router = useRouter();
+  const [admin, setAdmin] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem('adminToken');
+        
+        if (!token) {
+          console.log('❌ No admin token found');
+          router.push('/admin/login');
+          return;
+        }
+
+        const response = await fetch(`${BACKEND_URL}/api/admin/check-auth`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        
+        if (!response.ok) {
+          console.log('❌ Auth check failed, clearing token');
+          localStorage.removeItem('adminToken');
+          router.push('/admin/login');
+          return;
+        }
+
+        const data = await response.json();
+        if (data.authenticated && data.admin) {
+          console.log('✅ Admin authenticated:', data.admin.email);
+          setAdmin(data.admin);
+        } else {
+          console.log('❌ Not authenticated');
+          localStorage.removeItem('adminToken');
+          router.push('/admin/login');
+        }
+      } catch (error) {
+        console.error('💥 Auth check error:', error);
+        localStorage.removeItem('adminToken');
+        router.push('/admin/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
+
+  const [stats, setStats] = useState({
+    total_halls: 0,
+    total_bookings: 0,
+    total_customers: 0,
+    total_revenue: 0
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/admin/stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      }
+    };
+
+    if (admin) {
+      fetchStats();
+    }
+  }, [admin]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl text-gray-600">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!admin) {
+    return null;
+  }
+
+  const statsDisplay = [
+    { label: "Total Halls", value: stats.total_halls, icon: <FaBuilding className="text-orange-600 text-3xl" /> },
+    { label: "Total Bookings", value: stats.total_bookings, icon: <FaClipboardList className="text-orange-400 text-3xl" /> },
+    { label: "Total Customers", value: stats.total_customers, icon: <FaUsers className="text-orange-300 text-3xl" /> },
+    { label: "Revenue", value: `₹${stats.total_revenue.toLocaleString('en-IN')}`, icon: <FaRupeeSign className="text-orange-500 text-3xl" /> },
   ];
   return (
     <div className="flex min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
@@ -22,17 +110,23 @@ export default function AdminDashboard() {
           {/* Welcome Banner */}
           <div className="flex items-center justify-between bg-orange-500 text-white rounded-2xl shadow-lg px-8 py-6 mb-10 animate-fade-in">
             <div>
-              <h1 className="text-4xl font-extrabold mb-2 drop-shadow">Welcome, Admin!</h1>
+              <h1 className="text-4xl font-extrabold mb-2 drop-shadow">Welcome, {admin.name}!</h1>
               <p className="text-lg font-medium opacity-90">Manage your function halls, bookings, and more with ease.</p>
             </div>
             <div className="flex items-center gap-4">
-              <FaUserCircle className="text-orange-500 bg-white rounded-full text-6xl drop-shadow p-1" />
-              <span className="text-xl font-bold">Admin</span>
+              <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg">
+                <img 
+                  src="/hani1.jpg" 
+                  alt={admin.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="text-xl font-bold">{admin.name}</span>
             </div>
           </div>
           {/* Stat Cards with Glassmorphism and Hover Animation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-            {stats.map((stat, idx) => (
+            {statsDisplay.map((stat, idx) => (
               <div key={stat.label} className="backdrop-blur-lg bg-white/60 rounded-2xl shadow-lg border border-gray-200 flex items-center gap-4 p-6 transition-transform duration-200 hover:scale-105 hover:bg-orange-50">
                 <div>{stat.icon}</div>
                 <div>

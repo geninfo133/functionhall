@@ -41,8 +41,14 @@ const Topbar: React.FC = () => {
       </form>
       {/* Profile/Actions */}
       <div className="flex items-center space-x-4">
-        <Link href="/profile" className="text-orange-500 font-semibold hover:underline">Profile</Link>
-        <UserCircle size={32} className="text-gray-500" />
+        <Link href="/admin/profile" className="text-orange-500 font-semibold hover:underline">Profile</Link>
+        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-500 shadow">
+          <img 
+            src="/hani1.jpg" 
+            alt="Profile"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </div>
     </header>
   );
