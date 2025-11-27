@@ -18,7 +18,6 @@ import { useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
 import Link from "next/link";
 import RoleSidebar from "../../components/RoleSidebar";
-import Topbar from "../../components/Topbar";
 import HallTable from "../../components/HallTable";
 
 export default function HomePage() {
@@ -40,9 +39,14 @@ export default function HomePage() {
     }
     if (date) url += `date=${encodeURIComponent(date)}&`;
     if (guests) url += `guests=${encodeURIComponent(guests)}&`;
+    
+    console.log('🔍 Fetching URL:', url);
+    console.log('Guests value:', guests, 'Type:', typeof guests);
+    
     fetch(url)
       .then(res => res.json())
       .then(data => {
+        console.log('Received halls:', data.length);
         setHalls(data);
         setLoading(false);
       });
@@ -64,7 +68,6 @@ export default function HomePage() {
     <div className="flex min-h-screen bg-gray-50">
       <RoleSidebar role="customer" />
       <div className="flex-1 flex flex-col">
-        <Topbar />
         <main className="p-8">
           {/* Hero Section */}
           <section className="bg-orange-50 rounded-2xl p-8 mb-8 flex flex-col items-center text-center shadow">

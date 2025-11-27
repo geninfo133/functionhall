@@ -64,6 +64,9 @@ export default function HallTable({ halls: propHalls, loading: propLoading, onEd
               <th className="px-6 py-4 text-center font-semibold text-lg tracking-wide">Capacity</th>
               <th className="px-6 py-4 text-left font-semibold text-lg tracking-wide">Contact</th>
               <th className="px-6 py-4 text-right font-semibold text-lg tracking-wide">Price</th>
+              {!onEdit && !onDelete && (
+                <th className="px-6 py-4 text-center font-semibold text-lg tracking-wide">Action</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -92,6 +95,16 @@ export default function HallTable({ halls: propHalls, loading: propLoading, onEd
                   <td className="px-6 py-4 text-center align-middle">{hall.capacity}</td>
                   <td className="px-6 py-4 align-middle">{hall.contact_number}</td>
                   <td className="px-6 py-4 text-right align-middle font-bold text-orange-700">₹{hall.price_per_day}</td>
+                  {!onEdit && !onDelete && (
+                    <td className="px-6 py-4 text-center align-middle">
+                      <Link
+                        href={`/booking?hallId=${hall.id}`}
+                        className="bg-orange-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600 transition inline-block"
+                      >
+                        Book Now
+                      </Link>
+                    </td>
+                  )}
                   {(onEdit || onDelete) && (
                     <td className="px-6 py-4 text-center align-middle space-x-2">
                       {onEdit && <button className="text-blue-600 font-semibold hover:underline" onClick={() => onEdit(hall)}>Edit</button>}

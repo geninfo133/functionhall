@@ -1,13 +1,120 @@
-import MainNavbar from "../../components/MainNavbar";
+"use client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { BACKEND_URL } from "../../lib/config";
+import RoleSidebar from "../../components/RoleSidebar";
 
 export default function MyBookingsPage() {
+  const router = useRouter();
+  const [customer, setCustomer] = useState<any>(null);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if customer is logged in
+    const customerInfo = localStorage.getItem("customerInfo");
+    if (!customerInfo) {
+      router.push("/customer/login");
+      return;
+    }
+    
+    const parsedCustomer = JSON.parse(customerInfo);
+    setCustomer(parsedCustomer);
+
+    // Fetch customer bookings
+    fetch(`${BACKEND_URL}/api/customer/${parsedCustomer.id}/bookings`)
+      .then(res => res.json())
+      .then(data => {
+        setBookings(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, [router]);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Confirmed":
+        return "bg-green-100 text-green-800";
+      case "Pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "Cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  if (!customer) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <>
-      <MainNavbar />
-      <main className="p-8">
-        <h1 className="text-2xl font-bold mb-4">My Bookings</h1>
-        {/* List of user bookings, status, cancellation option will go here */}
-      </main>
-    </>
+    <div className="flex min-h-screen bg-gray-50">
+      <RoleSidebar role="customer" />
+      <div className="flex-1">
+        <main className="p-8">
+          <h1 className="text-3xl font-bold text-orange-500 mb-6">My Bookings</h1>
+          
+          {loading ? (
+            <div className="text-center py-12">Loading your bookings...</div>
+          ) : bookings.length === 0 ? (
+            <div className="bg-white rounded-xl shadow p-8 text-center">
+              <p className="text-gray-600 mb-4">You haven't made any bookings yet.</p>
+              <a
+                href="/home"
+                className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition"
+              >
+                Browse Halls
+              </a>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {bookings.map((booking) => (
+                <div key={booking.id} className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-800">{booking.hall_name}</h2>
+                      <p className="text-gray-600">{booking.hall_location}</p>
+                    </div>
+                    <span className={`px-4 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
+                      {booking.status}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-500">Event Date</p>
+                      <p className="font-semibold text-gray-800">
+                        {new Date(booking.event_date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Booking ID</p>
+                      <p className="font-semibold text-gray-800">#{booking.id}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Amount</p>
+                      <p className="font-bold text-orange-600 text-lg">₹{booking.total_amount}</p>
+                    </div>
+                  </div>
+
+                  {booking.created_at && (
+                    <p className="text-xs text-gray-400 mt-4">
+                      Booked on {new Date(booking.created_at).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
   );
 }

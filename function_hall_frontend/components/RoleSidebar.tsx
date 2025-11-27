@@ -9,7 +9,6 @@ interface SidebarProps {
 const sidebarOptions: Record<Role, { label: string; href: string }[]> = {
   customer: [
     { label: "Home", href: "/home" },
-    { label: "Browse Halls", href: "/halls" },
     { label: "My Bookings", href: "/my-bookings" },
     { label: "Enquiry", href: "/enquiry" },
     { label: "Profile", href: "/profile" },
