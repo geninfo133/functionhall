@@ -88,9 +88,16 @@ class Customer(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     phone = db.Column(db.String(20))
     address = db.Column(db.String(200))
+    password_hash = db.Column(db.String(256))
 
     bookings = db.relationship('Booking', backref='customer', lazy=True)
     inquiries = db.relationship('Inquiry', backref='customer', lazy=True)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return f'<Customer {self.name}>'
@@ -125,11 +132,31 @@ class Inquiry(db.Model):
     hall_id = db.Column(db.Integer, db.ForeignKey('function_halls.id'), nullable=True)
     customer_name = db.Column(db.String(100))
     email = db.Column(db.String(100))
+    phone = db.Column(db.String(20))
     message = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return f'<Inquiry {self.customer_name}>'
+
+
+# -------------------------
+# Notification Model
+# -------------------------
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+
+    id = db.Column(db.Integer, primary_key=True)
+    recipient_email = db.Column(db.String(100), nullable=False)  # Vendor/owner email
+    recipient_name = db.Column(db.String(100))
+    subject = db.Column(db.String(200))
+    message = db.Column(db.Text, nullable=False)
+    booking_id = db.Column(db.Integer, db.ForeignKey('bookings.id'))
+    is_read = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<Notification to {self.recipient_email}>'
 
 
 # -------------------------

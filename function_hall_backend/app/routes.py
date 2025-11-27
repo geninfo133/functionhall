@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 from app import db
-from app.models import FunctionHall, Package, Customer, Booking, Inquiry
+from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification
 from datetime import datetime, date
 
 main = Blueprint('main', __name__)
@@ -10,7 +10,43 @@ main = Blueprint('main', __name__)
 # -------------------------
 @main.route('/api/halls', methods=['GET'])
 def get_halls():
-    halls = FunctionHall.query.all()
+    # Get search parameters
+    name_query = request.args.get('name', '').strip()
+    location_query = request.args.get('location', '').strip()
+    guests = request.args.get('guests', type=int)
+    date_query = request.args.get('date', '').strip()
+    
+    print(f"🔍 Search params - name: {name_query}, location: {location_query}, guests: {guests}, date: {date_query}")
+    
+    # Start with base query
+    query = FunctionHall.query
+    
+    # Apply filters
+    if name_query:
+        query = query.filter(FunctionHall.name.ilike(f'%{name_query}%'))
+    if location_query:
+        query = query.filter(FunctionHall.location.ilike(f'%{location_query}%'))
+    if guests:
+        print(f"🔢 Filtering by guests >= {guests}")
+        query = query.filter(FunctionHall.capacity >= guests)
+    
+    halls = query.all()
+    
+    # Filter by date availability if date is provided
+    if date_query:
+        try:
+            check_date = datetime.strptime(date_query, '%Y-%m-%d').date()
+            available_halls = []
+            for hall in halls:
+                # Check if hall is available on the selected date
+                booking = Booking.query.filter_by(hall_id=hall.id, event_date=check_date).filter(
+                    Booking.status.in_(['Confirmed', 'Pending'])
+                ).first()
+                if not booking:
+                    available_halls.append(hall)
+            halls = available_halls
+        except ValueError:
+            pass  # Invalid date format, skip date filtering
     result = []
     for hall in halls:
         result.append({
@@ -158,6 +194,22 @@ def add_booking():
     )
     db.session.add(booking)
     db.session.commit()
+    
+    # Send notification to hall owner
+    hall = FunctionHall.query.get(booking.hall_id)
+    customer = Customer.query.get(booking.customer_id)
+    
+    if hall and customer:
+        notification = Notification(
+            recipient_email=hall.contact_number,  # Using contact for now, should be owner email
+            recipient_name=hall.owner_name,
+            subject=f"New Booking Request for {hall.name}",
+            message=f"New booking request from {customer.name} ({customer.email}) for {booking.event_date.strftime('%B %d, %Y')}. Amount: ₹{booking.total_amount}. Status: {booking.status}.",
+            booking_id=booking.id
+        )
+        db.session.add(notification)
+        db.session.commit()
+    
     return jsonify({"message": "Booking created successfully!", "id": booking.id}), 201
 
 
@@ -168,6 +220,56 @@ def update_booking_status(booking_id):
     booking.status = data.get('status', booking.status)
     db.session.commit()
     return jsonify({"message": f"Booking {booking.id} status updated to {booking.status}"})
+
+@main.route('/api/halls/<int:hall_id>/availability', methods=['GET'])
+def check_hall_availability(hall_id):
+    date_str = request.args.get('date')
+    if not date_str:
+        return jsonify({"error": "Date parameter required"}), 400
+    
+    try:
+        check_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"error": "Invalid date format"}), 400
+    
+    # Check if hall exists
+    hall = FunctionHall.query.get_or_404(hall_id)
+    
+    # Check if there's already a confirmed or pending booking for this date
+    existing_booking = Booking.query.filter_by(
+        hall_id=hall_id,
+        event_date=check_date
+    ).filter(
+        Booking.status.in_(['Confirmed', 'Pending'])
+    ).first()
+    
+    if existing_booking:
+        return jsonify({
+            "available": False,
+            "message": f"Hall is already booked for this date (Booking #{existing_booking.id})"
+        })
+    
+    return jsonify({
+        "available": True,
+        "message": "Hall is available for this date"
+    })
+
+@main.route('/api/customer/<int:customer_id>/bookings', methods=['GET'])
+def get_customer_bookings(customer_id):
+    bookings = Booking.query.filter_by(customer_id=customer_id).all()
+    result = []
+    for b in bookings:
+        hall = FunctionHall.query.get(b.hall_id)
+        result.append({
+            'id': b.id,
+            'hall_name': hall.name if hall else 'Unknown',
+            'hall_location': hall.location if hall else '',
+            'event_date': b.event_date.isoformat(),
+            'status': b.status,
+            'total_amount': b.total_amount,
+            'created_at': b.created_at.isoformat() if hasattr(b, 'created_at') and b.created_at else None
+        })
+    return jsonify(result)
 
 
 # -------------------------
@@ -193,6 +295,44 @@ def add_inquiry():
     db.session.add(inquiry)
     db.session.commit()
     return jsonify({"message": "Inquiry submitted successfully!", "id": inquiry.id}), 201
+
+@main.route('/api/enquiry', methods=['POST'])
+def add_enquiry():
+    data = request.get_json()
+    inquiry = Inquiry(
+        customer_name=data.get('name'),
+        email=data.get('email'),
+        phone=data.get('phone'),
+        message=data.get('message')
+    )
+    db.session.add(inquiry)
+    db.session.commit()
+    return jsonify({"message": "Enquiry submitted successfully!", "id": inquiry.id}), 201
+
+# -------------------------
+# CUSTOMER PROFILE
+# -------------------------
+@main.route('/api/customer/<int:customer_id>/profile', methods=['PUT'])
+def update_customer_profile(customer_id):
+    customer = Customer.query.get_or_404(customer_id)
+    data = request.get_json()
+    
+    customer.name = data.get('name', customer.name)
+    customer.email = data.get('email', customer.email)
+    customer.phone = data.get('phone', customer.phone)
+    customer.address = data.get('address', customer.address)
+    
+    db.session.commit()
+    return jsonify({
+        "message": "Profile updated successfully!",
+        "customer": {
+            "id": customer.id,
+            "name": customer.name,
+            "email": customer.email,
+            "phone": customer.phone,
+            "address": customer.address
+        }
+    }), 200
 
 # -------------------------
 # ADMIN DASHBOARD STATS
