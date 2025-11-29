@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaHome, FaCalendarCheck, FaUser, FaSignOutAlt, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarAlt, FaUsers, FaFileInvoiceDollar, FaCog, FaCheckCircle, FaEnvelope } from "react-icons/fa";
 
 export type Role = "customer" | "vendor" | "admin";
 
@@ -6,31 +7,31 @@ interface SidebarProps {
   role: Role;
 }
 
-const sidebarOptions: Record<Role, { label: string; href: string }[]> = {
+const sidebarOptions: Record<Role, { label: string; href: string; icon: JSX.Element }[]> = {
   customer: [
-    { label: "Home", href: "/home" },
-    { label: "My Bookings", href: "/my-bookings" },
-    { label: "Profile", href: "/profile" },
-    { label: "Logout", href: "/logout" },
+    { label: "Home", href: "/home", icon: <FaHome /> },
+    { label: "My Bookings", href: "/my-bookings", icon: <FaCalendarCheck /> },
+    { label: "Profile", href: "/profile", icon: <FaUser /> },
+    { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
   ],
   vendor: [
-    { label: "Dashboard", href: "/vendor/dashboard" },
-    { label: "My Halls", href: "/vendor/halls" },
-    { label: "Add/Edit Hall", href: "/vendor/halls/add" },
-    { label: "Manage Packages", href: "/vendor/packages" },
-    { label: "View Bookings", href: "/vendor/bookings" },
-    { label: "Calendar", href: "/vendor/calendar" },
-    { label: "Profile", href: "/profile" },
-    { label: "Logout", href: "/logout" },
+    { label: "Dashboard", href: "/vendor/dashboard", icon: <FaTachometerAlt /> },
+    { label: "My Halls", href: "/vendor/halls", icon: <FaBuilding /> },
+    { label: "Add/Edit Hall", href: "/vendor/halls/add", icon: <FaPlusCircle /> },
+    { label: "Manage Packages", href: "/vendor/packages", icon: <FaBox /> },
+    { label: "View Bookings", href: "/vendor/bookings", icon: <FaCalendarCheck /> },
+    { label: "Calendar", href: "/vendor/calendar", icon: <FaCalendarAlt /> },
+    { label: "Profile", href: "/profile", icon: <FaUser /> },
+    { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
   ],
   admin: [
-    { label: "Admin Dashboard", href: "/admin/dashboard" },
-    { label: "Approve Halls", href: "/admin/halls" },
-    { label: "Manage Users", href: "/admin/users" },
-    { label: "Manage Bookings", href: "/admin/bookings" },
-    { label: "Revenue/Reports", href: "/admin/reports" },
-    { label: "System Settings", href: "/admin/settings" },
-    { label: "Logout", href: "/logout" },
+    { label: "Admin Dashboard", href: "/admin/dashboard", icon: <FaTachometerAlt /> },
+    { label: "Approve Halls", href: "/admin/halls", icon: <FaCheckCircle /> },
+    { label: "Manage Users", href: "/admin/users", icon: <FaUsers /> },
+    { label: "Manage Bookings", href: "/admin/bookings", icon: <FaCalendarCheck /> },
+    { label: "Revenue/Reports", href: "/admin/reports", icon: <FaFileInvoiceDollar /> },
+    { label: "System Settings", href: "/admin/settings", icon: <FaCog /> },
+    { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
   ],
 };
 
@@ -44,14 +45,15 @@ export default function RoleSidebar({ role }: SidebarProps) {
         <ul className="space-y-2">
           {(role === "customer"
             ? [
-                { label: "Enquiry", href: "/customer/enquiry" },
+                { label: "Enquiry", href: "/customer/enquiry", icon: <FaEnvelope /> },
                 ...sidebarOptions[role]
               ]
             : sidebarOptions[role]
           ).map((item) => (
             <li key={item.href}>
-              <Link href={item.href} className="block px-4 py-2 rounded-lg hover:bg-orange-50 text-gray-700 font-medium transition">
-                {item.label}
+              <Link href={item.href} className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-orange-50 text-gray-700 font-medium transition">
+                <span className="text-orange-500">{item.icon}</span>
+                <span>{item.label}</span>
               </Link>
             </li>
           ))}

@@ -108,7 +108,7 @@ export default function CustomerLogin() {
 
         <p className="text-center text-gray-600 mt-6">
           Don't have an account?{" "}
-          <Link href="/customer/register" className="text-orange-500 font-semibold hover:underline">
+          <Link href="/customer/phone-verify" className="text-orange-500 font-semibold hover:underline">
             Register here
           </Link>
         </p>

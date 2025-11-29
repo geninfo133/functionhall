@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaSearch } from "react-icons/fa";
 
 // Avatar color palette
 const AVATAR_COLORS = [
@@ -44,24 +45,39 @@ export default function HomePage() {
     console.log('Guests value:', guests, 'Type:', typeof guests);
     
     fetch(url)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then(data => {
         console.log('Received halls:', data.length);
         setHalls(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('❌ Fetch error:', err);
+        setHalls([]);
         setLoading(false);
       });
   }, [searchQuery, location, date, guests]);
 
   const handleSearch = async () => {
     setLoading(true);
-    let url = `${BACKEND_URL}/api/halls?`;
-    if (location) url += `location=${encodeURIComponent(location)}&`;
-    if (date) url += `date=${encodeURIComponent(date)}&`;
-    if (guests) url += `guests=${encodeURIComponent(guests)}&`;
-    const res = await fetch(url);
-    const data = await res.json();
-    setHalls(data);
-    setLoading(false);
+    try {
+      let url = `${BACKEND_URL}/api/halls?`;
+      if (location) url += `location=${encodeURIComponent(location)}&`;
+      if (date) url += `date=${encodeURIComponent(date)}&`;
+      if (guests) url += `guests=${encodeURIComponent(guests)}&`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      const data = await res.json();
+      setHalls(data);
+    } catch (err) {
+      console.error('❌ Search error:', err);
+      setHalls([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -75,31 +91,41 @@ export default function HomePage() {
             <p className="text-lg text-orange-500 mb-6">Book top-rated halls for your events, weddings, and celebrations!</p>
             {/* Search Bar */}
             <div className="flex flex-wrap gap-4 justify-center mb-4">
-              <input
-                type="text"
-                placeholder="Location"
-                className="px-4 py-2 rounded-lg border w-40"
-                value={location}
-                onChange={e => setLocation(e.target.value)}
-              />
-              <input
-                type="date"
-                className="px-4 py-2 rounded-lg border w-40"
-                value={date}
-                onChange={e => setDate(e.target.value)}
-              />
-              <input
-                type="number"
-                placeholder="Guests"
-                className="px-4 py-2 rounded-lg border w-32"
-                value={guests}
-                onChange={e => setGuests(e.target.value)}
-              />
+              <div className="relative">
+                <FaMapMarkerAlt className="absolute left-3 top-3 text-orange-500" />
+                <input
+                  type="text"
+                  placeholder="Location"
+                  className="pl-10 pr-4 py-2 rounded-lg border w-40 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  value={location}
+                  onChange={e => setLocation(e.target.value)}
+                />
+              </div>
+              <div className="relative">
+                <FaCalendarAlt className="absolute left-3 top-3 text-orange-500" />
+                <input
+                  type="date"
+                  className="pl-10 pr-4 py-2 rounded-lg border w-40 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  value={date}
+                  onChange={e => setDate(e.target.value)}
+                />
+              </div>
+              <div className="relative">
+                <FaUsers className="absolute left-3 top-3 text-orange-500" />
+                <input
+                  type="number"
+                  placeholder="Guests"
+                  className="pl-10 pr-4 py-2 rounded-lg border w-32 focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  value={guests}
+                  onChange={e => setGuests(e.target.value)}
+                />
+              </div>
               <button
-                className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-700 transition"
+                className="flex items-center space-x-2 bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-700 transition"
                 onClick={handleSearch}
               >
-                Search
+                <FaSearch />
+                <span>Search</span>
               </button>
             </div>
           </section>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
 import RoleSidebar from "../../components/RoleSidebar";
+import { FaCalendarCheck, FaBuilding, FaCalendarAlt, FaRupeeSign, FaCheckCircle, FaClock, FaTimesCircle } from "react-icons/fa";
 
 export default function MyBookingsPage() {
   const router = useRouter();
@@ -55,7 +56,10 @@ export default function MyBookingsPage() {
       <RoleSidebar role="customer" />
       <div className="flex-1">
         <main className="p-8">
-          <h1 className="text-3xl font-bold text-orange-500 mb-6">My Bookings</h1>
+          <div className="flex items-center space-x-3 mb-6">
+            <FaCalendarCheck className="text-orange-500 text-3xl" />
+            <h1 className="text-3xl font-bold text-orange-500">My Bookings</h1>
+          </div>
           
           {loading ? (
             <div className="text-center py-12">Loading your bookings...</div>
@@ -74,18 +78,27 @@ export default function MyBookingsPage() {
               {bookings.map((booking) => (
                 <div key={booking.id} className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
                   <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h2 className="text-xl font-bold text-gray-800">{booking.hall_name}</h2>
-                      <p className="text-gray-600">{booking.hall_location}</p>
+                    <div className="flex items-start space-x-3">
+                      <FaBuilding className="text-orange-500 text-xl mt-1" />
+                      <div>
+                        <h2 className="text-xl font-bold text-gray-800">{booking.hall_name}</h2>
+                        <p className="text-gray-600">{booking.hall_location}</p>
+                      </div>
                     </div>
-                    <span className={`px-4 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
-                      {booking.status}
+                    <span className={`flex items-center space-x-1 px-4 py-1 rounded-full text-sm font-semibold ${getStatusColor(booking.status)}`}>
+                      {booking.status === 'Confirmed' && <FaCheckCircle />}
+                      {booking.status === 'Pending' && <FaClock />}
+                      {booking.status === 'Cancelled' && <FaTimesCircle />}
+                      <span>{booking.status}</span>
                     </span>
                   </div>
                   
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-500">Event Date</p>
+                      <p className="flex items-center space-x-1 text-gray-500">
+                        <FaCalendarAlt className="text-orange-500" />
+                        <span>Event Date</span>
+                      </p>
                       <p className="font-semibold text-gray-800">
                         {new Date(booking.event_date).toLocaleDateString('en-US', {
                           year: 'numeric',
@@ -99,7 +112,10 @@ export default function MyBookingsPage() {
                       <p className="font-semibold text-gray-800">#{booking.id}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Amount</p>
+                      <p className="flex items-center space-x-1 text-gray-500">
+                        <FaRupeeSign className="text-orange-500" />
+                        <span>Amount</span>
+                      </p>
                       <p className="font-bold text-orange-600 text-lg">₹{booking.total_amount}</p>
                     </div>
                   </div>
