@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaHome, FaCalendarCheck, FaUser, FaSignOutAlt, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarAlt, FaUsers, FaFileInvoiceDollar, FaCog, FaCheckCircle, FaEnvelope } from "react-icons/fa";
+import { ReactElement } from "react";
 
 export type Role = "customer" | "vendor" | "admin";
 
@@ -7,7 +8,7 @@ interface SidebarProps {
   role: Role;
 }
 
-const sidebarOptions: Record<Role, { label: string; href: string; icon: JSX.Element }[]> = {
+const sidebarOptions: Record<Role, { label: string; href: string; icon: ReactElement }[]> = {
   customer: [
     { label: "Home", href: "/home", icon: <FaHome /> },
     { label: "My Bookings", href: "/my-bookings", icon: <FaCalendarCheck /> },
