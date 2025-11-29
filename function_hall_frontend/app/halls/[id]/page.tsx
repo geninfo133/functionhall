@@ -17,17 +17,31 @@ export default function HallDetailsPage() {
     if (hallId) {
       // Fetch hall details
       fetch(`${BACKEND_URL}/api/halls/${hallId}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
         .then(data => {
           setHall(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('❌ Fetch hall error:', err);
+          setHall(null);
           setLoading(false);
         });
       
       // Fetch packages
       fetch(`${BACKEND_URL}/api/halls/${hallId}/packages`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+          return res.json();
+        })
         .then(data => setPackages(data))
-        .catch(err => console.log("No packages available"));
+        .catch(err => {
+          console.error('❌ Fetch packages error:', err);
+          setPackages([]);
+        });
     }
   }, [hallId]);
 
