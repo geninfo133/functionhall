@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
 import RoleSidebar from "../../components/RoleSidebar";
+import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaEdit, FaSave, FaTimes } from "react-icons/fa";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -85,40 +86,57 @@ export default function ProfilePage() {
       <div className="flex-1">
         <main className="p-8">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold text-orange-500 mb-6">My Profile</h1>
+            <div className="flex items-center space-x-3 mb-6">
+              <FaUser className="text-orange-500 text-3xl" />
+              <h1 className="text-3xl font-bold text-orange-500">My Profile</h1>
+            </div>
             
             <div className="bg-white rounded-xl shadow p-8">
               {!editing ? (
                 <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Name</p>
-                    <p className="text-lg font-semibold text-gray-800">{customer.name}</p>
+                  <div className="flex items-start space-x-3">
+                    <FaUser className="text-orange-500 mt-1" />
+                    <div>
+                      <p className="text-sm text-gray-500">Name</p>
+                      <p className="text-lg font-semibold text-gray-800">{customer.name}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Email</p>
-                    <p className="text-lg font-semibold text-gray-800">{customer.email}</p>
+                  <div className="flex items-start space-x-3">
+                    <FaEnvelope className="text-orange-500 mt-1" />
+                    <div>
+                      <p className="text-sm text-gray-500">Email</p>
+                      <p className="text-lg font-semibold text-gray-800">{customer.email}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Phone</p>
-                    <p className="text-lg font-semibold text-gray-800">{customer.phone || "Not provided"}</p>
+                  <div className="flex items-start space-x-3">
+                    <FaPhone className="text-orange-500 mt-1" />
+                    <div>
+                      <p className="text-sm text-gray-500">Phone</p>
+                      <p className="text-lg font-semibold text-gray-800">{customer.phone || "Not provided"}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Address</p>
-                    <p className="text-lg font-semibold text-gray-800">{customer.address || "Not provided"}</p>
+                  <div className="flex items-start space-x-3">
+                    <FaMapMarkerAlt className="text-orange-500 mt-1" />
+                    <div>
+                      <p className="text-sm text-gray-500">Address</p>
+                      <p className="text-lg font-semibold text-gray-800">{customer.address || "Not provided"}</p>
+                    </div>
                   </div>
 
                   <button
                     onClick={() => setEditing(true)}
-                    className="mt-6 bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-600 transition"
+                    className="flex items-center space-x-2 mt-6 bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-600 transition"
                   >
-                    Edit Profile
+                    <FaEdit />
+                    <span>Edit Profile</span>
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Name
+                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                      <FaUser className="text-orange-500" />
+                      <span>Name</span>
                     </label>
                     <input
                       type="text"
@@ -131,8 +149,9 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email
+                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                      <FaEnvelope className="text-orange-500" />
+                      <span>Email</span>
                     </label>
                     <input
                       type="email"
@@ -145,8 +164,9 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone
+                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                      <FaPhone className="text-orange-500" />
+                      <span>Phone</span>
                     </label>
                     <input
                       type="tel"
@@ -158,8 +178,9 @@ export default function ProfilePage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Address
+                    <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                      <FaMapMarkerAlt className="text-orange-500" />
+                      <span>Address</span>
                     </label>
                     <textarea
                       name="address"
@@ -186,9 +207,10 @@ export default function ProfilePage() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="flex-1 bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition disabled:bg-gray-400"
+                      className="flex items-center justify-center space-x-2 flex-1 bg-orange-500 text-white py-2 rounded-lg font-semibold hover:bg-orange-600 transition disabled:bg-gray-400"
                     >
-                      {loading ? "Saving..." : "Save Changes"}
+                      <FaSave />
+                      <span>{loading ? "Saving..." : "Save Changes"}</span>
                     </button>
                     <button
                       type="button"
@@ -201,9 +223,10 @@ export default function ProfilePage() {
                           address: customer.address || ""
                         });
                       }}
-                      className="flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
+                      className="flex items-center justify-center space-x-2 flex-1 bg-gray-200 text-gray-700 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
                     >
-                      Cancel
+                      <FaTimes />
+                      <span>Cancel</span>
                     </button>
                   </div>
                 </form>

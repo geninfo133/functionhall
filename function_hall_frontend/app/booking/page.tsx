@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
+import HallCalendar from "../../components/HallCalendar";
+import { FaBuilding, FaMapMarkerAlt, FaUsers, FaUser, FaEnvelope, FaCalendarAlt, FaBox, FaRupeeSign, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 export default function BookingPage() {
   const router = useRouter();
@@ -20,15 +22,30 @@ export default function BookingPage() {
   const [success, setSuccess] = useState("");
   const [availability, setAvailability] = useState<{available: boolean, message: string} | null>(null);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
+  const [hallBookings, setHallBookings] = useState<any[]>([]);
 
   useEffect(() => {
     // Check if customer is logged in
     const customerInfo = localStorage.getItem("customerInfo");
     if (!customerInfo) {
-      router.push("/customer/login");
+      // Redirect to phone verification for new customers
+      router.push("/customer/phone-verify");
       return;
     }
-    setCustomer(JSON.parse(customerInfo));
+    
+    const parsedCustomer = JSON.parse(customerInfo);
+    
+    // Allow customers with or without is_phone_verified field
+    // Only block if explicitly set to false (new registration flow)
+    if (parsedCustomer.is_phone_verified === false) {
+      // Phone not verified, redirect to phone verification
+      localStorage.removeItem("customerInfo");
+      localStorage.removeItem("customerToken");
+      router.push("/customer/phone-verify");
+      return;
+    }
+    
+    setCustomer(parsedCustomer);
 
     // Load all halls
     fetch(`${BACKEND_URL}/api/halls`)
@@ -47,6 +64,12 @@ export default function BookingPage() {
       fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/packages`)
         .then(res => res.json())
         .then(data => setPackages(data));
+      
+      // Load bookings for this hall
+      fetch(`${BACKEND_URL}/api/bookings?hall_id=${selectedHallId}`)
+        .then(res => res.json())
+        .then(data => setHallBookings(data))
+        .catch(err => console.error("Failed to fetch bookings", err));
     }
   }, [selectedHallId]);
 
@@ -88,6 +111,16 @@ export default function BookingPage() {
       return;
     }
 
+    const totalAmount = selectedPackage ? selectedPackage.price : hall?.price_per_day || 0;
+    const advanceAmount = Math.round(totalAmount / 4);
+
+    // Show confirmation dialog with advance payment details
+    const confirmMessage = `Total Amount: ₹${totalAmount}\n\nTo confirm your booking, you need to pay an advance of ₹${advanceAmount} (25% of total amount).\n\nYou will receive payment details via SMS on your registered mobile number.\n\nDo you want to proceed?`;
+    
+    if (!confirm(confirmMessage)) {
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${BACKEND_URL}/api/bookings`, {
@@ -98,13 +131,14 @@ export default function BookingPage() {
           hall_id: parseInt(selectedHallId),
           event_date: eventDate,
           status: "Pending",
-          total_amount: selectedPackage ? selectedPackage.price : hall?.price_per_day || 0
+          total_amount: totalAmount,
+          advance_amount: advanceAmount
         })
       });
 
       if (res.ok) {
-        setSuccess("Booking submitted successfully! You will receive confirmation soon.");
-        setTimeout(() => router.push("/my-bookings"), 2000);
+        setSuccess(`Booking submitted successfully! Please pay advance amount of ₹${advanceAmount}. Payment details have been sent to your mobile number.`);
+        setTimeout(() => router.push("/my-bookings"), 3000);
       } else {
         setError("Failed to create booking. Please try again.");
       }
@@ -120,20 +154,40 @@ export default function BookingPage() {
 
   return (
     <>
-      <main className="p-8 max-w-4xl mx-auto">
+      <main className="p-8 max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-orange-500 mb-6">Book a Function Hall</h1>
         
-        {hall && (
-          <div className="bg-white rounded-xl shadow p-6 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">{hall.name}</h2>
-            <p className="text-gray-600 mb-1"><span className="font-semibold">Location:</span> {hall.location}</p>
-            <p className="text-gray-600 mb-1"><span className="font-semibold">Capacity:</span> {hall.capacity} guests</p>
-            <p className="text-gray-600 mb-1"><span className="font-semibold">Owner:</span> {hall.owner_name}</p>
-            <p className="text-orange-600 font-bold text-xl mt-2">₹{hall.price_per_day}/day</p>
-          </div>
-        )}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left Column - Booking Form */}
+          <div>
+            {hall && (
+              <div className="bg-white rounded-xl shadow p-6 mb-6">
+                <div className="flex items-center space-x-2 mb-4">
+                  <FaBuilding className="text-orange-500 text-2xl" />
+                  <h2 className="text-2xl font-bold text-gray-800">{hall.name}</h2>
+                </div>
+                <div className="space-y-2">
+                  <p className="flex items-center space-x-2 text-gray-600">
+                    <FaMapMarkerAlt className="text-orange-500" />
+                    <span><span className="font-semibold">Location:</span> {hall.location}</span>
+                  </p>
+                  <p className="flex items-center space-x-2 text-gray-600">
+                    <FaUsers className="text-orange-500" />
+                    <span><span className="font-semibold">Capacity:</span> {hall.capacity} guests</span>
+                  </p>
+                  <p className="flex items-center space-x-2 text-gray-600">
+                    <FaUser className="text-orange-500" />
+                    <span><span className="font-semibold">Owner:</span> {hall.owner_name}</span>
+                  </p>
+                  <p className="flex items-center space-x-2 text-orange-600 font-bold text-xl mt-2">
+                    <FaRupeeSign />
+                    <span>{hall.price_per_day}/day</span>
+                  </p>
+                </div>
+              </div>
+            )}
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">              Select Hall *
             </label>
@@ -158,50 +212,60 @@ export default function BookingPage() {
             )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">              Customer Name
-            </label>
-            <input
-              type="text"
-              value={customer.name}
-              disabled
-              className="w-full px-4 py-2 border rounded-lg bg-gray-50"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={customer.email}
-              disabled
-              className="w-full px-4 py-2 border rounded-lg bg-gray-50"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Event Date *
-            </label>
-            <input
-              type="date"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
-              required
-            />
-            {checkingAvailability && (
-              <p className="text-sm text-gray-500 mt-1">Checking availability...</p>
-            )}
-            {availability && (
-              <div className={`mt-2 p-3 rounded-lg ${availability.available ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
-                {availability.available ? '✓ ' : '✗ '}{availability.message}
+              <div>
+                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                  <FaUser className="text-orange-500" />
+                  <span>Customer Name</span>
+                </label>
+                <input
+                  type="text"
+                  value={customer.name}
+                  disabled
+                  className="w-full px-4 py-2 border rounded-lg bg-gray-50"
+                />
               </div>
-            )}
-          </div>
+
+              <div>
+                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                  <FaEnvelope className="text-orange-500" />
+                  <span>Email</span>
+                </label>
+                <input
+                  type="email"
+                  value={customer.email}
+                  disabled
+                  className="w-full px-4 py-2 border rounded-lg bg-gray-50"
+                />
+              </div>
+
+              {eventDate && (
+                <div>
+                  <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                    <FaCalendarAlt className="text-orange-500" />
+                    <span>Selected Event Date</span>
+                  </label>
+                  <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <p className="flex items-center space-x-2 text-sm font-semibold text-orange-800">
+                      <FaCalendarAlt />
+                      <span>{new Date(eventDate).toLocaleDateString('en-IN', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}</span>
+                    </p>
+                  </div>
+                  {checkingAvailability && (
+                    <p className="text-sm text-gray-500 mt-2">Checking availability...</p>
+                  )}
+                  {availability && (
+                    <div className={`flex items-center space-x-2 mt-2 p-3 rounded-lg ${availability.available ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                      {availability.available ? <FaCheckCircle /> : <FaTimesCircle />}
+                      {availability.available ? '✓ ' : '✗ '}{availability.message}
+                    </div>
+                  )}
+                </div>
+              )}
 
           {packages.length > 0 && (
             <div>
@@ -240,14 +304,35 @@ export default function BookingPage() {
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition disabled:bg-gray-400"
-          >
-            {loading ? "Processing..." : "Confirm Booking"}
-          </button>
-        </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition disabled:bg-gray-400"
+              >
+                {loading ? "Processing..." : "Confirm Booking"}
+              </button>
+            </form>
+          </div>
+
+          {/* Right Column - Calendar */}
+          <div className="lg:sticky lg:top-8 lg:self-start">
+            <div className="bg-white rounded-xl shadow p-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Select Event Date</h2>
+              {selectedHallId ? (
+                <HallCalendar
+                  hallId={parseInt(selectedHallId)}
+                  selectedDate={eventDate}
+                  onDateSelect={(date) => setEventDate(date)}
+                  bookings={hallBookings}
+                />
+              ) : (
+                <div className="p-8 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center">
+                  <p className="text-gray-500">Please select a hall first to view available dates</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </main>
     </>
   );

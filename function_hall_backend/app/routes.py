@@ -3,6 +3,7 @@ from app import db
 from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification
 from datetime import datetime, date
 from sms_utils import send_sms
+from app import otp_service
 
 main = Blueprint('main', __name__)
 
@@ -164,6 +165,29 @@ def add_customer():
     return jsonify({"message": "Customer added successfully!", "id": cust.id}), 201
 
 
+@main.route('/api/customers/<int:customer_id>', methods=['DELETE'])
+def delete_customer(customer_id):
+    try:
+        customer = Customer.query.get(customer_id)
+        if not customer:
+            return jsonify({"error": "Customer not found"}), 404
+        
+        # Delete all related bookings
+        Booking.query.filter_by(customer_id=customer_id).delete()
+        
+        # Delete all related inquiries
+        Inquiry.query.filter_by(customer_id=customer_id).delete()
+        
+        # Delete the customer
+        db.session.delete(customer)
+        db.session.commit()
+        
+        return jsonify({"message": "Customer deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
+
+
 # -------------------------
 # BOOKINGS
 # -------------------------
@@ -196,11 +220,12 @@ def add_booking():
     db.session.add(booking)
     db.session.commit()
     
-    # Send notification to hall owner
+    # Get customer and hall details
     hall = FunctionHall.query.get(booking.hall_id)
     customer = Customer.query.get(booking.customer_id)
     
     if hall and customer:
+        # Send notification to hall owner
         notification = Notification(
             recipient_email=hall.contact_number,  # Using contact for now, should be owner email
             recipient_name=hall.owner_name,
@@ -226,41 +251,32 @@ def update_booking_status(booking_id):
     
     # Send SMS notification to customer when booking is confirmed
     if old_status == 'Pending' and new_status == 'Confirmed':
-        print(f"✅ Booking #{booking.id} confirmed! Sending SMS notification...")
+        print(f"✅ Booking #{booking.id} confirmed! Sending advance payment SMS...")
         
         # Get customer and hall details
         customer = Customer.query.get(booking.customer_id)
         hall = FunctionHall.query.get(booking.hall_id)
         
         if customer and hall:
+            # Calculate advance amount (25% of total)
+            advance_amount = booking.total_amount // 4
+            
             # Format customer phone number
             customer_phone = customer.phone
+            country_code = getattr(customer, 'country_code', '+91')
             if not customer_phone.startswith('+'):
-                customer_phone = '+91' + customer_phone[1:] if customer_phone.startswith('0') else '+91' + customer_phone
+                customer_phone = country_code + customer_phone
             
-            # Send confirmation SMS to customer
-            message = f"""🎉 Booking Confirmed!
-
-Dear {customer.name},
-
-Your booking at {hall.name} has been CONFIRMED!
-
-Event Date: {booking.event_date.strftime('%B %d, %Y')}
-Amount: ₹{booking.total_amount}
-Location: {hall.location}
-
-Hall Contact: {hall.contact_number}
-Owner: {hall.owner_name}
-
-Thank you for choosing us!"""
+            # Send advance payment details SMS to customer (keep under 160 chars for single SMS)
+            message = f"""Booking CONFIRMED! {hall.name} on {booking.event_date.strftime('%d %b')}. Advance: Rs.{advance_amount}/- (25%). Pay: gens@upi or 9866168995 within 24hrs. ID#{booking.id}"""
 
             sms_result = send_sms(customer_phone, message)
             print(f"📱 SMS Result: {sms_result}")
             
-            if sms_result['success']:
-                print(f"✉️ Confirmation SMS sent to {customer.name} at {customer_phone}")
+            if sms_result.get('success'):
+                print(f"✉️ Advance payment SMS sent to {customer.name} at {customer_phone}")
             else:
-                print(f"❌ SMS failed: {sms_result['message']}")
+                print(f"❌ SMS failed: {sms_result.get('error')}")
     
     return jsonify({"message": f"Booking {booking.id} status updated to {booking.status}"})
 
@@ -453,3 +469,43 @@ def get_admin_stats():
         'total_customers': total_customers,
         'total_revenue': total_revenue
     })
+
+
+# -------------------------
+# OTP VERIFICATION
+# -------------------------
+@main.route('/api/otp/send', methods=['POST'])
+def send_otp():
+    """Send OTP to phone number"""
+    data = request.get_json()
+    phone_number = data.get('phone_number')
+    country_code = data.get('country_code', '+91')
+    
+    if not phone_number:
+        return jsonify({"error": "Phone number is required"}), 400
+    
+    result = otp_service.send_otp(phone_number, country_code)
+    
+    if result['success']:
+        return jsonify({"message": result['message']}), 200
+    else:
+        return jsonify({"error": result['message']}), 500
+
+
+@main.route('/api/otp/verify', methods=['POST'])
+def verify_otp():
+    """Verify OTP for phone number"""
+    data = request.get_json()
+    phone_number = data.get('phone_number')
+    otp = data.get('otp')
+    country_code = data.get('country_code', '+91')
+    
+    if not phone_number or not otp:
+        return jsonify({"error": "Phone number and OTP are required"}), 400
+    
+    result = otp_service.verify_otp(phone_number, otp, country_code)
+    
+    if result['success']:
+        return jsonify({"message": result['message']}), 200
+    else:
+        return jsonify({"error": result['message']}), 400
