@@ -169,7 +169,16 @@ def add_customer():
 # -------------------------
 @main.route('/api/bookings', methods=['GET'])
 def get_bookings():
-    bookings = Booking.query.all()
+    # Check for hall_id query parameter
+    hall_id = request.args.get('hall_id', type=int)
+    
+    if hall_id:
+        # Filter by hall_id
+        bookings = Booking.query.filter_by(hall_id=hall_id).all()
+    else:
+        # Get all bookings
+        bookings = Booking.query.all()
+    
     result = []
     for b in bookings:
         result.append({

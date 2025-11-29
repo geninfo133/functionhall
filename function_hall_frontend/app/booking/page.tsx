@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
+import HallCalendar from "../../components/HallCalendar";
 
 export default function BookingPage() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function BookingPage() {
   const [eventDate, setEventDate] = useState("");
   const [packages, setPackages] = useState<any[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
+  const [hallBookings, setHallBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -40,6 +42,7 @@ export default function BookingPage() {
   // Load hall details when selected
   useEffect(() => {
     if (selectedHallId) {
+      // Load hall details
       fetch(`${BACKEND_URL}/api/halls/${selectedHallId}`)
         .then(res => res.json())
         .then(data => setHall(data));
@@ -48,6 +51,12 @@ export default function BookingPage() {
       fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/packages`)
         .then(res => res.json())
         .then(data => setPackages(data));
+      
+      // Load all bookings for this hall to show in calendar
+      fetch(`${BACKEND_URL}/api/bookings?hall_id=${selectedHallId}`)
+        .then(res => res.json())
+        .then(data => setHallBookings(data))
+        .catch(err => console.error("Failed to load bookings", err));
     }
   }, [selectedHallId]);
 
@@ -176,23 +185,48 @@ export default function BookingPage() {
             </label>
             <input
               type="email"
-              value={customer.email}
-              disabled
-              className="w-full px-4 py-2 border rounded-lg bg-gray-50"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Event Date *
+              value={customer.email}2">
+              Select Event Date *
             </label>
-            <input
-              type="date"
-              value={eventDate}
-              onChange={(e) => setEventDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
-              required
+            
+            {selectedHallId ? (
+              <>
+                {/* Calendar View */}
+                <HallCalendar
+                  hallId={selectedHallId}
+                  selectedDate={eventDate}
+                  onDateSelect={setEventDate}
+                  bookings={hallBookings}
+                />
+                
+                {/* Selected Date Display */}
+                {eventDate && (
+                  <div className="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <p className="text-sm font-medium text-gray-700">
+                      Selected Date: <span className="text-orange-600 font-bold">
+                        {new Date(eventDate).toLocaleDateString('en-US', { 
+                          weekday: 'long', 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}
+                      </span>
+                    </p>
+                  </div>
+                )}
+                
+                {checkingAvailability && (
+                  <p className="text-sm text-gray-500 mt-2">Checking availability...</p>
+                )}
+                {availability && (
+                  <div className={`mt-2 p-3 rounded-lg ${availability.available ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                    {availability.available ? '✓ ' : '✗ '}{availability.message}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="p-6 bg-gray-50 rounded-lg text-center text-gray-500">
+                Please select a hall first to view availability calendar
             />
             {checkingAvailability && (
               <p className="text-sm text-gray-500 mt-1">Checking availability...</p>
