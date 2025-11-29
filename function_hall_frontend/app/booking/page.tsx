@@ -6,9 +6,11 @@ import { BACKEND_URL } from "../../lib/config";
 export default function BookingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const hallId = searchParams.get("hallId");
+  const urlHallId = searchParams.get("hallId");
   
   const [customer, setCustomer] = useState<any>(null);
+  const [halls, setHalls] = useState<any[]>([]);
+  const [selectedHallId, setSelectedHallId] = useState(urlHallId || "");
   const [hall, setHall] = useState<any>(null);
   const [eventDate, setEventDate] = useState("");
   const [packages, setPackages] = useState<any[]>([]);
@@ -28,34 +30,41 @@ export default function BookingPage() {
     }
     setCustomer(JSON.parse(customerInfo));
 
-    // Load hall details if hallId is provided
-    if (hallId) {
-      fetch(`${BACKEND_URL}/api/halls/${hallId}`)
+    // Load all halls
+    fetch(`${BACKEND_URL}/api/halls`)
+      .then(res => res.json())
+      .then(data => setHalls(data));
+  }, [router]);
+
+  // Load hall details when selected
+  useEffect(() => {
+    if (selectedHallId) {
+      fetch(`${BACKEND_URL}/api/halls/${selectedHallId}`)
         .then(res => res.json())
         .then(data => setHall(data));
       
       // Load packages for this hall
-      fetch(`${BACKEND_URL}/api/halls/${hallId}/packages`)
+      fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/packages`)
         .then(res => res.json())
         .then(data => setPackages(data));
     }
-  }, [hallId, router]);
+  }, [selectedHallId]);
 
   // Check availability when date changes
   useEffect(() => {
-    if (eventDate && hallId) {
+    if (eventDate && selectedHallId) {
       checkAvailability();
     }
-  }, [eventDate, hallId]);
+  }, [eventDate, selectedHallId]);
 
   const checkAvailability = async () => {
-    if (!eventDate || !hallId) return;
+    if (!eventDate || !selectedHallId) return;
     
     setCheckingAvailability(true);
     setAvailability(null);
     
     try {
-      const res = await fetch(`${BACKEND_URL}/api/halls/${hallId}/availability?date=${eventDate}`);
+      const res = await fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/availability?date=${eventDate}`);
       const data = await res.json();
       setAvailability(data);
     } catch (err) {
@@ -69,13 +78,8 @@ export default function BookingPage() {
     setError("");
     setSuccess("");
 
-    if (!customer || !eventDate) {
+    if (!customer || !eventDate || !selectedHallId) {
       setError("Please fill all required fields");
-      return;
-    }
-
-    if (!hallId) {
-      setError("Please select a hall first");
       return;
     }
 
@@ -91,7 +95,7 @@ export default function BookingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           customer_id: customer.id,
-          hall_id: parseInt(hallId),
+          hall_id: parseInt(selectedHallId),
           event_date: eventDate,
           status: "Pending",
           total_amount: selectedPackage ? selectedPackage.price : hall?.price_per_day || 0
@@ -131,8 +135,31 @@ export default function BookingPage() {
 
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Customer Name
+            <label className="block text-sm font-medium text-gray-700 mb-1">              Select Hall *
+            </label>
+            <select
+              value={selectedHallId}
+              onChange={(e) => setSelectedHallId(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+              required
+            >
+              <option value="">-- Select a Hall --</option>
+              {halls.map(h => (
+                <option key={h.id} value={h.id}>
+                  {h.name} - {h.location} (Capacity: {h.capacity})
+                </option>
+              ))}
+            </select>
+            {hall && (
+              <div className="mt-2 p-3 bg-orange-50 rounded-lg">
+                <p className="text-sm"><strong>Owner:</strong> {hall.owner_name}</p>
+                <p className="text-sm"><strong>Price:</strong> ₹{hall.price_per_day}/day</p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">              Customer Name
             </label>
             <input
               type="text"
@@ -221,14 +248,6 @@ export default function BookingPage() {
             {loading ? "Processing..." : "Confirm Booking"}
           </button>
         </form>
-
-        {!hallId && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
-            <p className="text-yellow-800">
-              Please select a hall from the <a href="/home" className="text-orange-600 font-semibold underline">home page</a> first.
-            </p>
-          </div>
-        )}
       </main>
     </>
   );
