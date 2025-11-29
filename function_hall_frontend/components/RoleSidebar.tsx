@@ -10,7 +10,6 @@ const sidebarOptions: Record<Role, { label: string; href: string }[]> = {
   customer: [
     { label: "Home", href: "/home" },
     { label: "My Bookings", href: "/my-bookings" },
-    { label: "Enquiry", href: "/enquiry" },
     { label: "Profile", href: "/profile" },
     { label: "Logout", href: "/logout" },
   ],
