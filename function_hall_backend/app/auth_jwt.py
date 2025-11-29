@@ -136,7 +136,14 @@ def customer_login():
         return jsonify({'error': 'Email and password are required.'}), 400
 
     customer = Customer.query.filter_by(email=email).first()
-    if not customer or not customer.check_password(password):
+    if not customer:
+        return jsonify({'error': 'Invalid credentials.'}), 401
+    
+    # Check if customer has a password hash (new accounts)
+    if not customer.password_hash:
+        return jsonify({'error': 'Account not set up with password. Please register again.'}), 401
+    
+    if not customer.check_password(password):
         return jsonify({'error': 'Invalid credentials.'}), 401
 
     # Create JWT token
