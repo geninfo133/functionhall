@@ -25,7 +25,8 @@ export default function BookingPage() {
     // Check if customer is logged in
     const customerInfo = localStorage.getItem("customerInfo");
     if (!customerInfo) {
-      router.push("/customer/login");
+      // Redirect to phone verification for new customers
+      router.push("/auth/phone-verify?return=/booking" + (urlHallId ? `?hallId=${urlHallId}` : ""));
       return;
     }
     setCustomer(JSON.parse(customerInfo));
@@ -34,7 +35,7 @@ export default function BookingPage() {
     fetch(`${BACKEND_URL}/api/halls`)
       .then(res => res.json())
       .then(data => setHalls(data));
-  }, [router]);
+  }, [router, urlHallId]);
 
   // Load hall details when selected
   useEffect(() => {

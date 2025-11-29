@@ -410,6 +410,60 @@ def add_enquiry():
     return jsonify({"message": "Enquiry submitted successfully!", "id": inquiry.id}), 201
 
 # -------------------------
+# OTP VERIFICATION
+# -------------------------
+@main.route('/api/otp/send', methods=['POST'])
+def send_otp_endpoint():
+    """Send OTP to phone number"""
+    from app.otp_service import send_otp
+    
+    data = request.get_json()
+    phone = data.get('phone')
+    country_code = data.get('country_code', '+91')
+    
+    if not phone:
+        return jsonify({"error": "Phone number is required"}), 400
+    
+    print(f"📱 Sending OTP to {country_code}{phone}")
+    result = send_otp(phone, country_code)
+    
+    if result['success']:
+        return jsonify({
+            "message": result['message'],
+            "phone": result['phone']
+        }), 200
+    else:
+        return jsonify({"error": result['message']}), 400
+
+@main.route('/api/otp/verify', methods=['POST'])
+def verify_otp_endpoint():
+    """Verify OTP for phone number"""
+    from app.otp_service import verify_otp
+    
+    data = request.get_json()
+    phone = data.get('phone')
+    otp = data.get('otp')
+    country_code = data.get('country_code', '+91')
+    
+    if not phone or not otp:
+        return jsonify({"error": "Phone and OTP are required"}), 400
+    
+    print(f"🔍 Verifying OTP for {country_code}{phone}")
+    result = verify_otp(phone, otp, country_code)
+    
+    if result['success']:
+        return jsonify({
+            "message": result['message'],
+            "phone": result['phone'],
+            "verified": True
+        }), 200
+    else:
+        return jsonify({
+            "error": result['message'],
+            "verified": False
+        }), 400
+
+# -------------------------
 # CUSTOMER PROFILE
 # -------------------------
 @main.route('/api/customer/<int:customer_id>/profile', methods=['PUT'])

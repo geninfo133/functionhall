@@ -91,18 +91,38 @@ def customer_register():
     email = data.get('email')
     password = data.get('password')
     phone = data.get('phone')
+    country_code = data.get('country_code', '+91')
     address = data.get('address')
+    aadhar_number = data.get('aadhar_number')
+    is_phone_verified = data.get('is_phone_verified', False)
 
-    if not name or not email or not password:
-        return jsonify({'error': 'Name, email and password are required.'}), 400
+    if not name or not email or not password or not phone:
+        return jsonify({'error': 'Name, email, password and phone are required.'}), 400
+    
+    # Validate Aadhar number (12 digits)
+    if aadhar_number and len(aadhar_number) != 12:
+        return jsonify({'error': 'Aadhar number must be 12 digits.'}), 400
 
     # Check if customer already exists
     existing_customer = Customer.query.filter_by(email=email).first()
     if existing_customer:
         return jsonify({'error': 'Email already registered.'}), 400
+    
+    # Check if phone already exists
+    existing_phone = Customer.query.filter_by(phone=phone).first()
+    if existing_phone:
+        return jsonify({'error': 'Phone number already registered.'}), 400
 
     # Create new customer
-    customer = Customer(name=name, email=email, phone=phone, address=address)
+    customer = Customer(
+        name=name,
+        email=email,
+        phone=phone,
+        country_code=country_code,
+        address=address,
+        aadhar_number=aadhar_number,
+        is_phone_verified=is_phone_verified
+    )
     customer.set_password(password)
     db.session.add(customer)
     db.session.commit()
@@ -122,7 +142,9 @@ def customer_register():
             'id': customer.id,
             'name': customer.name,
             'email': customer.email,
-            'phone': customer.phone
+            'phone': customer.phone,
+            'country_code': country_code,
+            'is_phone_verified': is_phone_verified
         }
     }), 201
 

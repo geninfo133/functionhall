@@ -87,7 +87,10 @@ class Customer(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     phone = db.Column(db.String(20))
+    country_code = db.Column(db.String(5), default='+91')
     address = db.Column(db.String(200))
+    aadhar_number = db.Column(db.String(12))  # Aadhar identification
+    is_phone_verified = db.Column(db.Boolean, default=False)
     password_hash = db.Column(db.String(256))
 
     bookings = db.relationship('Booking', backref='customer', lazy=True)
