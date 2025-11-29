@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from app import db
 from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification
 from datetime import datetime, date
+from sms_utils import send_sms
 
 main = Blueprint('main', __name__)
 
@@ -217,8 +218,50 @@ def add_booking():
 def update_booking_status(booking_id):
     booking = Booking.query.get_or_404(booking_id)
     data = request.get_json()
-    booking.status = data.get('status', booking.status)
+    
+    old_status = booking.status
+    new_status = data.get('status', booking.status)
+    booking.status = new_status
     db.session.commit()
+    
+    # Send SMS notification to customer when booking is confirmed
+    if old_status == 'Pending' and new_status == 'Confirmed':
+        print(f"✅ Booking #{booking.id} confirmed! Sending SMS notification...")
+        
+        # Get customer and hall details
+        customer = Customer.query.get(booking.customer_id)
+        hall = FunctionHall.query.get(booking.hall_id)
+        
+        if customer and hall:
+            # Format customer phone number
+            customer_phone = customer.phone
+            if not customer_phone.startswith('+'):
+                customer_phone = '+91' + customer_phone[1:] if customer_phone.startswith('0') else '+91' + customer_phone
+            
+            # Send confirmation SMS to customer
+            message = f"""🎉 Booking Confirmed!
+
+Dear {customer.name},
+
+Your booking at {hall.name} has been CONFIRMED!
+
+Event Date: {booking.event_date.strftime('%B %d, %Y')}
+Amount: ₹{booking.total_amount}
+Location: {hall.location}
+
+Hall Contact: {hall.contact_number}
+Owner: {hall.owner_name}
+
+Thank you for choosing us!"""
+
+            sms_result = send_sms(customer_phone, message)
+            print(f"📱 SMS Result: {sms_result}")
+            
+            if sms_result['success']:
+                print(f"✉️ Confirmation SMS sent to {customer.name} at {customer_phone}")
+            else:
+                print(f"❌ SMS failed: {sms_result['message']}")
+    
     return jsonify({"message": f"Booking {booking.id} status updated to {booking.status}"})
 
 @main.route('/api/halls/<int:hall_id>/availability', methods=['GET'])
@@ -299,14 +342,71 @@ def add_inquiry():
 @main.route('/api/enquiry', methods=['POST'])
 def add_enquiry():
     data = request.get_json()
+    hall_id = data.get('hall_id')
+    customer_phone = data.get('phone', '')
+    
+    # Format phone number to international format if needed
+    if customer_phone and not customer_phone.startswith('+'):
+        if customer_phone.startswith('0'):
+            customer_phone = '+91' + customer_phone[1:]  # Remove leading 0 and add +91
+        else:
+            customer_phone = '+91' + customer_phone  # Add +91
+    
+    print(f"📝 Enquiry received - Hall ID: {hall_id}, Customer Phone: {customer_phone}")
+    
     inquiry = Inquiry(
         customer_name=data.get('name'),
         email=data.get('email'),
-        phone=data.get('phone'),
-        message=data.get('message')
+        phone=customer_phone,
+        message=data.get('message'),
+        hall_id=hall_id
     )
     db.session.add(inquiry)
     db.session.commit()
+    
+    print(f"✅ Enquiry #{inquiry.id} saved to database")
+    
+    # Send SMS to hall owner and customer if hall_id is provided
+    if hall_id:
+        print(f"🔍 Looking up hall #{hall_id}")
+        hall = FunctionHall.query.get(hall_id)
+        if hall:
+            print(f"📍 Hall found: {hall.name}")
+            print(f"📞 Owner contact: {hall.contact_number}")
+            
+            from sms_utils import send_sms
+            
+            # 1. Send SMS to hall owner
+            if hall.contact_number:
+                owner_message = f"New Enquiry from {inquiry.customer_name}\n"
+                owner_message += f"Phone: {inquiry.phone}\n"
+                owner_message += f"Email: {inquiry.email}\n"
+                owner_message += f"Message: {inquiry.message}\n"
+                owner_message += f"Hall: {hall.name}"
+                
+                print(f"📱 Sending SMS to hall owner: {hall.contact_number}")
+                result = send_sms(hall.contact_number, owner_message)
+                print(f"✉️ Owner SMS result: {result}")
+            else:
+                print(f"⚠️ No contact number for hall {hall.name}")
+            
+            # 2. Send confirmation SMS to customer (from Hall Owner)
+            if inquiry.phone:
+                customer_message = f"From {hall.name} - {hall.owner_name}\n\n"
+                customer_message += f"Dear {inquiry.customer_name},\n"
+                customer_message += f"Thank you for your enquiry. We have received your message and will contact you soon with the details.\n\n"
+                customer_message += f"We will send you complete information through your email: {inquiry.email}\n\n"
+                customer_message += f"Contact us: {hall.contact_number}\n"
+                customer_message += f"Best regards,\n{hall.owner_name}"
+                
+                print(f"📱 Sending confirmation SMS to customer: {inquiry.phone}")
+                customer_result = send_sms(inquiry.phone, customer_message)
+                print(f"✉️ Customer SMS result: {customer_result}")
+        else:
+            print(f"❌ Hall #{hall_id} not found")
+    else:
+        print(f"⚠️ No hall_id provided in enquiry")
+    
     return jsonify({"message": "Enquiry submitted successfully!", "id": inquiry.id}), 201
 
 # -------------------------
