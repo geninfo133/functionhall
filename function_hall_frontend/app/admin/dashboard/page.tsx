@@ -116,7 +116,7 @@ export default function AdminDashboard() {
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img 
-                  src="/hani1.jpg" 
+                  src="/G.png" 
                   alt={admin.name}
                   className="w-full h-full object-cover"
                 />

@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, Building2, CalendarDays, LogOut } from "lucide-react";
+import { FaTachometerAlt, FaBuilding, FaUsers, FaCog, FaFileInvoice, FaHeadset, FaUserShield, FaSignOutAlt } from "react-icons/fa";
 import { useState } from "react";
 
 const menu = [
@@ -19,30 +20,63 @@ export default function Sidebar() {
     <aside className="w-64 bg-white h-screen shadow-lg flex flex-col p-6 rounded-r-2xl border-r border-gray-200">
       
       <nav className="flex-1">
+        <div className="mb-4 px-4">
+          <p className="text-lg tracking-wider text-orange-500 font-bold pb-2 border-b-2 border-orange-500" style={{ fontFamily: 'Arial, sans-serif' }}>Navigation Menu</p>
+        </div>
         <ul className="space-y-2">
           <li>
-            <a href="/dashboard" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">Dashboard</a>
+            <a href="/admin/dashboard" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaTachometerAlt className="text-orange-500" />
+              <span>Dashboard</span>
+            </a>
           </li>
           <li>
-            <a href="/dashboard/halls" className="block w-full px-4 py-2 rounded-lg bg-orange-500 text-white font-semibold shadow">Function Halls</a>
+            <a href="/admin/enquiries" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaHeadset className="text-orange-500" />
+              <span>Enquiries</span>
+            </a>
           </li>
           <li>
-            <a href="#" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">Manage Roles</a>
+            <a href="/dashboard/halls" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaBuilding className="text-orange-500" />
+              <span>Function Halls</span>
+            </a>
           </li>
           <li>
-            <a href="#" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">System Features</a>
+            <a href="#" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaUserShield className="text-orange-500" />
+              <span>Manage Roles</span>
+            </a>
           </li>
           <li>
-            <a href="#" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">Billing</a>
+            <a href="#" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaCog className="text-orange-500" />
+              <span>System Features</span>
+            </a>
           </li>
           <li>
-            <a href="#" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">Support Request</a>
+            <a href="#" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaFileInvoice className="text-orange-500" />
+              <span>Billing</span>
+            </a>
           </li>
           <li>
-            <a href="#" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">Manage Customers</a>
+            <a href="#" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaHeadset className="text-orange-500" />
+              <span>Support Request</span>
+            </a>
           </li>
           <li>
-            <a href="#" className="block w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-gray-800 font-medium transition">Settings</a>
+            <a href="#" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaUsers className="text-orange-500" />
+              <span>Manage Customers</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white text-blue-700 font-bold transition">
+              <FaCog className="text-orange-500" />
+              <span>Settings</span>
+            </a>
           </li>
         </ul>
       </nav>
@@ -62,10 +96,11 @@ function LogoutButton() {
   return (
     <>
       <button
-        className="w-full py-2 rounded-lg bg-orange-500 hover:bg-orange-500 text-white font-bold transition"
+        className="flex items-center justify-center space-x-2 w-full py-2 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-bold transition"
         onClick={() => setShow(true)}
       >
-        Logout
+        <FaSignOutAlt />
+        <span>Logout</span>
       </button>
       {show && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-orange-500 bg-opacity-30">
