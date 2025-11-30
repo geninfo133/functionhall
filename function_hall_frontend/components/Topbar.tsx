@@ -44,7 +44,7 @@ const Topbar: React.FC = () => {
         <Link href="/admin/profile" className="text-orange-500 font-semibold hover:underline">Profile</Link>
         <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-500 shadow">
           <img 
-            src="/hani1.jpg" 
+            src="/G.png" 
             alt="Profile"
             className="w-full h-full object-cover"
           />

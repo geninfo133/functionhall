@@ -98,28 +98,28 @@ export default function ProfilePage() {
                     <FaUser className="text-orange-500 mt-1" />
                     <div>
                       <p className="text-sm text-gray-500">Name</p>
-                      <p className="text-lg font-semibold text-gray-800">{customer.name}</p>
+                      <p className="text-lg font-semibold text-blue-700">{customer.name}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <FaEnvelope className="text-orange-500 mt-1" />
                     <div>
                       <p className="text-sm text-gray-500">Email</p>
-                      <p className="text-lg font-semibold text-gray-800">{customer.email}</p>
+                      <p className="text-lg font-semibold text-blue-700">{customer.email}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <FaPhone className="text-orange-500 mt-1" />
                     <div>
                       <p className="text-sm text-gray-500">Phone</p>
-                      <p className="text-lg font-semibold text-gray-800">{customer.phone || "Not provided"}</p>
+                      <p className="text-lg font-semibold text-blue-700">{customer.phone || "Not provided"}</p>
                     </div>
                   </div>
                   <div className="flex items-start space-x-3">
                     <FaMapMarkerAlt className="text-orange-500 mt-1" />
                     <div>
                       <p className="text-sm text-gray-500">Address</p>
-                      <p className="text-lg font-semibold text-gray-800">{customer.address || "Not provided"}</p>
+                      <p className="text-lg font-semibold text-blue-700">{customer.address || "Not provided"}</p>
                     </div>
                   </div>
 

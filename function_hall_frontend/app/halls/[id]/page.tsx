@@ -99,7 +99,7 @@ export default function HallDetailsPage() {
             {/* Gallery */}
             {hall.photos && hall.photos.length > 1 && (
               <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Photo Gallery</h2>
+                <h2 className="text-2xl font-bold text-blue-700 mb-4">Photo Gallery</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {hall.photos.slice(1).map((photo: string, index: number) => (
                     <div key={index} className="relative h-48 rounded-lg overflow-hidden">
@@ -116,7 +116,7 @@ export default function HallDetailsPage() {
 
             {/* Description */}
             <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">About This Hall</h2>
+              <h2 className="text-2xl font-bold text-blue-700 mb-4">About This Hall</h2>
               <p className="text-gray-700 leading-relaxed">
                 {hall.description || "A beautiful function hall perfect for all your celebration needs. Modern amenities and excellent service guaranteed."}
               </p>
@@ -125,7 +125,7 @@ export default function HallDetailsPage() {
             {/* Packages */}
             {packages.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">Available Packages</h2>
+                <h2 className="text-2xl font-bold text-blue-700 mb-4">Available Packages</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {packages.map((pkg) => (
                     <div
@@ -146,14 +146,14 @@ export default function HallDetailsPage() {
           <div className="lg:col-span-1">
             {/* Quick Info Card */}
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-4">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Hall Information</h2>
+              <h2 className="text-2xl font-bold text-blue-700 mb-4">Hall Information</h2>
               
               <div className="space-y-4">
                 <div className="flex items-start">
                   <span className="text-2xl mr-3">👤</span>
                   <div>
                     <p className="text-sm text-gray-500">Owner</p>
-                    <p className="font-semibold text-gray-800">{hall.owner_name}</p>
+                    <p className="font-semibold text-blue-700">{hall.owner_name}</p>
                   </div>
                 </div>
 
@@ -161,7 +161,7 @@ export default function HallDetailsPage() {
                   <span className="text-2xl mr-3">👥</span>
                   <div>
                     <p className="text-sm text-gray-500">Capacity</p>
-                    <p className="font-semibold text-gray-800">{hall.capacity} Guests</p>
+                    <p className="font-semibold text-blue-700">{hall.capacity} Guests</p>
                   </div>
                 </div>
 
@@ -177,7 +177,7 @@ export default function HallDetailsPage() {
                   <span className="text-2xl mr-3">📞</span>
                   <div>
                     <p className="text-sm text-gray-500">Contact</p>
-                    <p className="font-semibold text-gray-800">{hall.contact_number}</p>
+                    <p className="font-semibold text-blue-700">{hall.contact_number}</p>
                   </div>
                 </div>
               </div>

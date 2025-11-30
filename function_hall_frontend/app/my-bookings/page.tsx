@@ -81,7 +81,7 @@ export default function MyBookingsPage() {
                     <div className="flex items-start space-x-3">
                       <FaBuilding className="text-orange-500 text-xl mt-1" />
                       <div>
-                        <h2 className="text-xl font-bold text-gray-800">{booking.hall_name}</h2>
+                        <h2 className="text-xl font-bold text-blue-700">{booking.hall_name}</h2>
                         <p className="text-gray-600">{booking.hall_location}</p>
                       </div>
                     </div>
@@ -99,7 +99,7 @@ export default function MyBookingsPage() {
                         <FaCalendarAlt className="text-orange-500" />
                         <span>Event Date</span>
                       </p>
-                      <p className="font-semibold text-gray-800">
+                      <p className="font-semibold text-blue-700">
                         {new Date(booking.event_date).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
@@ -109,7 +109,7 @@ export default function MyBookingsPage() {
                     </div>
                     <div>
                       <p className="text-gray-500">Booking ID</p>
-                      <p className="font-semibold text-gray-800">#{booking.id}</p>
+                      <p className="font-semibold text-blue-700">#{booking.id}</p>
                     </div>
                     <div>
                       <p className="flex items-center space-x-1 text-gray-500">

@@ -164,7 +164,7 @@ export default function BookingPage() {
               <div className="bg-white rounded-xl shadow p-6 mb-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <FaBuilding className="text-orange-500 text-2xl" />
-                  <h2 className="text-2xl font-bold text-gray-800">{hall.name}</h2>
+                  <h2 className="text-2xl font-bold text-blue-700">{hall.name}</h2>
                 </div>
                 <div className="space-y-2">
                   <p className="flex items-center space-x-2 text-gray-600">
@@ -317,7 +317,7 @@ export default function BookingPage() {
           {/* Right Column - Calendar */}
           <div className="lg:sticky lg:top-8 lg:self-start">
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-4">Select Event Date</h2>
+              <h2 className="text-xl font-bold text-blue-700 mb-4">Select Event Date</h2>
               {selectedHallId ? (
                 <HallCalendar
                   hallId={parseInt(selectedHallId)}
