@@ -52,14 +52,25 @@ export default function MyBookingsPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <RoleSidebar role="customer" />
-      <div className="flex-1">
-        <main className="p-8">
-          <div className="flex items-center space-x-3 mb-6">
-            <FaCalendarCheck className="text-orange-500 text-3xl" />
-            <h1 className="text-3xl font-bold text-orange-500">My Bookings</h1>
+    <div className="min-h-screen">
+      <main className="p-4 sm:p-6 lg:p-8">
+        {/* Hero Banner */}
+        <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
+          <div className="px-6 sm:px-8 lg:px-12 py-10">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+                  My Bookings
+                </h1>
+                <p className="text-lg text-blue-100 mt-3">
+                  View and manage your hall bookings
+                </p>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto">
           
           {loading ? (
             <div className="text-center py-12">Loading your bookings...</div>
@@ -68,7 +79,7 @@ export default function MyBookingsPage() {
               <p className="text-gray-600 mb-4">You haven't made any bookings yet.</p>
               <a
                 href="/home"
-                className="inline-block bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition"
+                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
               >
                 Browse Halls
               </a>
@@ -79,7 +90,7 @@ export default function MyBookingsPage() {
                 <div key={booking.id} className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-start space-x-3">
-                      <FaBuilding className="text-orange-500 text-xl mt-1" />
+                      <FaBuilding className="text-blue-600 text-xl mt-1" />
                       <div>
                         <h2 className="text-xl font-bold text-blue-700">{booking.hall_name}</h2>
                         <p className="text-gray-600">{booking.hall_location}</p>
@@ -96,7 +107,7 @@ export default function MyBookingsPage() {
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                     <div>
                       <p className="flex items-center space-x-1 text-gray-500">
-                        <FaCalendarAlt className="text-orange-500" />
+                        <FaCalendarAlt className="text-blue-600" />
                         <span>Event Date</span>
                       </p>
                       <p className="font-semibold text-blue-700">
@@ -113,10 +124,10 @@ export default function MyBookingsPage() {
                     </div>
                     <div>
                       <p className="flex items-center space-x-1 text-gray-500">
-                        <FaRupeeSign className="text-orange-500" />
+                        <FaRupeeSign className="text-blue-600" />
                         <span>Amount</span>
                       </p>
-                      <p className="font-bold text-orange-600 text-lg">₹{booking.total_amount}</p>
+                      <p className="font-bold text-blue-600 text-lg">₹{booking.total_amount}</p>
                     </div>
                   </div>
 
@@ -129,8 +140,8 @@ export default function MyBookingsPage() {
               ))}
             </div>
           )}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

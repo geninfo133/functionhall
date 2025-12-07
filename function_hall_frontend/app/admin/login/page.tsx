@@ -50,18 +50,18 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
             <Shield size={32} className="text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Admin Portal
           </h1>
           <p className="text-gray-600">
-            Welcome to <span className="font-semibold text-orange-600">GenS Services</span> Administration
+            Welcome to <span className="font-semibold text-blue-600">GenS Services</span> Administration
           </p>
         </div>
 
@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
                   placeholder="admin@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                   required
                   autoComplete="username"
                 />
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                   required
                   autoComplete="current-password"
                 />
@@ -118,7 +118,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-500/30"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/30"
             >
               {loading ? "Signing in..." : "Sign In as Admin"}
             </button>
@@ -129,7 +129,7 @@ export default function AdminLoginPage() {
               Not an admin?{" "}
               <Link
                 href="/auth/login"
-                className="text-orange-600 font-semibold hover:text-orange-700 transition"
+                className="text-blue-600 font-semibold hover:text-blue-700 transition"
               >
                 Customer Login
               </Link>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../../lib/config";
 import CountryCodeSelector from "../../../components/CountryCodeSelector";
 
-export default function PhoneVerifyPage() {
+export default function VendorPhoneVerifyPage() {
   const router = useRouter();
   const [step, setStep] = useState(1); // 1: Phone input, 2: OTP verification
   const [countryCode, setCountryCode] = useState("+91");
@@ -103,13 +103,13 @@ export default function PhoneVerifyPage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Store verified phone info in sessionStorage
-        sessionStorage.setItem("verifiedPhone", `${countryCode}${phoneNumber}`);
-        sessionStorage.setItem("countryCode", countryCode);
-        sessionStorage.setItem("phoneNumber", phoneNumber);
+        // Store verified phone info in sessionStorage for vendor
+        sessionStorage.setItem("vendorVerifiedPhone", `${countryCode}${phoneNumber}`);
+        sessionStorage.setItem("vendorCountryCode", countryCode);
+        sessionStorage.setItem("vendorPhoneNumber", phoneNumber);
         
-        // Redirect to customer details form
-        router.push("/customer/details");
+        // Redirect to vendor registration form
+        router.push("/vendor/register");
       } else {
         setError(data.error || "Invalid OTP");
         setOtp(["", "", "", "", "", ""]);
@@ -127,18 +127,18 @@ export default function PhoneVerifyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">📱</span>
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-3xl">🏢</span>
           </div>
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">
-            {step === 1 ? "Verify Your Phone" : "Enter OTP"}
+          <h1 className="text-3xl font-bold text-green-600 mb-2">
+            {step === 1 ? "Vendor Phone Verification" : "Enter OTP"}
           </h1>
           <p className="text-gray-600">
             {step === 1 
-              ? "We'll send you a verification code" 
+              ? "Verify your phone to register as a vendor" 
               : `Code sent to ${countryCode} ${phoneNumber}`}
           </p>
         </div>
@@ -164,8 +164,8 @@ export default function PhoneVerifyPage() {
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
-                placeholder="Enter your phone number"
-                className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                placeholder="Enter your business phone number"
+                className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
                 required
                 maxLength={15}
               />
@@ -180,17 +180,17 @@ export default function PhoneVerifyPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition disabled:bg-gray-400 shadow-lg"
+              className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-green-700 transition disabled:bg-gray-400 shadow-lg"
             >
               {loading ? "Sending..." : "Send OTP"}
             </button>
 
             <p className="text-center text-sm text-gray-600">
-              Already have an account?{" "}
+              Already have a vendor account?{" "}
               <button
                 type="button"
-                onClick={() => router.push("/customer/login")}
-                className="text-blue-600 font-semibold hover:underline"
+                onClick={() => router.push("/vendor/login")}
+                className="text-green-600 font-semibold hover:underline"
               >
                 Login here
               </button>
@@ -213,7 +213,7 @@ export default function PhoneVerifyPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                    className="w-12 h-14 text-center text-2xl font-bold border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-12 h-14 text-center text-2xl font-bold border-2 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   />
                 ))}
               </div>
@@ -228,7 +228,7 @@ export default function PhoneVerifyPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition disabled:bg-gray-400 shadow-lg"
+              className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-green-700 transition disabled:bg-gray-400 shadow-lg"
             >
               {loading ? "Verifying..." : "Verify OTP"}
             </button>
@@ -242,7 +242,7 @@ export default function PhoneVerifyPage() {
                 <button
                   type="button"
                   onClick={handleResendOTP}
-                  className="text-sm text-blue-600 font-semibold hover:underline"
+                  className="text-sm text-green-600 font-semibold hover:underline"
                 >
                   Resend OTP
                 </button>
