@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { BACKEND_URL } from "../../../lib/config";
-import Sidebar from "../../../components/Sidebar";
-import Topbar from "../../../components/Topbar";
 
 export default function AdminBookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -80,12 +78,9 @@ export default function AdminBookingsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Topbar />
-        <main className="p-8">
-          <h1 className="text-3xl font-bold text-orange-500 mb-6">Manage Bookings</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+      <main className="p-8 w-full">
+          <h1 className="text-3xl font-bold text-blue-600 mb-6">Manage Bookings</h1>
           
           {loading ? (
             <div className="text-center py-12">Loading bookings...</div>
@@ -126,7 +121,7 @@ export default function AdminBookingsPage() {
                           day: 'numeric'
                         })}
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-orange-600">
+                      <td className="px-6 py-4 text-sm font-semibold text-blue-600">
                         ₹{booking.total_amount}
                       </td>
                       <td className="px-6 py-4">
@@ -173,7 +168,6 @@ export default function AdminBookingsPage() {
             </div>
           )}
         </main>
-      </div>
     </div>
   );
 }

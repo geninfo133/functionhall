@@ -39,10 +39,10 @@ const sidebarOptions: Record<Role, { label: string; href: string; icon: ReactEle
 
 export default function RoleSidebar({ role }: SidebarProps) {
   return (
-    <aside className="w-64 bg-white h-screen shadow-lg flex flex-col p-6 rounded-r-2xl">
+    <aside className="w-64 bg-slate-900 h-screen shadow-lg flex flex-col p-6 rounded-r-2xl border-r border-slate-700">
       <nav className="flex-1">
         <div className="mb-4 px-4">
-          <p className="text-lg tracking-wider text-orange-500 font-bold pb-2 border-b-2 border-orange-500" style={{ fontFamily: 'Arial, sans-serif' }}>Navigation Menu</p>
+          <p className="text-lg tracking-wider text-slate-300 font-bold pb-2 border-b-2 border-slate-600" style={{ fontFamily: 'Arial, sans-serif' }}>Navigation Menu</p>
         </div>
         <ul className="space-y-2">
           {(role === "customer"
@@ -53,8 +53,8 @@ export default function RoleSidebar({ role }: SidebarProps) {
             : sidebarOptions[role]
           ).map((item) => (
             <li key={item.href}>
-              <Link href={item.href} className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-orange-50 text-blue-700 font-bold transition">
-                <span className="text-orange-500">{item.icon}</span>
+              <Link href={item.href} className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-bold transition">
+                <span className="text-slate-400">{item.icon}</span>
                 <span>{item.label}</span>
               </Link>
             </li>

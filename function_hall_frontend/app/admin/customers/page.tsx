@@ -81,10 +81,9 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white p-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-orange-600 flex items-center gap-3">
+          <h1 className="text-4xl font-bold text-blue-600 flex items-center gap-3">
             <FaUsers /> Manage Customers
           </h1>
           <button
@@ -109,7 +108,7 @@ export default function CustomersPage() {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-orange-500 text-white">
+                <thead className="bg-blue-600 text-white">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
                       <div className="flex items-center gap-2"><FaIdCard /> ID</div>
@@ -186,7 +185,6 @@ export default function CustomersPage() {
             <strong>Note:</strong> Deleting a customer will permanently remove all their bookings and inquiries from the system.
           </p>
         </div>
-      </div>
     </div>
   );
 }

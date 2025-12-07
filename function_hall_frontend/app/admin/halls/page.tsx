@@ -1,9 +1,9 @@
 "use client";
-import Sidebar from "../../../components/Sidebar";
-import Topbar from "../../../components/Topbar";
-import HallTable from "../../../components/HallTable";
 import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../../../lib/config";
+import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaStar } from "react-icons/fa";
+import Link from "next/link";
+import HallCards from "../../../components/HallCards";
 
 export default function AdminHallsPage() {
   const [showAddModal, setShowAddModal] = useState(false);
@@ -11,7 +11,14 @@ export default function AdminHallsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedHall, setSelectedHall] = useState<any>(null);
   const [halls, setHalls] = useState<any[]>([]);
+  const [filteredHalls, setFilteredHalls] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [searchCapacity, setSearchCapacity] = useState("");
+  const [allPackages, setAllPackages] = useState<any[]>([]);
+  const [selectedPackages, setSelectedPackages] = useState<number[]>([]);
+  const [editSelectedPackages, setEditSelectedPackages] = useState<number[]>([]);
   const [form, setForm] = useState({
     name: "",
     owner_name: "",
@@ -39,12 +46,44 @@ export default function AdminHallsPage() {
       .then(res => res.json())
       .then(data => {
         setHalls(data);
+        setFilteredHalls(data);
         setLoading(false);
       });
+    
+    // Fetch all packages
+    fetch(`${BACKEND_URL}/api/packages`)
+      .then(res => res.json())
+      .then(data => setAllPackages(data))
+      .catch(err => console.error('Error fetching packages:', err));
   }, [showAddModal, showEditModal, showDeleteModal]);
+
+  useEffect(() => {
+    let filtered = [...halls];
+    
+    if (searchLocation) {
+      filtered = filtered.filter(hall => 
+        hall.location.toLowerCase().includes(searchLocation.toLowerCase())
+      );
+    }
+    
+    if (searchCapacity) {
+      filtered = filtered.filter(hall => 
+        hall.capacity >= parseInt(searchCapacity)
+      );
+    }
+    
+    setFilteredHalls(filtered);
+  }, [searchLocation, searchCapacity, halls]);
+
+  const handleClearFilters = () => {
+    setSearchLocation("");
+    setSearchDate("");
+    setSearchCapacity("");
+  };
 
   const handleAdd = () => {
     setForm({ name: "", owner_name: "", location: "", capacity: "", contact_number: "", price_per_day: "", description: "" });
+    setSelectedPackages([]);
     setShowAddModal(true);
   };
   const handleEdit = (hall: any) => {
@@ -58,6 +97,16 @@ export default function AdminHallsPage() {
       price_per_day: hall.price_per_day,
       description: hall.description || ""
     });
+    
+    // Fetch packages for this hall
+    fetch(`${BACKEND_URL}/api/halls/${hall.id}/packages`)
+      .then(res => res.json())
+      .then(data => {
+        const packageIds = data.map((pkg: any) => pkg.id);
+        setEditSelectedPackages(packageIds);
+      })
+      .catch(err => console.error('Error fetching hall packages:', err));
+    
     setShowEditModal(true);
   };
   const handleDelete = (hall: any) => {
@@ -91,7 +140,8 @@ export default function AdminHallsPage() {
           capacity: Number(form.capacity),
           contact_number: form.contact_number,
           price_per_day: Number(form.price_per_day),
-          description: form.description
+          description: form.description,
+          package_ids: selectedPackages
         })
       });
       if (res.ok) {
@@ -124,7 +174,8 @@ export default function AdminHallsPage() {
           capacity: Number(editForm.capacity),
           contact_number: editForm.contact_number,
           price_per_day: Number(editForm.price_per_day),
-          description: editForm.description
+          description: editForm.description,
+          package_ids: editSelectedPackages
         })
       });
       if (res.ok) {
@@ -157,35 +208,140 @@ export default function AdminHallsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Topbar />
-        <main className="p-8 w-full">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <main className="p-8 w-full">
           <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold text-orange-500">Manage Halls</h1>
-            <button className="bg-orange-500 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-orange-600 transition" onClick={handleAdd}>+ Add New Hall</button>
+            <h2 className="text-2xl font-bold text-blue-600">All Halls</h2>
+            <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition" onClick={handleAdd}>+ Add New Hall</button>
           </div>
-          {/* Pass handlers to HallTable for row actions (to be implemented in HallTable) */}
-          <HallTable halls={halls} loading={loading} onEdit={handleEdit} onDelete={handleDelete} />
+
+          {/* Search Filters */}
+          <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
+            <div className="px-6 sm:px-8 lg:px-12 py-3">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center">
+                  <h2 className="text-base sm:text-lg font-bold text-white leading-tight">
+                    Search Function Halls
+                  </h2>
+                  <p className="text-xs text-blue-100 mt-1 max-w-2xl mx-auto">
+                    Find and manage your function halls
+                  </p>
+                </div>
+
+                <div className="mt-2">
+                  <div className="bg-white rounded-xl shadow-lg p-3 max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                      <div className="relative">
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Location</label>
+                        <input
+                          type="text"
+                          placeholder="City or area"
+                          value={searchLocation}
+                          onChange={(e) => setSearchLocation(e.target.value)}
+                          className="pl-2.5 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
+                        <input
+                          type="date"
+                          value={searchDate}
+                          onChange={(e) => setSearchDate(e.target.value)}
+                          className="pl-2.5 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Guests</label>
+                        <input
+                          type="number"
+                          placeholder="How many?"
+                          value={searchCapacity}
+                          onChange={(e) => setSearchCapacity(e.target.value)}
+                          className="pl-2.5 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                        />
+                      </div>
+
+                      <div className="flex gap-2 items-end">
+                        <button
+                          type="button"
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                        >
+                          Search
+                        </button>
+                        {(searchLocation || searchDate || searchCapacity) && (
+                          <button
+                            type="button"
+                            onClick={handleClearFilters}
+                            className="px-2.5 py-1.5 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {(searchLocation || searchCapacity) && (
+                      <div className="mt-4 text-sm text-gray-600">
+                        Showing {filteredHalls.length} of {halls.length} halls
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Display halls using HallCards component */}
+          <HallCards halls={filteredHalls} loading={loading} onEdit={handleEdit} onDelete={handleDelete} />
 
           {/* Add Modal */}
           {showAddModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-              <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg border border-gray-200 relative">
-                <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onClick={() => setShowAddModal(false)}>&times;</button>
-                <h2 className="text-2xl font-bold mb-4 text-orange-500">Add New Hall</h2>
-                <form onSubmit={submitAdd} className="grid grid-cols-1 gap-4">
-                  <input name="name" value={form.name} onChange={handleInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border" required />
-                  <input name="owner_name" value={form.owner_name} onChange={handleInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border" required />
-                  <input name="location" value={form.location} onChange={handleInput} placeholder="Location" className="px-4 py-2 rounded-lg border" required />
-                  <input name="capacity" value={form.capacity} onChange={handleInput} type="number" placeholder="Capacity" className="px-4 py-2 rounded-lg border" required />
-                  <input name="contact_number" value={form.contact_number} onChange={handleInput} placeholder="Contact Number" className="px-4 py-2 rounded-lg border" required />
-                  <input name="price_per_day" value={form.price_per_day} onChange={handleInput} type="number" placeholder="Price Per Day" className="px-4 py-2 rounded-lg border" required />
-                  <textarea name="description" value={form.description} onChange={handleInput} placeholder="Description" className="px-4 py-2 rounded-lg border" />
-                  <button type="submit" className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-600 transition mt-2">Add Hall</button>
-                  {error && <div className="text-red-600 font-semibold mt-2">{error}</div>}
-                  {success && <div className="text-green-600 font-semibold mt-2">{success}</div>}
+            <div className="fixed inset-0 bg-blue-50/85 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-3xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
+                <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onClick={() => setShowAddModal(false)}>&times;</button>
+                <h2 className="text-2xl font-bold mb-4 text-blue-600">Add New Hall</h2>
+                <form onSubmit={submitAdd} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input name="name" value={form.name} onChange={handleInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="owner_name" value={form.owner_name} onChange={handleInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="location" value={form.location} onChange={handleInput} placeholder="Location" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="capacity" value={form.capacity} onChange={handleInput} type="number" placeholder="Capacity" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="contact_number" value={form.contact_number} onChange={handleInput} placeholder="Contact Number" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="price_per_day" value={form.price_per_day} onChange={handleInput} type="number" placeholder="Price Per Day" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <textarea name="description" value={form.description} onChange={handleInput} placeholder="Description" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400 md:col-span-2" />
+                  
+                  {/* Package Selection */}
+                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">Select Packages</label>
+                    <div className="max-h-48 overflow-y-auto space-y-2">
+                      {allPackages.map((pkg) => (
+                        <label key={pkg.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={selectedPackages.includes(pkg.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedPackages([...selectedPackages, pkg.id]);
+                              } else {
+                                setSelectedPackages(selectedPackages.filter(id => id !== pkg.id));
+                              }
+                            }}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                          />
+                          <span className="text-sm text-gray-700">
+                            {pkg.package_name} - ₹{pkg.price?.toLocaleString()}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {selectedPackages.length > 0 && (
+                      <p className="text-xs text-gray-600 mt-2">{selectedPackages.length} package(s) selected</p>
+                    )}
+                  </div>
+                  
+                  <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition mt-2 md:col-span-2">Add Hall</button>
+                  {error && <div className="text-red-500 font-semibold mt-2 md:col-span-2">{error}</div>}
+                  {success && <div className="text-green-500 font-semibold mt-2 md:col-span-2">{success}</div>}
                 </form>
               </div>
             </div>
@@ -193,21 +349,51 @@ export default function AdminHallsPage() {
 
           {/* Edit Modal */}
           {showEditModal && selectedHall && (
-            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-              <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg border border-gray-200 relative">
-                <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onClick={() => setShowEditModal(false)}>&times;</button>
-                <h2 className="text-2xl font-bold mb-4 text-orange-500">Edit Hall</h2>
-                <form onSubmit={submitEdit} className="grid grid-cols-1 gap-4">
-                  <input name="name" value={editForm.name} onChange={handleEditInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border" required />
-                  <input name="owner_name" value={editForm.owner_name} onChange={handleEditInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border" required />
-                  <input name="location" value={editForm.location} onChange={handleEditInput} placeholder="Location" className="px-4 py-2 rounded-lg border" required />
-                  <input name="capacity" value={editForm.capacity} onChange={handleEditInput} type="number" placeholder="Capacity" className="px-4 py-2 rounded-lg border" required />
-                  <input name="contact_number" value={editForm.contact_number} onChange={handleEditInput} placeholder="Contact Number" className="px-4 py-2 rounded-lg border" required />
-                  <input name="price_per_day" value={editForm.price_per_day} onChange={handleEditInput} type="number" placeholder="Price Per Day" className="px-4 py-2 rounded-lg border" required />
-                  <textarea name="description" value={editForm.description} onChange={handleEditInput} placeholder="Description" className="px-4 py-2 rounded-lg border" />
-                  <button type="submit" className="bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-600 transition mt-2">Update Hall</button>
-                  {error && <div className="text-red-600 font-semibold mt-2">{error}</div>}
-                  {success && <div className="text-green-600 font-semibold mt-2">{success}</div>}
+            <div className="fixed inset-0 bg-blue-50/85 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-3xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
+                <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onClick={() => setShowEditModal(false)}>&times;</button>
+                <h2 className="text-2xl font-bold mb-4 text-blue-600">Edit Hall</h2>
+                <form onSubmit={submitEdit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input name="name" value={editForm.name} onChange={handleEditInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="owner_name" value={editForm.owner_name} onChange={handleEditInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="location" value={editForm.location} onChange={handleEditInput} placeholder="Location" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="capacity" value={editForm.capacity} onChange={handleEditInput} type="number" placeholder="Capacity" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="contact_number" value={editForm.contact_number} onChange={handleEditInput} placeholder="Contact Number" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <input name="price_per_day" value={editForm.price_per_day} onChange={handleEditInput} type="number" placeholder="Price Per Day" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
+                  <textarea name="description" value={editForm.description} onChange={handleEditInput} placeholder="Description" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400 md:col-span-2" />
+                  
+                  {/* Package Selection */}
+                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">Select Packages</label>
+                    <div className="max-h-48 overflow-y-auto space-y-2">
+                      {allPackages.map((pkg) => (
+                        <label key={pkg.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={editSelectedPackages.includes(pkg.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setEditSelectedPackages([...editSelectedPackages, pkg.id]);
+                              } else {
+                                setEditSelectedPackages(editSelectedPackages.filter(id => id !== pkg.id));
+                              }
+                            }}
+                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                          />
+                          <span className="text-sm text-gray-700">
+                            {pkg.package_name} - ₹{pkg.price?.toLocaleString()}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {editSelectedPackages.length > 0 && (
+                      <p className="text-xs text-gray-600 mt-2">{editSelectedPackages.length} package(s) selected</p>
+                    )}
+                  </div>
+                  
+                  <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition mt-2 md:col-span-2">Update Hall</button>
+                  {error && <div className="text-red-500 font-semibold mt-2">{error}</div>}
+                  {success && <div className="text-green-500 font-semibold mt-2">{success}</div>}
                 </form>
               </div>
             </div>
@@ -215,22 +401,21 @@ export default function AdminHallsPage() {
 
           {/* Delete Modal */}
           {showDeleteModal && selectedHall && (
-            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-blue-50/85 backdrop-blur-sm flex items-center justify-center z-50">
               <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg border border-gray-200 relative">
-                <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" onClick={() => setShowDeleteModal(false)}>&times;</button>
-                <h2 className="text-2xl font-bold mb-4 text-orange-500">Delete Hall</h2>
-                <div className="text-gray-600 mb-4">Are you sure you want to delete <span className="font-bold">{selectedHall.name}</span>?</div>
+                <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onClick={() => setShowDeleteModal(false)}>&times;</button>
+                <h2 className="text-2xl font-bold mb-4 text-blue-600">Delete Hall</h2>
+                <div className="text-gray-700 mb-4">Are you sure you want to delete <span className="font-bold">{selectedHall.name}</span>?</div>
                 <div className="flex gap-4 justify-end">
-                  <button className="bg-gray-300 text-gray-800 px-5 py-2 rounded-lg font-semibold hover:bg-gray-400" onClick={() => setShowDeleteModal(false)}>Cancel</button>
-                  <button className="bg-red-700 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-red-800" onClick={submitDelete}>Delete</button>
+                  <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                  <button className="bg-red-700 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-red-600" onClick={submitDelete}>Delete</button>
                 </div>
-                {error && <div className="text-red-600 font-semibold mt-2">{error}</div>}
-                {success && <div className="text-green-600 font-semibold mt-2">{success}</div>}
+                {error && <div className="text-red-500 font-semibold mt-2">{error}</div>}
+                {success && <div className="text-green-500 font-semibold mt-2">{success}</div>}
               </div>
             </div>
           )}
         </main>
-      </div>
     </div>
   );
 }

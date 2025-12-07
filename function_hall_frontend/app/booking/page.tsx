@@ -154,32 +154,39 @@ export default function BookingPage() {
 
   return (
     <>
-      <main className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-orange-500 mb-6">Book a Function Hall</h1>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen">
+        <main className="p-8 max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FaCalendarAlt className="text-3xl text-blue-600" />
+            </div>
+            <h1 className="text-3xl font-bold text-blue-600 mb-2">Book a Function Hall</h1>
+            <p className="text-gray-600">Select your hall and date to book</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Column - Booking Form */}
           <div>
             {hall && (
               <div className="bg-white rounded-xl shadow p-6 mb-6">
                 <div className="flex items-center space-x-2 mb-4">
-                  <FaBuilding className="text-orange-500 text-2xl" />
+                  <FaBuilding className="text-blue-600 text-2xl" />
                   <h2 className="text-2xl font-bold text-blue-700">{hall.name}</h2>
                 </div>
                 <div className="space-y-2">
                   <p className="flex items-center space-x-2 text-gray-600">
-                    <FaMapMarkerAlt className="text-orange-500" />
+                    <FaMapMarkerAlt className="text-blue-600" />
                     <span><span className="font-semibold">Location:</span> {hall.location}</span>
                   </p>
                   <p className="flex items-center space-x-2 text-gray-600">
-                    <FaUsers className="text-orange-500" />
+                    <FaUsers className="text-blue-600" />
                     <span><span className="font-semibold">Capacity:</span> {hall.capacity} guests</span>
                   </p>
                   <p className="flex items-center space-x-2 text-gray-600">
-                    <FaUser className="text-orange-500" />
+                    <FaUser className="text-blue-600" />
                     <span><span className="font-semibold">Owner:</span> {hall.owner_name}</span>
                   </p>
-                  <p className="flex items-center space-x-2 text-orange-600 font-bold text-xl mt-2">
+                  <p className="flex items-center space-x-2 text-blue-600 font-bold text-xl mt-2">
                     <FaRupeeSign />
                     <span>{hall.price_per_day}/day</span>
                   </p>
@@ -194,7 +201,7 @@ export default function BookingPage() {
             <select
               value={selectedHallId}
               onChange={(e) => setSelectedHallId(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="">-- Select a Hall --</option>
@@ -205,7 +212,7 @@ export default function BookingPage() {
               ))}
             </select>
             {hall && (
-              <div className="mt-2 p-3 bg-orange-50 rounded-lg">
+              <div className="mt-2 p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm"><strong>Owner:</strong> {hall.owner_name}</p>
                 <p className="text-sm"><strong>Price:</strong> ₹{hall.price_per_day}/day</p>
               </div>
@@ -214,7 +221,7 @@ export default function BookingPage() {
 
               <div>
                 <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <FaUser className="text-orange-500" />
+                  <FaUser className="text-blue-600" />
                   <span>Customer Name</span>
                 </label>
                 <input
@@ -227,7 +234,7 @@ export default function BookingPage() {
 
               <div>
                 <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <FaEnvelope className="text-orange-500" />
+                  <FaEnvelope className="text-blue-600" />
                   <span>Email</span>
                 </label>
                 <input
@@ -241,11 +248,11 @@ export default function BookingPage() {
               {eventDate && (
                 <div>
                   <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                    <FaCalendarAlt className="text-orange-500" />
+                    <FaCalendarAlt className="text-blue-600" />
                     <span>Selected Event Date</span>
                   </label>
-                  <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                    <p className="flex items-center space-x-2 text-sm font-semibold text-orange-800">
+                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="flex items-center space-x-2 text-sm font-semibold text-blue-800">
                       <FaCalendarAlt />
                       <span>{new Date(eventDate).toLocaleDateString('en-IN', { 
                         weekday: 'long', 
@@ -279,13 +286,13 @@ export default function BookingPage() {
                     onClick={() => setSelectedPackage(pkg)}
                     className={`border-2 rounded-lg p-4 cursor-pointer transition ${
                       selectedPackage?.id === pkg.id
-                        ? "border-orange-500 bg-orange-50"
-                        : "border-gray-200 hover:border-orange-300"
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-blue-300"
                     }`}
                   >
                     <h3 className="font-semibold text-lg">{pkg.name}</h3>
                     <p className="text-gray-600 text-sm mt-1">{pkg.description}</p>
-                    <p className="text-orange-600 font-bold mt-2">₹{pkg.price}</p>
+                    <p className="text-blue-600 font-bold mt-2">₹{pkg.price}</p>
                   </div>
                 ))}
               </div>
@@ -307,7 +314,7 @@ export default function BookingPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition disabled:bg-gray-400"
+                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-gray-400"
               >
                 {loading ? "Processing..." : "Confirm Booking"}
               </button>
@@ -334,6 +341,7 @@ export default function BookingPage() {
           </div>
         </div>
       </main>
+      </div>
     </>
   );
 }

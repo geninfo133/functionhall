@@ -80,11 +80,31 @@ def get_hall(hall_id):
         'photos': photos
     })
 
+@main.route('/api/vendor/<int:vendor_id>/halls', methods=['GET'])
+def get_vendor_halls(vendor_id):
+    """Get all halls belonging to a specific vendor"""
+    halls = FunctionHall.query.filter_by(vendor_id=vendor_id).all()
+    result = []
+    for hall in halls:
+        result.append({
+            'id': hall.id,
+            'name': hall.name,
+            'owner_name': hall.owner_name,
+            'location': hall.location,
+            'capacity': hall.capacity,
+            'price_per_day': hall.price_per_day,
+            'contact_number': hall.contact_number,
+            'description': hall.description
+        })
+    return jsonify(result)
 
 @main.route('/api/halls', methods=['POST'])
 def add_hall():
     data = request.get_json()
     print(f"📝 Adding new hall: {data}")
+    
+    # Get vendor_id from request (if provided)
+    vendor_id = data.get('vendor_id')
     
     hall = FunctionHall(
         name=data.get('name'),
@@ -93,10 +113,28 @@ def add_hall():
         capacity=data.get('capacity'),
         price_per_day=data.get('price_per_day'),
         contact_number=data.get('contact_number'),
-        description=data.get('description')
+        description=data.get('description'),
+        vendor_id=vendor_id
     )
     db.session.add(hall)
     db.session.commit()
+    
+    # Handle package associations
+    package_ids = data.get('package_ids', [])
+    if package_ids:
+        for pkg_id in package_ids:
+            package = Package.query.get(pkg_id)
+            if package:
+                # If package belongs to different hall, create a copy
+                if package.hall_id != hall.id:
+                    new_package = Package(
+                        hall_id=hall.id,
+                        package_name=package.package_name,
+                        price=package.price,
+                        details=package.details
+                    )
+                    db.session.add(new_package)
+        db.session.commit()
     
     print(f"✅ Hall added successfully! ID: {hall.id}")
     return jsonify({"message": "Hall added successfully!", "id": hall.id}), 201
@@ -336,8 +374,22 @@ def get_customer_bookings(customer_id):
 # -------------------------
 @main.route('/api/inquiries', methods=['GET'])
 def get_inquiries():
-    inquiries = Inquiry.query.all()
-    result = [{'id': i.id, 'customer_name': i.customer_name, 'email': i.email, 'hall_id': i.hall_id, 'message': i.message} for i in inquiries]
+    inquiries = Inquiry.query.order_by(Inquiry.created_at.desc()).all()
+    result = []
+    for i in inquiries:
+        hall = FunctionHall.query.get(i.hall_id) if i.hall_id else None
+        result.append({
+            'id': i.id,
+            'customer_name': i.customer_name,
+            'customer_phone': i.phone,
+            'email': i.email,
+            'hall_id': i.hall_id,
+            'hall_name': hall.name if hall else None,
+            'location': hall.location if hall else None,
+            'message': i.message,
+            'status': i.status or 'Pending',
+            'created_at': i.created_at.isoformat() if i.created_at else None
+        })
     return jsonify(result)
 
 
@@ -424,6 +476,25 @@ def add_enquiry():
         print(f"⚠️ No hall_id provided in enquiry")
     
     return jsonify({"message": "Enquiry submitted successfully!", "id": inquiry.id}), 201
+
+
+@main.route('/api/inquiries/<int:id>/status', methods=['PUT'])
+def update_inquiry_status(id):
+    data = request.get_json()
+    new_status = data.get('status')
+    
+    if not new_status:
+        return jsonify({"error": "Status is required"}), 400
+    
+    inquiry = Inquiry.query.get(id)
+    if not inquiry:
+        return jsonify({"error": "Inquiry not found"}), 404
+    
+    inquiry.status = new_status
+    db.session.commit()
+    
+    return jsonify({"message": "Status updated successfully", "id": inquiry.id, "status": inquiry.status}), 200
+
 
 # -------------------------
 # CUSTOMER PROFILE

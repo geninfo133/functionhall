@@ -56,7 +56,7 @@ export default function CustomerRegister() {
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h1 className="text-3xl font-bold text-orange-500 mb-6 text-center">
+        <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center">
           Customer Registration
         </h1>
         
@@ -84,7 +84,7 @@ export default function CustomerRegister() {
               name="email"
               value={form.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
             />
           </div>
@@ -98,7 +98,7 @@ export default function CustomerRegister() {
               name="password"
               value={form.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
               minLength={6}
             />
@@ -113,7 +113,7 @@ export default function CustomerRegister() {
               name="phone"
               value={form.phone}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -125,7 +125,7 @@ export default function CustomerRegister() {
               name="address"
               value={form.address}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               rows={2}
             />
           </div>
@@ -139,7 +139,7 @@ export default function CustomerRegister() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition disabled:bg-gray-400"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-gray-400"
           >
             {loading ? "Registering..." : "Register"}
           </button>
@@ -147,7 +147,7 @@ export default function CustomerRegister() {
 
         <p className="text-center text-gray-600 mt-4">
           Already have an account?{" "}
-          <Link href="/customer/login" className="text-orange-500 font-semibold hover:underline">
+          <Link href="/customer/login" className="text-blue-600 font-semibold hover:underline">
             Login here
           </Link>
         </p>

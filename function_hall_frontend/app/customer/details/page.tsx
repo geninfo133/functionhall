@@ -115,14 +115,14 @@ export default function CustomerDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white p-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white p-4 py-12">
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-3xl">✓</span>
             </div>
-            <h1 className="text-3xl font-bold text-orange-600 mb-2">
+            <h1 className="text-3xl font-bold text-blue-600 mb-2">
               Complete Your Profile
             </h1>
             <p className="text-gray-600">
@@ -142,7 +142,7 @@ export default function CustomerDetailsPage() {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
@@ -157,7 +157,7 @@ export default function CustomerDetailsPage() {
                   value={form.email}
                   onChange={handleChange}
                   placeholder="your.email@example.com"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
@@ -174,7 +174,7 @@ export default function CustomerDetailsPage() {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Minimum 6 characters"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                   minLength={6}
                 />
@@ -190,7 +190,7 @@ export default function CustomerDetailsPage() {
                   value={form.confirmPassword}
                   onChange={handleChange}
                   placeholder="Re-enter password"
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
@@ -209,7 +209,7 @@ export default function CustomerDetailsPage() {
                   setForm({ ...form, aadhar_number: value });
                 }}
                 placeholder="12-digit Aadhar number"
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 maxLength={12}
               />
             </div>
@@ -224,7 +224,7 @@ export default function CustomerDetailsPage() {
                 onChange={handleChange}
                 placeholder="Enter your full address"
                 rows={3}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               />
             </div>
 
@@ -237,7 +237,7 @@ export default function CustomerDetailsPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-orange-500 text-white py-3 rounded-lg font-semibold text-lg hover:bg-orange-600 transition disabled:bg-gray-400 shadow-lg"
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition disabled:bg-gray-400 shadow-lg"
             >
               {loading ? "Creating Account..." : "Complete Registration"}
             </button>

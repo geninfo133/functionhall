@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Sidebar from "../../../components/Sidebar";
-import Topbar from "../../../components/Topbar";
-import { FaEnvelope, FaUser, FaPhone, FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaFilter, FaSort } from "react-icons/fa";
+import { FaEnvelope, FaUser, FaPhone, FaBuilding, FaMapMarkerAlt, FaCalendarAlt, FaFilter, FaSort, FaTimes, FaCheck } from "react-icons/fa";
 import { BACKEND_URL } from "../../../lib/config";
 
 export default function AdminEnquiriesPage() {
@@ -16,6 +14,7 @@ export default function AdminEnquiriesPage() {
   const [filterLocation, setFilterLocation] = useState("");
   const [halls, setHalls] = useState<any[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
+  const [selectedEnquiry, setSelectedEnquiry] = useState<number | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -47,29 +46,13 @@ export default function AdminEnquiriesPage() {
       const response = await fetch(`${BACKEND_URL}/api/inquiries`);
       if (response.ok) {
         const data = await response.json();
-        console.log('📋 Enquiries data:', data); // Debug log
+        console.log('📋 Enquiries data:', data);
         
-        // Fetch hall data for each enquiry to get location
-        const hallsResponse = await fetch(`${BACKEND_URL}/api/halls`);
-        const hallsData = await hallsResponse.json();
+        setEnquiries(data);
+        setFilteredEnquiries(data);
         
-        // Map hall locations to enquiries
-        const enrichedData = data.map((e: any) => {
-          const hall = hallsData.find((h: any) => h.id === e.hall_id);
-          return {
-            ...e,
-            location: hall ? hall.location : e.location || "",
-            created_at: e.created_at || e.date || e.inquiry_date || new Date().toISOString()
-          };
-        });
-        
-        console.log('📋 Enriched data:', enrichedData); // Debug log
-        
-        setEnquiries(enrichedData);
-        setFilteredEnquiries(enrichedData);
-        
-        // Extract unique locations
-        const uniqueLocations = Array.from(new Set(enrichedData.map((e: any) => e.location).filter(Boolean)));
+        // Extract unique locations from enquiries
+        const uniqueLocations = Array.from(new Set(data.map((e: any) => e.location).filter(Boolean)));
         setLocations(uniqueLocations as string[]);
       }
     } catch (error) {
@@ -147,18 +130,15 @@ export default function AdminEnquiriesPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Topbar />
-        <main className="p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+      <main className="p-8 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
-              <FaEnvelope className="text-orange-500 text-3xl" />
+              <FaEnvelope className="text-blue-600 text-3xl" />
               <h1 className="text-3xl font-bold text-blue-700">Customer Enquiries</h1>
             </div>
             <div className="text-sm text-gray-600">
-              Total: <span className="font-bold text-orange-500">{filteredEnquiries.length}</span> enquiries
+              Total: <span className="font-bold text-blue-600">{filteredEnquiries.length}</span> enquiries
             </div>
           </div>
 
@@ -168,13 +148,13 @@ export default function AdminEnquiriesPage() {
               {/* Sort By */}
               <div>
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaSort className="text-orange-500" />
+                  <FaSort className="text-blue-600" />
                   <span>Sort By</span>
                 </label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
                   <option value="date">Date (Newest First)</option>
                   <option value="date-asc">Date (Oldest First)</option>
@@ -187,13 +167,13 @@ export default function AdminEnquiriesPage() {
               {/* Filter by Hall */}
               <div>
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaBuilding className="text-orange-500" />
+                  <FaBuilding className="text-blue-600" />
                   <span>Filter by Hall</span>
                 </label>
                 <select
                   value={filterHall}
                   onChange={(e) => setFilterHall(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
                   <option value="">All Halls</option>
                   {halls.map((hall) => (
@@ -207,13 +187,13 @@ export default function AdminEnquiriesPage() {
               {/* Filter by Location */}
               <div>
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaMapMarkerAlt className="text-orange-500" />
+                  <FaMapMarkerAlt className="text-blue-600" />
                   <span>Filter by Location</span>
                 </label>
                 <select
                   value={filterLocation}
                   onChange={(e) => setFilterLocation(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
                   <option value="">All Locations</option>
                   {locations.map((loc) => (
@@ -233,7 +213,7 @@ export default function AdminEnquiriesPage() {
                     setFilterHall("");
                     setFilterLocation("");
                   }}
-                  className="text-orange-500 hover:text-orange-700 font-semibold text-sm"
+                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
                 >
                   Clear Filters
                 </button>
@@ -252,21 +232,21 @@ export default function AdminEnquiriesPage() {
               {filteredEnquiries.map((enquiry) => (
                 <div
                   key={enquiry.id}
-                  className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition"
+                  className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition"
                 >
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <FaUser className="text-orange-500" />
-                        <h3 className="text-xl font-bold text-blue-700">{enquiry.customer_name}</h3>
+                        <FaUser className="text-blue-600" />
+                        <h3 className="text-lg font-bold text-blue-700">{enquiry.customer_name}</h3>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
-                          <FaPhone className="text-orange-500" />
+                          <FaPhone className="text-blue-600" />
                           <span>{enquiry.customer_phone}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <FaCalendarAlt className="text-orange-500" />
+                          <FaCalendarAlt className="text-blue-600" />
                           <span>
                             {enquiry.created_at ? (() => {
                               const date = new Date(enquiry.created_at);
@@ -282,26 +262,68 @@ export default function AdminEnquiriesPage() {
                         </div>
                         {enquiry.hall_name && (
                           <div className="flex items-center space-x-2">
-                            <FaBuilding className="text-orange-500" />
+                            <FaBuilding className="text-blue-600" />
                             <span>{enquiry.hall_name}</span>
                           </div>
                         )}
                         {enquiry.location && (
                           <div className="flex items-center space-x-2">
-                            <FaMapMarkerAlt className="text-orange-500" />
+                            <FaMapMarkerAlt className="text-blue-600" />
                             <span>{enquiry.location}</span>
                           </div>
                         )}
                       </div>
                     </div>
-                    <span className={`px-4 py-1 rounded-full text-sm font-semibold ${getStatusColor(enquiry.status || 'Pending')}`}>
-                      {enquiry.status || 'Pending'}
-                    </span>
+                    <div className="flex flex-col items-end space-y-2">
+                      <span className={`px-4 py-1 rounded-full text-sm font-semibold ${getStatusColor(enquiry.status || 'Pending')}`}>
+                        {enquiry.status || 'Pending'}
+                      </span>
+                      {enquiry.status === 'Pending' && (
+                        <button
+                          onClick={async () => {
+                            try {
+                              const response = await fetch(`${BACKEND_URL}/api/inquiries/${enquiry.id}/status`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: 'Responded' })
+                              });
+                              if (response.ok) {
+                                const updatedEnquiries = enquiries.map(e => 
+                                  e.id === enquiry.id ? { ...e, status: 'Responded' } : e
+                                );
+                                setEnquiries(updatedEnquiries);
+                              }
+                            } catch (error) {
+                              console.error('Error updating status:', error);
+                            }
+                          }}
+                          className="flex items-center space-x-1 text-xs bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-full transition"
+                        >
+                          <FaCheck />
+                          <span>Mark Replied</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-4">
+                  <div 
+                    className="bg-gray-50 rounded-lg p-3 cursor-pointer hover:bg-gray-100 transition"
+                    onClick={() => setSelectedEnquiry(selectedEnquiry === enquiry.id ? null : enquiry.id)}
+                  >
                     <p className="text-sm font-semibold text-gray-700 mb-1">Message:</p>
-                    <p className="text-gray-600">{enquiry.message}</p>
+                    <p className="text-gray-600 text-sm">
+                      {selectedEnquiry === enquiry.id 
+                        ? enquiry.message 
+                        : enquiry.message.length > 100 
+                          ? `${enquiry.message.substring(0, 100)}...` 
+                          : enquiry.message
+                      }
+                    </p>
+                    {enquiry.message.length > 100 && (
+                      <button className="text-blue-600 hover:text-blue-700 text-xs font-semibold mt-1">
+                        {selectedEnquiry === enquiry.id ? 'Show less' : 'Read more'}
+                      </button>
+                    )}
                   </div>
 
                   {enquiry.event_date && (
@@ -322,7 +344,6 @@ export default function AdminEnquiriesPage() {
             </div>
           )}
         </main>
-      </div>
     </div>
   );
 }

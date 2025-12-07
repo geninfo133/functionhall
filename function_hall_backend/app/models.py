@@ -12,8 +12,14 @@ class AdminUser(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    role = db.Column(db.String(20), default='admin')
+    role = db.Column(db.String(20), default='vendor')  # 'super_admin' or 'vendor'
+    phone = db.Column(db.String(20))
+    business_name = db.Column(db.String(150))  # For vendors
+    is_approved = db.Column(db.Boolean, default=False)  # Vendors need approval
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationship to halls (for vendors)
+    halls = db.relationship('FunctionHall', backref='vendor', lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -38,6 +44,7 @@ class FunctionHall(db.Model):
     contact_number = db.Column(db.String(20))
     price_per_day = db.Column(db.Float)
     description = db.Column(db.Text)
+    vendor_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)  # Link to vendor
 
     # Relationships
     packages = db.relationship('Package', backref='hall', lazy=True)
@@ -134,6 +141,7 @@ class Inquiry(db.Model):
     email = db.Column(db.String(100))
     phone = db.Column(db.String(20))
     message = db.Column(db.Text)
+    status = db.Column(db.String(20), default='Pending')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):

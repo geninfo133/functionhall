@@ -1,25 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaSearch } from "react-icons/fa";
-
-// Avatar color palette
-const AVATAR_COLORS = [
-  "bg-orange-500",
-  "bg-blue-500",
-  "bg-green-500",
-  "bg-red-500",
-  "bg-purple-500",
-  "bg-pink-500",
-  "bg-yellow-500",
-  "bg-teal-500",
-  "bg-indigo-500",
-  "bg-cyan-500"
-];
 import { useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
-import Link from "next/link";
-import RoleSidebar from "../../components/RoleSidebar";
-import HallTable from "../../components/HallTable";
+import HallCards from "../../components/HallCards";
 
 export default function HomePage() {
   const [halls, setHalls] = useState<any[]>([]);
@@ -81,62 +65,153 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <RoleSidebar role="customer" />
-      <div className="flex-1 flex flex-col">
-        <main className="p-8">
-          {/* Hero Section */}
-          <section className="bg-orange-50 rounded-2xl p-8 mb-8 flex flex-col items-center text-center shadow">
-            <h1 className="text-5xl font-extrabold text-orange-500 mb-4">Find the Perfect Function Hall</h1>
-            <p className="text-lg text-orange-500 mb-6">Book top-rated halls for your events, weddings, and celebrations!</p>
-            {/* Search Bar */}
-            <div className="flex flex-wrap gap-4 justify-center mb-4">
-              <div className="relative">
-                <FaMapMarkerAlt className="absolute left-3 top-3 text-orange-500" />
-                <input
-                  type="text"
-                  placeholder="Location"
-                  className="pl-10 pr-4 py-2 rounded-lg border w-40 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                  value={location}
-                  onChange={e => setLocation(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaCalendarAlt className="absolute left-3 top-3 text-orange-500" />
-                <input
-                  type="date"
-                  className="pl-10 pr-4 py-2 rounded-lg border w-40 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                  value={date}
-                  onChange={e => setDate(e.target.value)}
-                />
-              </div>
-              <div className="relative">
-                <FaUsers className="absolute left-3 top-3 text-orange-500" />
-                <input
-                  type="number"
-                  placeholder="Guests"
-                  className="pl-10 pr-4 py-2 rounded-lg border w-32 focus:ring-2 focus:ring-orange-500 focus:outline-none"
-                  value={guests}
-                  onChange={e => setGuests(e.target.value)}
-                />
-              </div>
-              <button
-                className="flex items-center space-x-2 bg-orange-500 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-orange-700 transition"
-                onClick={handleSearch}
-              >
-                <FaSearch />
-                <span>Search</span>
-              </button>
-            </div>
-          </section>
+    <div className="min-h-screen">
+      <main className="p-4 sm:p-6 lg:p-8">
+          {/* Hero Banner with Search */}
+          <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
 
-          {/* Halls Table */}
-          <section>
-           
-            <HallTable halls={halls} loading={loading} />
-          </section>
+            <div className="px-6 sm:px-8 lg:px-12 py-4">
+              <div className="max-w-6xl mx-auto">
+                <div className="text-center">
+                  <h1 className="text-base sm:text-lg font-bold text-white leading-tight">
+                    Find Your Perfect Venue
+                  </h1>
+                  <p className="text-xs text-blue-100 mt-1 max-w-2xl mx-auto">
+                    Discover beautiful function halls for weddings, corporate events, and celebrations
+                  </p>
+                </div>
+
+                <div className="mt-3">
+                  <div className="bg-white rounded-xl shadow-lg p-3 max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                      <div className="relative">
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Location</label>
+                        <FaMapMarkerAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <input
+                          type="text"
+                          placeholder="City or area"
+                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          value={location}
+                          onChange={e => setLocation(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
+                        <FaCalendarAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <input
+                          type="date"
+                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          value={date}
+                          onChange={e => setDate(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <label className="block text-xs font-medium text-gray-700 mb-1">Guests</label>
+                        <FaUsers className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <input
+                          type="number"
+                          placeholder="How many?"
+                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          value={guests}
+                          onChange={e => setGuests(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="flex gap-2 items-end">
+                        <button
+                          onClick={handleSearch}
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                        >
+                          <FaSearch className="text-xs" />
+                          Search
+                        </button>
+                        {(location || date || guests) && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setLocation("");
+                              setDate("");
+                              setGuests("");
+                            }}
+                            className="px-2.5 py-1.5 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+                          >
+                            Clear
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Marquee */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 mb-12 overflow-hidden py-4">
+            <div className="flex items-center gap-12 animate-marquee whitespace-nowrap">
+              <div className="flex items-center gap-3 px-6">
+                <div className="text-2xl font-bold text-blue-600">{halls.length}</div>
+                <p className="text-gray-600 font-medium">Premium Halls</p>
+              </div>
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">24/7</div>
+                <p className="text-gray-600 font-medium">Customer Support</p>
+              </div>
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">1000+</div>
+                <p className="text-gray-600 font-medium">Events Hosted</p>
+              </div>
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">⭐</div>
+                <p className="text-gray-600 font-medium">Top Rated Service</p>
+              </div>
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">100%</div>
+                <p className="text-gray-600 font-medium">Verified Venues</p>
+              </div>
+              {/* Duplicate for seamless loop */}
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">{halls.length}</div>
+                <p className="text-gray-600 font-medium">Premium Halls</p>
+              </div>
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">24/7</div>
+                <p className="text-gray-600 font-medium">Customer Support</p>
+              </div>
+              <div className="flex items-center gap-3 px-6 border-l border-gray-200">
+                <div className="text-2xl font-bold text-blue-600">1000+</div>
+                <p className="text-gray-600 font-medium">Events Hosted</p>
+              </div>
+            </div>
+          </div>
+
+          <style jsx>{`
+            @keyframes marquee {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+              animation: marquee 30s linear infinite;
+            }
+            .animate-marquee:hover {
+              animation-play-state: paused;
+            }
+          `}</style>
+
+          {/* Featured Halls Section */}
+          <div>
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900">Featured Halls</h2>
+                <p className="text-gray-600 mt-1">Choose from our curated collection</p>
+              </div>
+            </div>
+
+            <HallCards halls={halls} loading={loading} />
+          </div>
         </main>
-      </div>
     </div>
   );
 }

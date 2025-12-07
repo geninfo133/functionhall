@@ -19,30 +19,30 @@ const Topbar: React.FC = () => {
     }
   };
   return (
-    <header className="bg-white shadow-sm p-4 flex items-center justify-between rounded-b-2xl">
+    <header className="bg-slate-900 shadow-sm p-4 flex items-center justify-between rounded-b-2xl border-b border-slate-700">
       {/* Branding/Home Link */}
-      <Link href="/" className="text-2xl font-bold text-orange-500 mr-6">FunctionHall</Link>
+      <Link href="/" className="text-2xl font-bold text-slate-300 mr-6">FunctionHall</Link>
       {/* Search Bar */}
-      <form className="flex items-center space-x-2 bg-gray-100 border px-4 py-2 rounded-full shadow-sm w-96" onSubmit={handleSearch}>
-        <Search size={18} className="text-gray-400" />
+      <form className="flex items-center space-x-2 bg-slate-800 border border-slate-700 px-4 py-2 rounded-full shadow-sm w-96" onSubmit={handleSearch}>
+        <Search size={18} className="text-slate-400" />
         <input
           type="text"
           placeholder="Search halls by name or location"
-          className="outline-none text-sm w-full bg-transparent"
+          className="outline-none text-sm w-full bg-transparent text-slate-300 placeholder-slate-500"
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
         <button
           type="submit"
-          className="ml-2 bg-orange-500 text-white px-3 py-1 rounded-full font-semibold hover:bg-orange-500 transition"
+          className="ml-2 bg-slate-700 text-white px-3 py-1 rounded-full font-semibold hover:bg-slate-600 transition"
         >
           Search
         </button>
       </form>
       {/* Profile/Actions */}
       <div className="flex items-center space-x-4">
-        <Link href="/admin/profile" className="text-orange-500 font-semibold hover:underline">Profile</Link>
-        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-orange-500 shadow">
+        <Link href="/admin/profile" className="text-slate-300 font-semibold hover:text-slate-100">Profile</Link>
+        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-slate-600 shadow">
           <img 
             src="/G.png" 
             alt="Profile"
