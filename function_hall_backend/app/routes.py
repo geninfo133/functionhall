@@ -1,11 +1,19 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_from_directory, current_app
 from app import db
-from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification
+from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification, HallChangeRequest, AdminUser, HallPhoto
 from datetime import datetime, date
 from sms_utils import send_sms
 from app import otp_service
+import json
+import os
 
 main = Blueprint('main', __name__)
+
+# Route to serve uploaded files
+@main.route('/uploads/hall_photos/<filename>')
+def serve_hall_photo(filename):
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    return send_from_directory(upload_folder, filename)
 
 # -------------------------
 # FUNCTION HALLS
@@ -51,6 +59,7 @@ def get_halls():
             pass  # Invalid date format, skip date filtering
     result = []
     for hall in halls:
+        photos = [photo.url for photo in hall.photos]
         result.append({
             'id': hall.id,
             'name': hall.name,
@@ -59,7 +68,8 @@ def get_halls():
             'capacity': hall.capacity,
             'price_per_day': hall.price_per_day,
             'contact_number': hall.contact_number,
-            'description': hall.description
+            'description': hall.description,
+            'photos': photos
         })
     return jsonify(result)
 
@@ -86,6 +96,7 @@ def get_vendor_halls(vendor_id):
     halls = FunctionHall.query.filter_by(vendor_id=vendor_id).all()
     result = []
     for hall in halls:
+        photos = [photo.url for photo in hall.photos]
         result.append({
             'id': hall.id,
             'name': hall.name,
@@ -94,18 +105,81 @@ def get_vendor_halls(vendor_id):
             'capacity': hall.capacity,
             'price_per_day': hall.price_per_day,
             'contact_number': hall.contact_number,
-            'description': hall.description
+            'description': hall.description,
+            'photos': photos
         })
     return jsonify(result)
 
 @main.route('/api/halls', methods=['POST'])
 def add_hall():
-    data = request.get_json()
-    print(f"📝 Adding new hall: {data}")
+    from werkzeug.utils import secure_filename
+    import uuid
+    from flask import current_app
+    
+    # Check if request has files or JSON
+    if request.content_type and 'multipart/form-data' in request.content_type:
+        # Handle file upload
+        data = request.form.to_dict()
+        files = request.files.getlist('photos')
+        print(f"📝 Adding new hall with {len(files)} photo files: {data}")
+        
+        # Save uploaded files and get their paths
+        photo_paths = []
+        for file in files:
+            if file and file.filename:
+                # Generate unique filename
+                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
+                filename = f"{uuid.uuid4().hex}.{ext}"
+                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                
+                # Save file
+                file.save(filepath)
+                # Store relative path for URL generation
+                photo_paths.append(f"/uploads/hall_photos/{filename}")
+                print(f"💾 Saved photo: {filename}")
+    else:
+        # Handle JSON request (for backward compatibility)
+        data = request.get_json()
+        photo_paths = data.get('photos', [])
+        print(f"📝 Adding new hall: {data}")
     
     # Get vendor_id from request (if provided)
     vendor_id = data.get('vendor_id')
+    if vendor_id:
+        vendor_id = int(vendor_id)
+    is_admin = data.get('is_admin', False)  # Check if request is from super admin
     
+    # If request is from vendor, create a change request instead
+    if vendor_id and not is_admin:
+        vendor = AdminUser.query.get(vendor_id)
+        if vendor and vendor.role == 'vendor':
+            # Create a change request for approval
+            change_request = HallChangeRequest(
+                vendor_id=vendor_id,
+                action_type='add',
+                new_data=json.dumps({
+                    'name': data.get('name'),
+                    'owner_name': data.get('owner_name'),
+                    'location': data.get('location'),
+                    'capacity': int(data.get('capacity')) if data.get('capacity') else 0,
+                    'price_per_day': int(data.get('price_per_day')) if data.get('price_per_day') else 0,
+                    'contact_number': data.get('contact_number'),
+                    'description': data.get('description'),
+                    'vendor_id': vendor_id,
+                    'photos': photo_paths
+                }),
+                status='pending'
+            )
+            db.session.add(change_request)
+            db.session.commit()
+            print(f"📋 Change request created! ID: {change_request.id}")
+            return jsonify({
+                "message": "Hall submission received! Pending admin approval.",
+                "request_id": change_request.id,
+                "status": "pending"
+            }), 201
+    
+    # Super admin adding hall directly - no approval needed
     hall = FunctionHall(
         name=data.get('name'),
         owner_name=data.get('owner_name'),
@@ -114,7 +188,9 @@ def add_hall():
         price_per_day=data.get('price_per_day'),
         contact_number=data.get('contact_number'),
         description=data.get('description'),
-        vendor_id=vendor_id
+        vendor_id=vendor_id,
+        is_approved=True,
+        approval_status='approved'
     )
     db.session.add(hall)
     db.session.commit()
@@ -185,7 +261,15 @@ def add_package():
 @main.route('/api/customers', methods=['GET'])
 def get_customers():
     customers = Customer.query.all()
-    result = [{'id': c.id, 'name': c.name, 'email': c.email, 'phone': c.phone, 'address': c.address} for c in customers]
+    result = [{
+        'id': c.id, 
+        'name': c.name, 
+        'email': c.email, 
+        'phone': c.phone, 
+        'address': c.address,
+        'is_approved': c.is_approved,
+        'approval_status': c.approval_status
+    } for c in customers]
     return jsonify(result)
 
 
@@ -234,13 +318,29 @@ def get_bookings():
     bookings = Booking.query.all()
     result = []
     for b in bookings:
+        # Get customer details
+        customer = Customer.query.get(b.customer_id)
+        # Get hall details
+        hall = FunctionHall.query.get(b.hall_id)
+        
         result.append({
             'id': b.id,
             'customer_id': b.customer_id,
+            'customer_name': customer.name if customer else 'Unknown Customer',
+            'customer_email': customer.email if customer else 'N/A',
+            'customer_phone': customer.phone if customer else 'N/A',
             'hall_id': b.hall_id,
+            'hall_name': hall.name if hall else 'Unknown Hall',
             'event_date': b.event_date.isoformat(),
+            'event_type': b.event_type if hasattr(b, 'event_type') else 'N/A',
+            'number_of_guests': b.number_of_guests if hasattr(b, 'number_of_guests') else 0,
+            'package_id': b.package_id if hasattr(b, 'package_id') else None,
+            'package_name': b.package_name if hasattr(b, 'package_name') else None,
+            'total_price': b.total_amount,
             'status': b.status,
-            'total_amount': b.total_amount
+            'total_amount': b.total_amount,
+            'created_at': b.created_at.isoformat() if hasattr(b, 'created_at') else None,
+            'special_requests': b.special_requests if hasattr(b, 'special_requests') else None
         })
     return jsonify(result)
 
@@ -248,8 +348,21 @@ def get_bookings():
 @main.route('/api/bookings', methods=['POST'])
 def add_booking():
     data = request.get_json()
+    customer_id = data['customer_id']
+    
+    # Check if customer is approved
+    customer = Customer.query.get(customer_id)
+    if not customer:
+        return jsonify({"error": "Customer not found"}), 404
+    
+    if not customer.is_approved or customer.approval_status != 'approved':
+        return jsonify({
+            "error": "Your account is not approved yet. Please wait for admin approval.",
+            "status": "not_approved"
+        }), 403
+    
     booking = Booking(
-        customer_id=data['customer_id'],
+        customer_id=customer_id,
         hall_id=data['hall_id'],
         event_date=datetime.strptime(data['event_date'], "%Y-%m-%d").date(),
         status=data.get('status', 'Pending'),
@@ -580,3 +693,425 @@ def verify_otp():
         return jsonify({"message": result['message']}), 200
     else:
         return jsonify({"error": result['message']}), 400
+
+
+# -------------------------
+# VENDOR HALL MANAGEMENT WITH APPROVAL
+# -------------------------
+
+@main.route('/api/vendor/halls/<int:hall_id>/edit', methods=['POST'])
+def vendor_edit_hall(hall_id):
+    """Vendor requests to edit a hall - requires admin approval"""
+    data = request.get_json()
+    vendor_id = data.get('vendor_id')
+    
+    if not vendor_id:
+        return jsonify({"error": "Vendor ID is required"}), 400
+    
+    hall = FunctionHall.query.get_or_404(hall_id)
+    
+    # Verify vendor owns this hall
+    if hall.vendor_id != vendor_id:
+        return jsonify({"error": "Unauthorized - You don't own this hall"}), 403
+    
+    # Store old data
+    old_data = {
+        'name': hall.name,
+        'owner_name': hall.owner_name,
+        'location': hall.location,
+        'capacity': hall.capacity,
+        'price_per_day': hall.price_per_day,
+        'contact_number': hall.contact_number,
+        'description': hall.description
+    }
+    
+    # Store new data
+    new_data = {
+        'name': data.get('name', hall.name),
+        'owner_name': data.get('owner_name', hall.owner_name),
+        'location': data.get('location', hall.location),
+        'capacity': data.get('capacity', hall.capacity),
+        'price_per_day': data.get('price_per_day', hall.price_per_day),
+        'contact_number': data.get('contact_number', hall.contact_number),
+        'description': data.get('description', hall.description)
+    }
+    
+    # Create change request
+    change_request = HallChangeRequest(
+        hall_id=hall_id,
+        vendor_id=vendor_id,
+        action_type='edit',
+        old_data=json.dumps(old_data),
+        new_data=json.dumps(new_data),
+        status='pending'
+    )
+    db.session.add(change_request)
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Edit request submitted! Pending admin approval.",
+        "request_id": change_request.id
+    }), 201
+
+
+@main.route('/api/vendor/halls/<int:hall_id>/delete', methods=['POST'])
+def vendor_delete_hall(hall_id):
+    """Vendor requests to delete a hall - requires admin approval"""
+    data = request.get_json()
+    vendor_id = data.get('vendor_id')
+    
+    if not vendor_id:
+        return jsonify({"error": "Vendor ID is required"}), 400
+    
+    hall = FunctionHall.query.get_or_404(hall_id)
+    
+    # Verify vendor owns this hall
+    if hall.vendor_id != vendor_id:
+        return jsonify({"error": "Unauthorized - You don't own this hall"}), 403
+    
+    # Store hall data before deletion
+    old_data = {
+        'name': hall.name,
+        'owner_name': hall.owner_name,
+        'location': hall.location,
+        'capacity': hall.capacity,
+        'price_per_day': hall.price_per_day,
+        'contact_number': hall.contact_number,
+        'description': hall.description
+    }
+    
+    # Create change request
+    change_request = HallChangeRequest(
+        hall_id=hall_id,
+        vendor_id=vendor_id,
+        action_type='delete',
+        old_data=json.dumps(old_data),
+        status='pending'
+    )
+    db.session.add(change_request)
+    db.session.commit()
+    
+    return jsonify({
+        "message": "Delete request submitted! Pending admin approval.",
+        "request_id": change_request.id
+    }), 201
+
+
+# -------------------------
+# ADMIN APPROVAL MANAGEMENT
+# -------------------------
+
+@main.route('/api/admin/hall-requests', methods=['GET'])
+def get_hall_requests():
+    """Get all pending hall change requests"""
+    status = request.args.get('status', 'pending')
+    
+    requests = HallChangeRequest.query.filter_by(status=status).order_by(HallChangeRequest.requested_at.desc()).all()
+    
+    result = []
+    for req in requests:
+        vendor = AdminUser.query.get(req.vendor_id)
+        hall_name = None
+        if req.hall_id:
+            hall = FunctionHall.query.get(req.hall_id)
+            hall_name = hall.name if hall else None
+        
+        result.append({
+            'id': req.id,
+            'hall_id': req.hall_id,
+            'hall_name': hall_name,
+            'vendor_id': req.vendor_id,
+            'vendor_name': vendor.name if vendor else None,
+            'vendor_business': vendor.business_name if vendor else None,
+            'action_type': req.action_type,
+            'status': req.status,
+            'old_data': json.loads(req.old_data) if req.old_data else None,
+            'new_data': json.loads(req.new_data) if req.new_data else None,
+            'requested_at': req.requested_at.isoformat(),
+            'reviewed_at': req.reviewed_at.isoformat() if req.reviewed_at else None,
+            'rejection_reason': req.rejection_reason
+        })
+    
+    return jsonify(result)
+
+
+@main.route('/api/admin/hall-requests/<int:request_id>/approve', methods=['POST'])
+def approve_hall_request(request_id):
+    """Admin approves a hall change request"""
+    # Get JWT token from Authorization header
+    auth_header = request.headers.get('Authorization')
+    
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"error": "Authorization token required"}), 401
+    
+    token = auth_header.split(' ')[1]
+    
+    try:
+        # Decode JWT token
+        import jwt
+        import os
+        SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        admin_id = decoded.get('admin_id')
+        
+        # Verify admin is super_admin
+        admin = AdminUser.query.get(admin_id)
+        if not admin or admin.role != 'super_admin':
+            return jsonify({"error": "Unauthorized - Super admin access required"}), 403
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    
+    change_request = HallChangeRequest.query.get_or_404(request_id)
+    
+    if change_request.status != 'pending':
+        return jsonify({"error": "Request already processed"}), 400
+    
+    # Process based on action type
+    if change_request.action_type == 'add':
+        # Create new hall
+        new_data = json.loads(change_request.new_data)
+        hall = FunctionHall(
+            name=new_data.get('name'),
+            owner_name=new_data.get('owner_name'),
+            location=new_data.get('location'),
+            capacity=new_data.get('capacity'),
+            price_per_day=new_data.get('price_per_day'),
+            contact_number=new_data.get('contact_number'),
+            description=new_data.get('description'),
+            vendor_id=change_request.vendor_id,
+            is_approved=True,
+            approval_status='approved'
+        )
+        db.session.add(hall)
+        db.session.flush()  # Get hall.id before creating photos
+        
+        # Create photos if provided
+        photos = new_data.get('photos', [])
+        for photo_path in photos:
+            if photo_path and photo_path.strip():  # Only add non-empty paths/URLs
+                # Convert relative path to full URL
+                if photo_path.startswith('/uploads/'):
+                    photo_url = f"http://localhost:5000{photo_path}"
+                else:
+                    photo_url = photo_path  # Keep external URLs as-is
+                    
+                hall_photo = HallPhoto(
+                    hall_id=hall.id,
+                    url=photo_url
+                )
+                db.session.add(hall_photo)
+        
+        change_request.hall_id = hall.id
+        
+    elif change_request.action_type == 'edit':
+        # Update existing hall
+        hall = FunctionHall.query.get(change_request.hall_id)
+        if hall:
+            new_data = json.loads(change_request.new_data)
+            hall.name = new_data.get('name')
+            hall.owner_name = new_data.get('owner_name')
+            hall.location = new_data.get('location')
+            hall.capacity = new_data.get('capacity')
+            hall.price_per_day = new_data.get('price_per_day')
+            hall.contact_number = new_data.get('contact_number')
+            hall.description = new_data.get('description')
+    
+    elif change_request.action_type == 'delete':
+        # Delete hall
+        hall = FunctionHall.query.get(change_request.hall_id)
+        if hall:
+            db.session.delete(hall)
+    
+    # Update request status
+    change_request.status = 'approved'
+    change_request.reviewed_at = datetime.utcnow()
+    change_request.reviewed_by = admin_id
+    
+    db.session.commit()
+    
+    return jsonify({"message": f"Hall {change_request.action_type} request approved successfully!"}), 200
+
+
+@main.route('/api/admin/hall-requests/<int:request_id>/reject', methods=['POST'])
+def reject_hall_request(request_id):
+    """Admin rejects a hall change request"""
+    # Get JWT token from Authorization header
+    auth_header = request.headers.get('Authorization')
+    
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"error": "Authorization token required"}), 401
+    
+    token = auth_header.split(' ')[1]
+    
+    try:
+        # Decode JWT token
+        import jwt
+        import os
+        SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        admin_id = decoded.get('admin_id')
+        
+        # Verify admin is super_admin
+        admin = AdminUser.query.get(admin_id)
+        if not admin or admin.role != 'super_admin':
+            return jsonify({"error": "Unauthorized - Super admin access required"}), 403
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    
+    data = request.get_json() or {}
+    reason = data.get('reason', 'No reason provided')
+    
+    change_request = HallChangeRequest.query.get_or_404(request_id)
+    
+    if change_request.status != 'pending':
+        return jsonify({"error": "Request already processed"}), 400
+    
+    # Update request status
+    change_request.status = 'rejected'
+    change_request.reviewed_at = datetime.utcnow()
+    change_request.reviewed_by = admin_id
+    change_request.rejection_reason = reason
+    
+    db.session.commit()
+    
+    return jsonify({"message": "Hall request rejected"}), 200
+
+
+@main.route('/api/vendor/<int:vendor_id>/requests', methods=['GET'])
+def get_vendor_requests(vendor_id):
+    """Get all change requests submitted by a vendor"""
+    requests = HallChangeRequest.query.filter_by(vendor_id=vendor_id).order_by(HallChangeRequest.requested_at.desc()).all()
+    
+    result = []
+    for req in requests:
+        hall_name = None
+        if req.hall_id:
+            hall = FunctionHall.query.get(req.hall_id)
+            hall_name = hall.name if hall else None
+        
+        result.append({
+            'id': req.id,
+            'hall_id': req.hall_id,
+            'hall_name': hall_name,
+            'action_type': req.action_type,
+            'status': req.status,
+            'new_data': json.loads(req.new_data) if req.new_data else None,
+            'requested_at': req.requested_at.isoformat(),
+            'reviewed_at': req.reviewed_at.isoformat() if req.reviewed_at else None,
+            'rejection_reason': req.rejection_reason
+        })
+    
+    return jsonify(result)
+
+
+# -------------------------
+# CUSTOMER APPROVAL MANAGEMENT
+# -------------------------
+
+@main.route('/api/admin/customers/pending', methods=['GET'])
+def get_pending_customers():
+    """Get all customers pending approval"""
+    status = request.args.get('status', 'pending')
+    customers = Customer.query.filter_by(approval_status=status).order_by(Customer.created_at.desc()).all()
+    
+    result = []
+    for customer in customers:
+        result.append({
+            'id': customer.id,
+            'name': customer.name,
+            'email': customer.email,
+            'phone': customer.phone,
+            'address': customer.address,
+            'approval_status': customer.approval_status,
+            'created_at': customer.created_at.isoformat() if customer.created_at else None
+        })
+    
+    return jsonify(result)
+
+
+@main.route('/api/admin/customers/<int:customer_id>/approve', methods=['POST'])
+def approve_customer(customer_id):
+    """Admin approves a customer"""
+    # Get JWT token from Authorization header
+    auth_header = request.headers.get('Authorization')
+    
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"error": "Authorization token required"}), 401
+    
+    token = auth_header.split(' ')[1]
+    
+    try:
+        # Decode JWT token
+        import jwt
+        import os
+        SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        admin_id = decoded.get('admin_id')
+        
+        # Verify admin is super_admin
+        admin = AdminUser.query.get(admin_id)
+        if not admin or admin.role != 'super_admin':
+            return jsonify({"error": "Unauthorized - Super admin access required"}), 403
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    
+    customer = Customer.query.get_or_404(customer_id)
+    
+    if customer.approval_status != 'pending':
+        return jsonify({"error": "Customer already processed"}), 400
+    
+    customer.is_approved = True
+    customer.approval_status = 'approved'
+    
+    db.session.commit()
+    
+    return jsonify({"message": "Customer approved successfully!"}), 200
+
+
+@main.route('/api/admin/customers/<int:customer_id>/reject', methods=['POST'])
+def reject_customer(customer_id):
+    """Admin rejects a customer"""
+    # Get JWT token from Authorization header
+    auth_header = request.headers.get('Authorization')
+    
+    if not auth_header or not auth_header.startswith('Bearer '):
+        return jsonify({"error": "Authorization token required"}), 401
+    
+    token = auth_header.split(' ')[1]
+    
+    try:
+        # Decode JWT token
+        import jwt
+        import os
+        SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        admin_id = decoded.get('admin_id')
+        
+        # Verify admin is super_admin
+        admin = AdminUser.query.get(admin_id)
+        if not admin or admin.role != 'super_admin':
+            return jsonify({"error": "Unauthorized - Super admin access required"}), 403
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    
+    data = request.get_json() or {}
+    reason = data.get('reason', 'No reason provided')
+    
+    customer = Customer.query.get_or_404(customer_id)
+    
+    if customer.approval_status != 'pending':
+        return jsonify({"error": "Customer already processed"}), 400
+    
+    customer.approval_status = 'rejected'
+    
+    db.session.commit()
+    
+    return jsonify({"message": "Customer rejected", "reason": reason}), 200

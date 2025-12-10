@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../../lib/config";
-import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaPlus } from "react-icons/fa";
+import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaPlus, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarCheck, FaEnvelope, FaCalendarAlt, FaUser, FaSignOutAlt } from "react-icons/fa";
 import Link from "next/link";
 import HallCards from "../../../components/HallCards";
 
@@ -10,6 +10,7 @@ export default function VendorDashboardPage() {
   const router = useRouter();
   const [vendorData, setVendorData] = useState<any>(null);
   const [halls, setHalls] = useState<any[]>([]);
+  const [hallRequests, setHallRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [form, setForm] = useState({
@@ -21,6 +22,8 @@ export default function VendorDashboardPage() {
     price_per_day: "",
     description: ""
   });
+  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
+  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -59,8 +62,9 @@ export default function VendorDashboardPage() {
         return;
       }
 
-      // Fetch vendor's halls
+      // Fetch vendor's halls and requests
       fetchVendorHalls(data.admin.id);
+      fetchVendorRequests(data.admin.id);
     } catch (err) {
       console.error("Auth check failed:", err);
       router.push("/vendor/login");
@@ -81,14 +85,60 @@ export default function VendorDashboardPage() {
     }
   };
 
+  const fetchVendorRequests = async (vendorId: number) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/admin/hall-requests?status=pending`);
+      if (res.ok) {
+        const data = await res.json();
+        // Filter to show only this vendor's requests
+        const vendorRequests = data.filter((req: any) => req.vendor_id === vendorId);
+        setHallRequests(vendorRequests);
+      }
+    } catch (err) {
+      console.error("Failed to fetch hall requests:", err);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("vendorToken");
     localStorage.removeItem("vendorData");
-    router.push("/vendor/login");
+    window.location.href = "/vendor/login";
   };
 
   const handleInput = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    // Limit to 10 photos total
+    const remainingSlots = 10 - photoFiles.length;
+    const filesToAdd = files.slice(0, remainingSlots);
+
+    // Validate file types
+    const validFiles = filesToAdd.filter(file => 
+      file.type.startsWith('image/')
+    );
+
+    if (validFiles.length !== filesToAdd.length) {
+      alert('Only image files are allowed');
+    }
+
+    // Create preview URLs
+    const newPreviews = validFiles.map(file => URL.createObjectURL(file));
+    
+    setPhotoFiles([...photoFiles, ...validFiles]);
+    setPhotoPreviews([...photoPreviews, ...newPreviews]);
+  };
+
+  const removePhoto = (index: number) => {
+    // Revoke the preview URL to free memory
+    URL.revokeObjectURL(photoPreviews[index]);
+    
+    setPhotoFiles(photoFiles.filter((_, i) => i !== index));
+    setPhotoPreviews(photoPreviews.filter((_, i) => i !== index));
   };
 
   const handleAddHall = async (e: React.FormEvent) => {
@@ -104,22 +154,34 @@ export default function VendorDashboardPage() {
     const token = localStorage.getItem("vendorToken");
 
     try {
+      // Use FormData for file upload
+      const formData = new FormData();
+      formData.append('name', form.name);
+      formData.append('owner_name', form.owner_name || '');
+      formData.append('location', form.location);
+      formData.append('capacity', form.capacity);
+      formData.append('price_per_day', form.price_per_day);
+      formData.append('contact_number', form.contact_number || '');
+      formData.append('description', form.description || '');
+      formData.append('vendor_id', vendorData.id.toString());
+      
+      // Append photo files
+      photoFiles.forEach((file, index) => {
+        formData.append('photos', file);
+      });
+
       const res = await fetch(`${BACKEND_URL}/api/halls`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-          ...form,
-          capacity: Number(form.capacity),
-          price_per_day: Number(form.price_per_day),
-          vendor_id: vendorData.id
-        })
+        body: formData
       });
 
+      const data = await res.json();
+      
       if (res.ok) {
-        setSuccess("Hall added successfully!");
+        setSuccess("Hall submission received! Your hall will be visible once approved by admin.");
         setForm({
           name: "",
           owner_name: "",
@@ -129,10 +191,18 @@ export default function VendorDashboardPage() {
           price_per_day: "",
           description: ""
         });
+        // Clear photos
+        photoPreviews.forEach(url => URL.revokeObjectURL(url));
+        setPhotoFiles([]);
+        setPhotoPreviews([]);
         setShowAddModal(false);
         fetchVendorHalls(vendorData.id);
+        fetchVendorRequests(vendorData.id);
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => setSuccess(""), 5000);
       } else {
-        setError("Failed to add hall");
+        setError(data.error || "Failed to add hall");
       }
     } catch (err) {
       setError("Network error");
@@ -168,32 +238,83 @@ export default function VendorDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
+    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Sidebar */}
+      <aside className="w-64 bg-slate-900 min-h-screen shadow-lg flex flex-col p-6 border-r border-slate-700">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white">Vendor Panel</h2>
+          <p className="text-sm text-slate-400 mt-1">Manage your business</p>
+        </div>
+        
+        <nav className="flex-1">
+          <ul className="space-y-2">
+            <li>
+              <Link href="/vendor/dashboard" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold transition">
+                <FaTachometerAlt />
+                <span>Dashboard</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/vendor/halls" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
+                <FaBuilding />
+                <span>My Halls</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/vendor/bookings" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
+                <FaCalendarCheck />
+                <span>Bookings</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/enquiries" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
+                <FaEnvelope />
+                <span>Enquiries</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/vendor/profile" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
+                <FaUser />
+                <span>Profile</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+
+        <div className="mt-auto pt-6 border-t border-slate-700">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition"
+          >
+            <FaSignOutAlt />
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1">
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="px-8 py-4">
             <div>
               <h1 className="text-2xl font-bold text-blue-600">Vendor Dashboard</h1>
               <p className="text-sm text-gray-600">Welcome, {vendorData?.name} - {vendorData?.business_name}</p>
             </div>
-            <button
-              onClick={handleLogout}
-              className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-semibold transition"
-            >
-              Logout
-            </button>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Main Content */}
+        <main className="px-8 py-8">
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow p-6">
             <div className="text-3xl font-bold text-blue-600">{halls.length}</div>
-            <div className="text-gray-600 mt-1">Total Halls</div>
+            <div className="text-gray-600 mt-1">Approved Halls</div>
+          </div>
+          <div className="bg-white rounded-xl shadow p-6">
+            <div className="text-3xl font-bold text-yellow-600">{hallRequests.length}</div>
+            <div className="text-gray-600 mt-1">Pending Approval</div>
           </div>
           <div className="bg-white rounded-xl shadow p-6">
             <div className="text-3xl font-bold text-green-600">0</div>
@@ -205,10 +326,46 @@ export default function VendorDashboardPage() {
           </div>
         </div>
 
+        {/* Pending Halls Section */}
+        {hallRequests.length > 0 && (
+          <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <span className="text-yellow-600">⏳</span> Pending Approval ({hallRequests.length})
+            </h2>
+            <div className="space-y-3">
+              {hallRequests.map((request: any) => (
+                <div key={request.id} className="bg-white rounded-lg p-4 shadow-sm">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-semibold text-gray-800">{request.new_data?.name}</h3>
+                      <p className="text-sm text-gray-600 mt-1">
+                        📍 {request.new_data?.location} | 
+                        👥 Capacity: {request.new_data?.capacity} | 
+                        💰 ₹{request.new_data?.price_per_day}/day
+                      </p>
+                      {request.new_data?.photos && Array.isArray(request.new_data.photos) && request.new_data.photos.length > 0 && (
+                        <p className="text-xs text-blue-600 mt-1">
+                          📷 {request.new_data.photos.filter((p: string) => p && p.trim()).length} photo(s) attached
+                        </p>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">
+                        Submitted: {new Date(request.requested_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <span className="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
+                      Pending
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Halls Section */}
         <div className="bg-white rounded-xl shadow p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-800">My Halls</h2>
+            <h2 className="text-xl font-bold text-gray-800">Approved Halls</h2>
             <button
               onClick={() => setShowAddModal(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition"
@@ -318,10 +475,72 @@ export default function VendorDashboardPage() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
                   />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Hall Photos</label>
+                  
+                  {/* File Upload Button */}
+                  <div className="mb-3">
+                    <input
+                      type="file"
+                      id="photoUpload"
+                      accept="image/*"
+                      multiple
+                      onChange={handlePhotoSelect}
+                      className="hidden"
+                      disabled={photoFiles.length >= 10}
+                    />
+                    <label
+                      htmlFor="photoUpload"
+                      className={`inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer transition ${
+                        photoFiles.length >= 10
+                          ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'border-blue-300 bg-blue-50 text-blue-600 hover:bg-blue-100'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {photoFiles.length >= 10 ? 'Maximum 10 photos' : 'Choose Photos from Computer'}
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Select up to 10 images (JPG, PNG, etc.) - {photoFiles.length}/10 selected
+                    </p>
+                  </div>
+
+                  {/* Photo Previews */}
+                  {photoPreviews.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {photoPreviews.map((preview, index) => (
+                        <div key={index} className="relative group">
+                          <img
+                            src={preview}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-24 object-cover rounded-lg border border-gray-300"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(index)}
+                            className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                          >
+                            ✕
+                          </button>
+                          <div className="absolute bottom-1 left-1 bg-black/50 text-white text-xs px-2 py-0.5 rounded">
+                            {(photoFiles[index].size / 1024).toFixed(0)} KB
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <div className="flex gap-3 mt-6">
                   <button
                     type="button"
-                    onClick={() => setShowAddModal(false)}
+                    onClick={() => {
+                      photoPreviews.forEach(url => URL.revokeObjectURL(url));
+                      setPhotoFiles([]);
+                      setPhotoPreviews([]);
+                      setShowAddModal(false);
+                    }}
                     className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-semibold transition"
                   >
                     Cancel
@@ -338,6 +557,7 @@ export default function VendorDashboardPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

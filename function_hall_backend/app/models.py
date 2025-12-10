@@ -45,12 +45,15 @@ class FunctionHall(db.Model):
     price_per_day = db.Column(db.Float)
     description = db.Column(db.Text)
     vendor_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)  # Link to vendor
+    is_approved = db.Column(db.Boolean, default=False)  # Super admin approval required
+    approval_status = db.Column(db.String(20), default='pending')  # pending, approved, rejected
 
     # Relationships
     packages = db.relationship('Package', backref='hall', lazy=True)
     bookings = db.relationship('Booking', backref='hall', lazy=True)
     calendar_entries = db.relationship('Calendar', backref='hall', lazy=True)
     photos = db.relationship('HallPhoto', backref='hall', lazy=True)
+    pending_changes = db.relationship('HallChangeRequest', backref='hall', lazy=True)
 
     def __repr__(self):
         return f'<FunctionHall {self.name}>'
@@ -96,6 +99,9 @@ class Customer(db.Model):
     phone = db.Column(db.String(20))
     address = db.Column(db.String(200))
     password_hash = db.Column(db.String(256))
+    is_approved = db.Column(db.Boolean, default=False)  # Super admin approval required
+    approval_status = db.Column(db.String(20), default='pending')  # pending, approved, rejected
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     bookings = db.relationship('Booking', backref='customer', lazy=True)
     inquiries = db.relationship('Inquiry', backref='customer', lazy=True)
@@ -197,3 +203,29 @@ class Calendar(db.Model):
 
     def __repr__(self):
         return f'<Calendar {self.date} - {self.is_booked}>'
+
+
+# -------------------------
+# Hall Change Request Model
+# -------------------------
+class HallChangeRequest(db.Model):
+    __tablename__ = 'hall_change_requests'
+
+    id = db.Column(db.Integer, primary_key=True)
+    hall_id = db.Column(db.Integer, db.ForeignKey('function_halls.id'), nullable=True)  # Null for new halls
+    vendor_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=False)
+    action_type = db.Column(db.String(20), nullable=False)  # 'add', 'edit', 'delete'
+    status = db.Column(db.String(20), default='pending')  # 'pending', 'approved', 'rejected'
+    
+    # Store the changes as JSON
+    old_data = db.Column(db.Text)  # JSON string of old hall data (for edit/delete)
+    new_data = db.Column(db.Text)  # JSON string of new hall data (for add/edit)
+    
+    # Metadata
+    requested_at = db.Column(db.DateTime, default=datetime.utcnow)
+    reviewed_at = db.Column(db.DateTime)
+    reviewed_by = db.Column(db.Integer, db.ForeignKey('admin_users.id'))  # Super admin who approved/rejected
+    rejection_reason = db.Column(db.Text)  # Reason if rejected
+
+    def __repr__(self):
+        return f'<HallChangeRequest {self.action_type} - {self.status}>'

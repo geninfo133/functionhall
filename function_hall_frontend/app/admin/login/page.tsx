@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { BACKEND_URL } from "../../../lib/config";
@@ -12,6 +12,14 @@ export default function AdminLoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Clear any existing vendor/customer sessions when admin login page loads
+  useEffect(() => {
+    localStorage.removeItem('vendorToken');
+    localStorage.removeItem('vendorData');
+    localStorage.removeItem('customerToken');
+    localStorage.removeItem('customerInfo');
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,10 +41,27 @@ export default function AdminLoginPage() {
 
       if (response.ok && data.token) {
         console.log("✅ Admin login successful! Token received");
-        // Store token in localStorage
+        console.log("📋 Admin role:", data.admin.role);
+        
+        // Clear any vendor session data first
+        localStorage.removeItem('vendorToken');
+        localStorage.removeItem('vendorData');
+        
+        // Store admin token and admin data in localStorage
         localStorage.setItem('adminToken', data.token);
-        // Redirect to dashboard
-        window.location.href = "/admin/dashboard";
+        localStorage.setItem('adminUser', JSON.stringify(data.admin));
+        
+        // Redirect based on role
+        if (data.admin.role === 'super_admin') {
+          window.location.href = "/admin/dashboard";
+        } else if (data.admin.role === 'vendor') {
+          // If someone logs in as vendor from admin login page, redirect to vendor dashboard
+          localStorage.setItem('vendorToken', data.token);
+          localStorage.setItem('vendorData', JSON.stringify(data.admin));
+          window.location.href = "/vendor/dashboard";
+        } else {
+          window.location.href = "/admin/dashboard";
+        }
       } else {
         console.error("❌ Login failed:", data.error);
         setError(data.error || "Login failed. Please try again.");

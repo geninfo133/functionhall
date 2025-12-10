@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown } from "react-icons/fa";
+import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield } from "react-icons/fa";
 
 export default function MainNavbar() {
   const router = useRouter();
@@ -22,6 +22,19 @@ export default function MainNavbar() {
   const loginDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Check if vendor is logged in first
+    const vendorToken = localStorage.getItem('vendorToken');
+    const vendorData = localStorage.getItem('vendorData');
+    
+    if (vendorToken && vendorData) {
+      setIsVendorLoggedIn(true);
+      const info = JSON.parse(vendorData);
+      setVendorName(info.name);
+      setIsAdminLoggedIn(false);
+      setIsCustomerLoggedIn(false);
+      return;
+    }
+
     // Check if customer is logged in
     const token = localStorage.getItem('customerToken');
     const customerInfo = localStorage.getItem('customerInfo');
@@ -30,16 +43,9 @@ export default function MainNavbar() {
       setIsCustomerLoggedIn(true);
       const info = JSON.parse(customerInfo);
       setCustomerName(info.name);
-    }
-
-    // Check if vendor is logged in
-    const vendorToken = localStorage.getItem('vendorToken');
-    const vendorInfo = localStorage.getItem('vendorInfo');
-    
-    if (vendorToken && vendorInfo) {
-      setIsVendorLoggedIn(true);
-      const info = JSON.parse(vendorInfo);
-      setVendorName(info.name);
+      setIsAdminLoggedIn(false);
+      setIsVendorLoggedIn(false);
+      return;
     }
 
     // Check if admin is logged in (only on admin pages)
@@ -48,6 +54,8 @@ export default function MainNavbar() {
       const adminToken = localStorage.getItem('adminToken');
       if (adminToken) {
         setIsAdminLoggedIn(true);
+        setIsVendorLoggedIn(false);
+        setIsCustomerLoggedIn(false);
       }
     }
   }, [pathname]);
@@ -75,10 +83,10 @@ export default function MainNavbar() {
     } else if (isVendorLoggedIn) {
       // Logout vendor
       localStorage.removeItem('vendorToken');
-      localStorage.removeItem('vendorInfo');
+      localStorage.removeItem('vendorData');
       setIsVendorLoggedIn(false);
       setVendorName("");
-      router.push("/vendor/login");
+      window.location.href = "/vendor/login";
     } else {
       // Logout customer
       localStorage.removeItem('customerToken');
@@ -315,6 +323,15 @@ export default function MainNavbar() {
                       <FaBuilding size={18} />
                       <span className="font-medium">Browse All Halls</span>
                     </Link>
+
+                    <Link
+                      href="/vendor/profile"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-lg transition mb-2"
+                    >
+                      <FaUser size={18} />
+                      <span className="font-medium">Profile</span>
+                    </Link>
                   </>
                 ) : isAdminLoggedIn ? (
                   <>
@@ -355,6 +372,24 @@ export default function MainNavbar() {
                     </Link>
 
                     <Link
+                      href="/admin/customers-list"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                    >
+                      <FaUser size={18} />
+                      <span className="font-medium">Customer List</span>
+                    </Link>
+
+                    <Link
+                      href="/admin/vendors"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                    >
+                      <FaUserShield size={18} />
+                      <span className="font-medium">Vendors</span>
+                    </Link>
+
+                    <Link
                       href="/admin/enquiries"
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
@@ -372,6 +407,15 @@ export default function MainNavbar() {
                     >
                       <FaUser size={18} />
                       <span className="font-medium">Profile</span>
+                    </Link>
+
+                    <Link
+                      href="/customer/enquiry"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                    >
+                      <FaPhone size={18} />
+                      <span className="font-medium">Send Enquiry</span>
                     </Link>
 
                     <Link

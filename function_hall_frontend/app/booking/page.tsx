@@ -276,26 +276,46 @@ export default function BookingPage() {
 
           {packages.length > 0 && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Package (Optional)
+              <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
+                <FaBox className="text-blue-600" />
+                <span>Select Package (Optional)</span>
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {packages.map((pkg) => (
                   <div
                     key={pkg.id}
                     onClick={() => setSelectedPackage(pkg)}
-                    className={`border-2 rounded-lg p-4 cursor-pointer transition ${
+                    className={`border-2 rounded-xl p-4 cursor-pointer transition hover:shadow-lg ${
                       selectedPackage?.id === pkg.id
-                        ? "border-blue-500 bg-blue-50"
+                        ? "border-blue-500 bg-blue-50 shadow-md"
                         : "border-gray-200 hover:border-blue-300"
                     }`}
                   >
-                    <h3 className="font-semibold text-lg">{pkg.name}</h3>
-                    <p className="text-gray-600 text-sm mt-1">{pkg.description}</p>
-                    <p className="text-blue-600 font-bold mt-2">₹{pkg.price}</p>
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-bold text-lg text-gray-800">{pkg.package_name}</h3>
+                      {selectedPackage?.id === pkg.id && (
+                        <FaCheckCircle className="text-blue-500 text-xl" />
+                      )}
+                    </div>
+                    <p className="text-gray-600 text-sm mt-2 mb-3">{pkg.details}</p>
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                      <span className="text-gray-500 text-xs font-medium">Package Price</span>
+                      <span className="text-blue-600 font-bold text-lg">₹{pkg.price.toLocaleString()}</span>
+                    </div>
                   </div>
                 ))}
               </div>
+              {selectedPackage && (
+                <div className="mt-4 p-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600">Selected Package</p>
+                      <p className="font-bold text-lg text-green-800">{selectedPackage.package_name}</p>
+                    </div>
+                    <p className="text-green-600 font-bold text-xl">₹{selectedPackage.price.toLocaleString()}</p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 

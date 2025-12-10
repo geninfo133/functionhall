@@ -65,22 +65,38 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
               className="group bg-white/90 backdrop-blur-sm rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-white/50 flex flex-col h-full"
             >
               {/* Image Section */}
-              <div className="relative h-40 overflow-hidden bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
+              <div className="relative h-40 overflow-hidden bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900">
                 {hall.photos && hall.photos.length > 0 ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={hall.photos[0]}
                     alt={hall.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onError={(e) => {
+                      console.error(`Failed to load image for ${hall.name}:`, hall.photos[0]);
+                      // Try next photo if available
+                      if (hall.photos.length > 1 && !e.currentTarget.dataset.fallbackTried) {
+                        e.currentTarget.dataset.fallbackTried = "true";
+                        e.currentTarget.src = hall.photos[1];
+                      } else {
+                        // Hide image and show fallback
+                        e.currentTarget.style.display = 'none';
+                        const parent = e.currentTarget.parentElement;
+                        if (parent) {
+                          const fallback = parent.querySelector('.fallback-content');
+                          if (fallback) (fallback as HTMLElement).style.display = 'flex';
+                        }
+                      }
+                    }}
                   />
-                ) : (
-                  <div className="flex items-center justify-center h-full">
-                    <div className="text-center">
-                      <div className="text-white text-2xl font-bold">{hall.name}</div>
-                      <div className="text-blue-100 text-sm mt-2">No image available</div>
-                    </div>
+                ) : null}
+                {/* Fallback content */}
+                <div className="fallback-content flex items-center justify-center h-full" style={{ display: hall.photos && hall.photos.length > 0 ? 'none' : 'flex' }}>
+                  <div className="text-center">
+                    <div className="text-white text-2xl font-bold">{hall.name}</div>
+                    <div className="text-gray-300 text-sm mt-2">No image available</div>
                   </div>
-                )}
+                </div>
 
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

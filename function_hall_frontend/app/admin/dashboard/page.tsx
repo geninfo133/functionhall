@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FaUsers, FaBuilding, FaClipboardList, FaRupeeSign } from "react-icons/fa";
+import { FaUsers, FaBuilding, FaClipboardList, FaRupeeSign, FaCheckCircle, FaTimesCircle, FaClock } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { BACKEND_URL } from "../../../lib/config";
 
@@ -10,6 +10,7 @@ export default function AdminDashboard() {
   const router = useRouter();
   const [admin, setAdmin] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [hallRequests, setHallRequests] = useState<any[]>([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -31,22 +32,46 @@ export default function AdminDashboard() {
         if (!response.ok) {
           console.log('❌ Auth check failed, clearing token');
           localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
           router.push('/admin/login');
           return;
         }
 
         const data = await response.json();
         if (data.authenticated && data.admin) {
-          console.log('✅ Admin authenticated:', data.admin.email);
+          console.log('✅ Admin authenticated:', data.admin.email, 'Role:', data.admin.role);
+          
+          // Check if user is actually a vendor
+          if (data.admin.role === 'vendor') {
+            console.log('⚠️ Vendor trying to access admin dashboard, redirecting...');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            localStorage.setItem('vendorToken', token);
+            localStorage.setItem('vendorData', JSON.stringify(data.admin));
+            window.location.href = '/vendor/dashboard';
+            return;
+          }
+          
+          // Check if user is super_admin
+          if (data.admin.role !== 'super_admin') {
+            console.log('❌ Not a super admin');
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            router.push('/admin/login');
+            return;
+          }
+          
           setAdmin(data.admin);
         } else {
           console.log('❌ Not authenticated');
           localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
           router.push('/admin/login');
         }
       } catch (error) {
         console.error('💥 Auth check error:', error);
         localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
         router.push('/admin/login');
       } finally {
         setLoading(false);
@@ -76,10 +101,99 @@ export default function AdminDashboard() {
       }
     };
 
+    const fetchHallRequests = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/admin/hall-requests?status=pending`);
+        if (response.ok) {
+          const data = await response.json();
+          setHallRequests(data);
+        }
+      } catch (error) {
+        console.error('Error fetching hall requests:', error);
+      }
+    };
+
     if (admin) {
       fetchStats();
+      fetchHallRequests();
     }
   }, [admin]);
+
+  const approveRequest = async (requestId: number, actionType: string) => {
+    if (!confirm(`Approve this ${actionType} request?`)) return;
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        alert("Not authenticated. Please login again.");
+        window.location.href = "/admin/login";
+        return;
+      }
+
+      const res = await fetch(`${BACKEND_URL}/api/admin/hall-requests/${requestId}/approve`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        alert("Request approved successfully!");
+        // Refresh hall requests
+        const response = await fetch(`${BACKEND_URL}/api/admin/hall-requests?status=pending`);
+        if (response.ok) {
+          const data = await response.json();
+          setHallRequests(data);
+        }
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to approve request");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error approving request");
+    }
+  };
+
+  const rejectRequest = async (requestId: number, actionType: string) => {
+    const reason = prompt(`Reject this ${actionType} request?\nEnter rejection reason (optional):`);
+    if (reason === null) return;
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        alert("Not authenticated. Please login again.");
+        window.location.href = "/admin/login";
+        return;
+      }
+
+      const res = await fetch(`${BACKEND_URL}/api/admin/hall-requests/${requestId}/reject`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reason: reason || "No reason provided" }),
+      });
+
+      if (res.ok) {
+        alert("Request rejected successfully!");
+        // Refresh hall requests
+        const response = await fetch(`${BACKEND_URL}/api/admin/hall-requests?status=pending`);
+        if (response.ok) {
+          const data = await response.json();
+          setHallRequests(data);
+        }
+      } else {
+        const data = await res.json();
+        alert(data.error || "Failed to reject request");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error rejecting request");
+    }
+  };
 
   if (loading) {
     return (
@@ -154,6 +268,93 @@ export default function AdminDashboard() {
               <p className="text-sm text-gray-600 mt-1">View and manage customer details.</p>
             </Link>
           </nav>
+
+          {/* Pending Hall Requests Section */}
+          {hallRequests.length > 0 && (
+            <section className="backdrop-blur-lg bg-white/60 rounded-2xl shadow-lg p-6 border border-gray-200 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-yellow-600 flex items-center gap-2">
+                  <FaClock /> Pending Hall Approvals ({hallRequests.length})
+                </h2>
+                <Link 
+                  href="/admin/hall-requests" 
+                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
+                >
+                  View All →
+                </Link>
+              </div>
+              
+              <div className="space-y-4">
+                {hallRequests.slice(0, 3).map((request: any) => (
+                  <div key={request.id} className="bg-white rounded-lg p-4 shadow border border-gray-200">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                            request.action_type === "add"
+                              ? "bg-green-100 text-green-800"
+                              : request.action_type === "edit"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-red-100 text-red-800"
+                          }`}>
+                            {request.action_type.toUpperCase()}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-gray-800">
+                          {request.action_type === "add" ? request.new_data?.name : request.hall_name}
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          By: {request.vendor_name} ({request.vendor_business})
+                        </p>
+                      </div>
+                      <div className="text-right text-xs text-gray-500">
+                        {new Date(request.requested_at).toLocaleDateString()}
+                      </div>
+                    </div>
+
+                    {/* Show hall details for ADD requests */}
+                    {request.action_type === "add" && request.new_data && (
+                      <div className="bg-gray-50 rounded p-3 mb-3 text-sm">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div><span className="font-medium">Location:</span> {request.new_data.location}</div>
+                          <div><span className="font-medium">Capacity:</span> {request.new_data.capacity}</div>
+                          <div><span className="font-medium">Price:</span> ₹{request.new_data.price_per_day}/day</div>
+                          <div><span className="font-medium">Contact:</span> {request.new_data.contact_number}</div>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => approveRequest(request.id, request.action_type)}
+                        className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-1"
+                      >
+                        <FaCheckCircle /> Approve
+                      </button>
+                      <button
+                        onClick={() => rejectRequest(request.id, request.action_type)}
+                        className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-1"
+                      >
+                        <FaTimesCircle /> Reject
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {hallRequests.length > 3 && (
+                <div className="mt-4 text-center">
+                  <Link 
+                    href="/admin/hall-requests" 
+                    className="text-blue-600 hover:text-blue-700 font-semibold"
+                  >
+                    View {hallRequests.length - 3} more requests →
+                  </Link>
+                </div>
+              )}
+            </section>
+          )}
+
           <section className="backdrop-blur-lg bg-white/60 rounded-2xl shadow-lg p-6 border border-gray-200">
             <h2 className="text-2xl font-bold mb-4 text-blue-600">Get Started</h2>
             <p className="text-gray-700">Use the quick links above to manage halls, packages, bookings, and customers. More features coming soon!</p>

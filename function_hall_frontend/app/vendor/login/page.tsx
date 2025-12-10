@@ -43,10 +43,10 @@ export default function VendorLoginPage() {
       if (res.ok) {
         // Store token and user data
         localStorage.setItem("vendorToken", data.token);
-        localStorage.setItem("vendorInfo", JSON.stringify(data.admin));
+        localStorage.setItem("vendorData", JSON.stringify(data.admin));
         
-        // Redirect to vendor dashboard
-        router.push("/vendor/dashboard");
+        // Redirect to vendor dashboard with full page reload
+        window.location.href = "/vendor/dashboard";
       } else {
         setError(data.error || "Login failed");
       }

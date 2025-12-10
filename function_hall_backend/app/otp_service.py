@@ -6,8 +6,14 @@ from sms_utils import send_sms
 # In-memory storage for OTPs (in production, use Redis or database)
 otp_storage = {}
 
+# Development mode - set to True to use fixed OTP (123456) for testing
+DEV_MODE = False  # Set to False to send real SMS
+DEV_OTP = '123456'
+
 def generate_otp(length=6):
     """Generate a random numeric OTP"""
+    if DEV_MODE:
+        return DEV_OTP
     return ''.join(random.choices(string.digits, k=length))
 
 def send_otp(phone_number, country_code='+91'):
@@ -26,6 +32,20 @@ def send_otp(phone_number, country_code='+91'):
             'expiry': datetime.now() + timedelta(minutes=10),
             'attempts': 0
         }
+        
+        # In development mode, always return success and log OTP
+        if DEV_MODE:
+            print(f"\n{'='*60}")
+            print(f"🔐 DEVELOPMENT MODE - OTP GENERATED")
+            print(f"{'='*60}")
+            print(f"Phone: {country_code}{phone_number}")
+            print(f"OTP: {otp}")
+            print(f"⚠️  Use this OTP in your application")
+            print(f"{'='*60}\n")
+            return {
+                'success': True,
+                'message': f'OTP sent successfully (Dev mode: {otp})'
+            }
         
         # Format phone number with country code
         full_phone = f"{country_code}{phone_number}"

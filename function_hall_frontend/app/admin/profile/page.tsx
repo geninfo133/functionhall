@@ -65,93 +65,159 @@ export default function AdminProfilePage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
+    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Topbar />
-        <main className="p-8 max-w-4xl mx-auto w-full">
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
-            {/* Header */}
-            <div className="flex items-center gap-4 mb-8 pb-6 border-b border-gray-200">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-4 border-orange-500 shadow-lg">
-                <img 
-                  src="/hani1.jpg" 
-                  alt={admin.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800">{admin.name}</h1>
-                <p className="text-gray-600 flex items-center gap-2 mt-1">
-                  <Shield size={16} className="text-orange-500" />
-                  Administrator
-                </p>
+        <main className="p-8">
+          <div className="max-w-7xl mx-auto">
+            {/* Hero Header Card */}
+            <div className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 rounded-3xl shadow-2xl p-10 mb-8 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32 blur-2xl"></div>
+              <div className="relative flex flex-col md:flex-row items-center gap-8">
+                <div className="relative">
+                  <div className="w-32 h-32 rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-white">
+                    <img 
+                      src="/hani1.jpg" 
+                      alt={admin.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white shadow-lg"></div>
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-3">
+                    <Shield size={18} />
+                    <span className="font-semibold text-sm uppercase tracking-wider">
+                      {admin.role === 'super_admin' ? 'Super Administrator' : admin.role === 'vendor' ? 'Vendor Account' : 'Administrator'}
+                    </span>
+                  </div>
+                  <h1 className="text-4xl md:text-5xl font-extrabold mb-2">
+                    {admin.name}
+                  </h1>
+                  <p className="text-white/90 text-lg">
+                    Welcome to your admin dashboard
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Profile Information */}
-            <div className="space-y-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile Information</h2>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-500 text-sm font-medium mb-1">Total Halls</p>
+                    <p className="text-3xl font-bold text-orange-600">0</p>
+                  </div>
+                  <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center">
+                    <Calendar size={24} className="text-orange-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-500 text-sm font-medium mb-1">Bookings</p>
+                    <p className="text-3xl font-bold text-blue-600">0</p>
+                  </div>
+                  <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
+                    <Calendar size={24} className="text-blue-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-500 text-sm font-medium mb-1">Revenue</p>
+                    <p className="text-3xl font-bold text-green-600">₹0</p>
+                  </div>
+                  <div className="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center">
+                    <User size={24} className="text-green-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-500 text-sm font-medium mb-1">Customers</p>
+                    <p className="text-3xl font-bold text-purple-600">0</p>
+                  </div>
+                  <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center">
+                    <User size={24} className="text-purple-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Profile Information Card */}
+            <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <User size={20} className="text-white" />
+                </div>
+                Profile Information
+              </h2>
+
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Name */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <User size={18} className="text-orange-500" />
-                    <span className="font-semibold">Full Name</span>
+                <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                      <User size={24} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium mb-1">Full Name</p>
+                      <p className="text-xl font-bold text-gray-800">{admin.name}</p>
+                    </div>
                   </div>
-                  <p className="text-gray-800 text-lg">{admin.name}</p>
                 </div>
 
                 {/* Email */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <Mail size={18} className="text-orange-500" />
-                    <span className="font-semibold">Email Address</span>
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                      <Mail size={24} className="text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-600 font-medium mb-1">Email Address</p>
+                      <p className="text-xl font-bold text-gray-800 truncate">{admin.email}</p>
+                    </div>
                   </div>
-                  <p className="text-gray-800 text-lg">{admin.email}</p>
                 </div>
 
                 {/* Role */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <Shield size={18} className="text-orange-500" />
-                    <span className="font-semibold">Role</span>
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                      <Shield size={24} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium mb-1">Account Role</p>
+                      <p className="text-xl font-bold text-gray-800 capitalize">{admin.role.replace('_', ' ')}</p>
+                    </div>
                   </div>
-                  <p className="text-gray-800 text-lg capitalize">{admin.role}</p>
                 </div>
 
                 {/* Admin ID */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-600 mb-2">
-                    <Calendar size={18} className="text-orange-500" />
-                    <span className="font-semibold">Admin ID</span>
+                <div className="bg-gradient-to-br from-green-50 to-green-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                      <Calendar size={24} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium mb-1">User ID</p>
+                      <p className="text-xl font-bold text-gray-800">#{admin.id}</p>
+                    </div>
                   </div>
-                  <p className="text-gray-800 text-lg">#{admin.id}</p>
                 </div>
               </div>
 
-              {/* Actions */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">Account Actions</h3>
-                <div className="flex gap-4">
-                  <button 
-                    onClick={() => {
-                      localStorage.removeItem('adminToken');
-                      router.push('/admin/login');
-                    }}
-                    className="bg-red-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-600 transition"
-                  >
-                    Logout
-                  </button>
-                  <button 
-                    onClick={() => router.push('/admin/dashboard')}
-                    className="bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition"
-                  >
-                    Back to Dashboard
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
         </main>

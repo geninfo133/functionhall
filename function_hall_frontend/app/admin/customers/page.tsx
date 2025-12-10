@@ -14,6 +14,8 @@ interface Customer {
   country_code?: string;
   aadhar_number?: string;
   is_phone_verified?: boolean;
+  is_approved?: boolean;
+  approval_status?: string;
 }
 
 export default function CustomersPage() {
@@ -46,6 +48,76 @@ export default function CustomersPage() {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const approveCustomer = async (customerId: number, customerName: string) => {
+    if (!confirm(`Approve customer "${customerName}"?`)) {
+      return;
+    }
+
+    try {
+      const adminToken = localStorage.getItem("adminToken");
+      
+      if (!adminToken) {
+        alert("Not authenticated. Please login again.");
+        window.location.href = "/admin/login";
+        return;
+      }
+      
+      const response = await fetch(`${BACKEND_URL}/api/admin/customers/${customerId}/approve`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${adminToken}`,
+        },
+      });
+
+      if (response.ok) {
+        alert("Customer approved successfully!");
+        fetchCustomers();
+      } else {
+        const data = await response.json();
+        alert(data.error || "Failed to approve customer");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error approving customer");
+    }
+  };
+
+  const rejectCustomer = async (customerId: number, customerName: string) => {
+    const reason = prompt(`Reject customer "${customerName}"?\nEnter rejection reason (optional):`);
+    if (reason === null) return; // User cancelled
+
+    try {
+      const adminToken = localStorage.getItem("adminToken");
+      
+      if (!adminToken) {
+        alert("Not authenticated. Please login again.");
+        window.location.href = "/admin/login";
+        return;
+      }
+      
+      const response = await fetch(`${BACKEND_URL}/api/admin/customers/${customerId}/reject`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify({ reason: reason || "No reason provided" }),
+      });
+
+      if (response.ok) {
+        alert("Customer rejected successfully!");
+        fetchCustomers();
+      } else {
+        const data = await response.json();
+        alert(data.error || "Failed to reject customer");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error rejecting customer");
     }
   };
 
@@ -82,16 +154,8 @@ export default function CustomersPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white p-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-600 flex items-center gap-3">
-            <FaUsers /> Manage Customers
-          </h1>
-          <button
-            onClick={() => router.push("/admin/dashboard")}
-            className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition flex items-center gap-2"
-          >
-            <FaArrowLeft /> Back to Dashboard
-          </button>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-blue-600">Customer List</h1>
         </div>
 
         {error && (
@@ -126,7 +190,7 @@ export default function CustomersPage() {
                       <div className="flex items-center gap-2"><FaMapMarkerAlt /> Address</div>
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
-                      <div className="flex items-center gap-2"><FaCheckCircle /> Verified</div>
+                      <div className="flex items-center gap-2"><FaCheckCircle /> Status</div>
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
                       <div className="flex items-center gap-2"><FaTrash /> Actions</div>
@@ -154,23 +218,45 @@ export default function CustomersPage() {
                         {customer.address || "N/A"}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        {customer.is_phone_verified ? (
+                        {customer.approval_status === 'approved' ? (
                           <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            ✓ Verified
+                            ✓ Approved
+                          </span>
+                        ) : customer.approval_status === 'rejected' ? (
+                          <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                            ✗ Rejected
                           </span>
                         ) : (
-                          <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                            Not Verified
+                          <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                            ⏳ Pending
                           </span>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <button
-                          onClick={() => deleteCustomer(customer.id, customer.name)}
-                          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition flex items-center gap-2"
-                        >
-                          <FaTrash /> Delete
-                        </button>
+                        <div className="flex gap-2">
+                          {customer.approval_status === 'pending' && (
+                            <>
+                              <button
+                                onClick={() => approveCustomer(customer.id, customer.name)}
+                                className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition text-xs"
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() => rejectCustomer(customer.id, customer.name)}
+                                className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition text-xs"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                          <button
+                            onClick={() => deleteCustomer(customer.id, customer.name)}
+                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition flex items-center gap-1 text-xs"
+                          >
+                            <FaTrash /> Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

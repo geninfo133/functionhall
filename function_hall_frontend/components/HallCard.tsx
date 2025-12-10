@@ -5,10 +5,15 @@ interface Props {
 }
 
 export default function HallCard({ hall }: Props) {
+  // Get the first photo or use a placeholder
+  const imageUrl = hall.photos && hall.photos.length > 0 
+    ? hall.photos[0] 
+    : hall.image_url || 'https://images.unsplash.com/photo-1519167758481-83f29da8170d?w=800';
+    
   return (
     <div className="border border-slate-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition bg-slate-800">
       <img
-        src={hall.image_url}
+        src={imageUrl}
         alt={hall.name}
         className="w-full h-48 object-cover"
       />

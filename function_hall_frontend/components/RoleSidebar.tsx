@@ -12,6 +12,7 @@ interface SidebarProps {
 const sidebarOptions: Record<Role, { label: string; href: string; icon: ReactElement }[]> = {
   customer: [
     { label: "Home", href: "/home", icon: <FaHome /> },
+    { label: "Send Enquiry", href: "/customer/enquiry", icon: <FaEnvelope /> },
     { label: "My Bookings", href: "/my-bookings", icon: <FaCalendarCheck /> },
     { label: "Profile", href: "/profile", icon: <FaUser /> },
     { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
@@ -22,6 +23,7 @@ const sidebarOptions: Record<Role, { label: string; href: string; icon: ReactEle
     { label: "Add/Edit Hall", href: "/vendor/halls/add", icon: <FaPlusCircle /> },
     { label: "Manage Packages", href: "/vendor/packages", icon: <FaBox /> },
     { label: "View Bookings", href: "/vendor/bookings", icon: <FaCalendarCheck /> },
+    { label: "View Enquiries", href: "/admin/enquiries", icon: <FaEnvelope /> },
     { label: "Calendar", href: "/vendor/calendar", icon: <FaCalendarAlt /> },
     { label: "Profile", href: "/profile", icon: <FaUser /> },
     { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
@@ -45,13 +47,7 @@ export default function RoleSidebar({ role }: SidebarProps) {
           <p className="text-lg tracking-wider text-slate-300 font-bold pb-2 border-b-2 border-slate-600" style={{ fontFamily: 'Arial, sans-serif' }}>Navigation Menu</p>
         </div>
         <ul className="space-y-2">
-          {(role === "customer"
-            ? [
-                { label: "Enquiry", href: "/customer/enquiry", icon: <FaEnvelope /> },
-                ...sidebarOptions[role]
-              ]
-            : sidebarOptions[role]
-          ).map((item) => (
+          {sidebarOptions[role].map((item) => (
             <li key={item.href}>
               <Link href={item.href} className="flex items-center space-x-3 px-4 py-2 rounded-lg hover:bg-slate-800 text-slate-300 font-bold transition">
                 <span className="text-slate-400">{item.icon}</span>

@@ -212,7 +212,12 @@ export default function AdminHallsPage() {
       <main className="p-8 w-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-blue-600">All Halls</h2>
-            <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition" onClick={handleAdd}>+ Add New Hall</button>
+            <div className="flex gap-3">
+              <Link href="/admin/hall-requests" className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg font-semibold shadow transition flex items-center gap-2">
+                <span>⏳</span> Pending Approvals
+              </Link>
+              <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition" onClick={handleAdd}>+ Add New Hall</button>
+            </div>
           </div>
 
           {/* Search Filters */}

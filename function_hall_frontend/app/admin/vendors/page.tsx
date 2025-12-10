@@ -138,8 +138,7 @@ export default function AdminVendorsPage() {
       <main className="p-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-blue-600 mb-2">Vendor Management</h1>
-          <p className="text-gray-600">Approve or manage vendor registrations</p>
+          <h1 className="text-4xl font-bold text-blue-600 mb-2">Vendor List</h1>
         </div>
 
         {error && (
@@ -148,146 +147,74 @@ export default function AdminVendorsPage() {
           </div>
         )}
 
-        {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Pending Approval</p>
-                <p className="text-3xl font-bold text-yellow-600">{pendingVendors.length}</p>
-              </div>
-              <FaClock className="text-4xl text-yellow-500 opacity-20" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Approved Vendors</p>
-                <p className="text-3xl font-bold text-green-600">{approvedVendors.length}</p>
-              </div>
-              <FaUserCheck className="text-4xl text-green-500 opacity-20" />
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 font-medium">Total Vendors</p>
-                <p className="text-3xl font-bold text-blue-600">{vendors.length}</p>
-              </div>
-              <FaBuilding className="text-4xl text-blue-500 opacity-20" />
-            </div>
-          </div>
-        </div>
-
-        {/* Pending Vendors */}
-        {pendingVendors.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-              <FaClock className="text-yellow-500" />
-              Pending Approval ({pendingVendors.length})
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {pendingVendors.map((vendor) => (
-                <div key={vendor.id} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-400 hover:shadow-lg transition">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                        <FaBuilding className="text-yellow-600 text-xl" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-800">{vendor.business_name}</h3>
-                        <p className="text-sm text-gray-600">{vendor.name}</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
-                      Pending
-                    </span>
-                  </div>
-
-                  <div className="space-y-2 mb-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <FaEnvelope className="text-gray-400" />
-                      <span>{vendor.email}</span>
-                    </div>
-                    {vendor.phone && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <FaPhone className="text-gray-400" />
-                        <span>{vendor.phone}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleApprove(vendor.id, true)}
-                      disabled={processingId === vendor.id}
-                      className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg font-semibold transition flex items-center justify-center gap-2 disabled:bg-gray-400"
-                    >
-                      <FaCheckCircle />
-                      {processingId === vendor.id ? "Processing..." : "Approve"}
-                    </button>
-                    <button
-                      onClick={() => handleApprove(vendor.id, false)}
-                      disabled={processingId === vendor.id}
-                      className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg font-semibold transition flex items-center justify-center gap-2 disabled:bg-gray-400"
-                    >
-                      <FaTimesCircle />
-                      {processingId === vendor.id ? "Processing..." : "Reject"}
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Approved Vendors */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <FaUserCheck className="text-green-500" />
-            Approved Vendors ({approvedVendors.length})
-          </h2>
-          {approvedVendors.length === 0 ? (
-            <div className="bg-white rounded-xl shadow-md p-8 text-center text-gray-500">
-              No approved vendors yet
+        {/* All Vendors Table */}
+        <div className="bg-white rounded-xl shadow overflow-hidden">
+          {vendors.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              No vendors found
             </div>
           ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {approvedVendors.map((vendor) => (
-                <div key={vendor.id} className="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-400 hover:shadow-lg transition">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                        <FaBuilding className="text-green-600 text-xl" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-800">{vendor.business_name}</h3>
-                        <p className="text-sm text-gray-600">{vendor.name}</p>
-                      </div>
-                    </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1">
-                      <FaCheckCircle />
-                      Approved
-                    </span>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <FaEnvelope className="text-gray-400" />
-                      <span>{vendor.email}</span>
-                    </div>
-                    {vendor.phone && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <FaPhone className="text-gray-400" />
-                        <span>{vendor.phone}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+            <table className="min-w-full">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">ID</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Business Name</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Contact Person</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Email</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Phone</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">Status</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {vendors.map((vendor) => (
+                  <tr key={vendor.id} className="border-t border-gray-200 hover:bg-gray-50">
+                    <td className="px-6 py-4 text-sm">#{vendor.id}</td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm font-medium text-gray-800">{vendor.business_name}</div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-800">{vendor.name}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{vendor.email}</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{vendor.phone || 'N/A'}</td>
+                    <td className="px-6 py-4">
+                      {vendor.is_approved ? (
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 flex items-center gap-1 w-fit">
+                          <FaCheckCircle />
+                          Approved
+                        </span>
+                      ) : (
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 flex items-center gap-1 w-fit">
+                          <FaClock />
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4">
+                      {!vendor.is_approved ? (
+                        <div className="flex gap-2 justify-center">
+                          <button
+                            onClick={() => handleApprove(vendor.id, true)}
+                            disabled={processingId === vendor.id}
+                            className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 disabled:bg-gray-400"
+                          >
+                            {processingId === vendor.id ? 'Processing...' : 'Approve'}
+                          </button>
+                          <button
+                            onClick={() => handleApprove(vendor.id, false)}
+                            disabled={processingId === vendor.id}
+                            className="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 disabled:bg-gray-400"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="text-center text-sm text-gray-500">-</div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           )}
         </div>
       </main>
