@@ -11,7 +11,7 @@ Vendors can now upload photos directly instead of pasting URLs!
 ```bash
 # Terminal 1 - Backend
 cd function_hall_backend
-python run.py
+python app.py
 
 # Terminal 2 - Frontend  
 cd function_hall_frontend

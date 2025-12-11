@@ -253,7 +253,7 @@ photos=<file2>
 1. **Start Backend**:
    ```bash
    cd function_hall_backend
-   python run.py
+   python app.py
    ```
 
 2. **Start Frontend**:

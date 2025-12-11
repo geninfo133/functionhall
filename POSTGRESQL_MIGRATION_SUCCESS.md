@@ -72,7 +72,7 @@ Your Function Hall Management System has been successfully migrated from SQLite 
 ### Backend (Flask):
 ```bash
 cd d:\flask-projects\functionhall\function_hall_backend
-python run.py
+python app.py
 ```
 The backend will run on http://localhost:5000
 
@@ -130,7 +130,7 @@ SELECT * FROM bookings;
 
 ## Next Steps:
 
-1. Start the Flask backend: `python run.py`
+1. Start the Flask backend: `python app.py`
 2. Start the Next.js frontend: `npm run dev`  
 3. Login with any of the credentials above
 4. Test the full application with pre-populated data!

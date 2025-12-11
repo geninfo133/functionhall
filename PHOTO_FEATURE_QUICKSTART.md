@@ -109,7 +109,7 @@ Vendor Form → HallChangeRequest.new_data.photos[]
 
 ## ✅ Ready to Test!
 
-1. Backend running? `python run.py`
+1. Backend running? `python app.py`
 2. Frontend running? `npm run dev`
 3. Login as vendor
 4. Add hall with photos
