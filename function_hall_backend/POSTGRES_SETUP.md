@@ -54,7 +54,7 @@ This will:
 ### 4. Run the Application
 
 ```bash
-python run.py
+python app.py
 ```
 
 ## Default Super Admin Credentials

@@ -203,7 +203,7 @@ class HallPhoto(db.Model):
 
 ## Testing
 
-1. Start backend: `python run.py`
+1. Start backend: `python app.py`
 2. Start frontend: `npm run dev`
 3. Login as vendor (create one if needed)
 4. Submit a hall with photo URLs

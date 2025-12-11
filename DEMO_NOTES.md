@@ -482,7 +482,7 @@ Password: admin123
 ### Backend (Flask):
 ```bash
 cd function_hall_backend
-python run.py
+python app.py
 # Runs on: http://localhost:5000
 ```
 
