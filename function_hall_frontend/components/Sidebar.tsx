@@ -1,4 +1,3 @@
-
 // components/Sidebar.tsx
 "use client";
 
@@ -31,15 +30,45 @@ export default function Sidebar() {
             </a>
           </li>
           <li>
-            <a href="/admin/profile" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
-              <FaUsers className="text-slate-400" />
-              <span>Profile</span>
+            <a href="/admin/enquiries" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+              <FaHeadset className="text-slate-400" />
+              <span>View Enquiries</span>
             </a>
           </li>
           <li>
-            <a href="/admin/enquiries" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+            <a href="/customer/enquiry" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
               <FaHeadset className="text-slate-400" />
-              <span>Enquiries</span>
+              <span>Send Enquiry</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/halls" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+              <FaBuilding className="text-slate-400" />
+              <span>Function Halls</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/bookings" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+              <FaFileInvoice className="text-slate-400" />
+              <span>Manage Bookings</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/customers" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+              <FaUsers className="text-slate-400" />
+              <span>Customers</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/customers-list" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+              <FaUsers className="text-slate-400" />
+              <span>Customer List</span>
+            </a>
+          </li>
+          <li>
+            <a href="/admin/vendors" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+              <FaUserShield className="text-slate-400" />
+              <span>Vendors</span>
             </a>
           </li>
         </ul>

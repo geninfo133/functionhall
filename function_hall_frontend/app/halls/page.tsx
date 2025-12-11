@@ -51,48 +51,48 @@ export default function BrowseHallsPage() {
       <main className="p-4 sm:p-6 lg:p-8 pt-8">
         {/* Hero Banner with Search */}
         <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
-          <div className="px-6 py-2.5">
+          <div className="px-6 py-3">
             <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-2">
-                <h1 className="text-base sm:text-lg font-bold text-white">
+              <div className="text-center mb-3">
+                <h1 className="text-lg sm:text-xl font-bold text-white">
                   Browse Function Halls
                 </h1>
               </div>
 
               <div>
-                <div className="bg-white rounded-xl shadow-lg p-3 max-w-5xl mx-auto">
+                <div className="bg-white rounded-xl shadow-lg p-4 max-w-5xl mx-auto">
                   <form onSubmit={handleSearch}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Location</label>
-                        <FaMapMarkerAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Location</label>
+                        <FaMapMarkerAlt className="absolute left-3 top-8 text-gray-400 text-sm" />
                         <input
                           type="text"
                           placeholder="City or area"
-                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                           value={location}
                           onChange={(e) => setLocation(e.target.value)}
                         />
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
-                        <FaCalendarAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Event Date</label>
+                        <FaCalendarAlt className="absolute left-3 top-8 text-gray-400 text-sm" />
                         <input
                           type="date"
-                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                           value={date}
                           onChange={(e) => setDate(e.target.value)}
                         />
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Guests</label>
-                        <FaUsers className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Guests</label>
+                        <FaUsers className="absolute left-3 top-8 text-gray-400 text-sm" />
                         <input
                           type="number"
                           placeholder="How many?"
-                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                           value={guests}
                           onChange={(e) => setGuests(e.target.value)}
                         />
@@ -101,7 +101,7 @@ export default function BrowseHallsPage() {
                       <div className="flex gap-2 items-end">
                         <button
                           type="submit"
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
                         >
                           <FaSearch className="text-xs" />
                           Search
@@ -110,7 +110,7 @@ export default function BrowseHallsPage() {
                           <button
                             type="button"
                             onClick={handleClearFilters}
-                            className="px-2.5 py-1.5 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+                            className="px-3 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
                           >
                             Clear
                           </button>
