@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
 import HallCalendar from "../../components/HallCalendar";
 import { FaBuilding, FaMapMarkerAlt, FaUsers, FaUser, FaEnvelope, FaCalendarAlt, FaBox, FaRupeeSign, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
-export default function BookingPage() {
+
+function BookingPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const urlHallId = searchParams.get("hallId");
@@ -363,5 +364,13 @@ export default function BookingPage() {
       </main>
       </div>
     </>
+  );
+}
+
+export default function BookingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BookingPageContent />
+    </Suspense>
   );
 }

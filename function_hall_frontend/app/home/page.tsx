@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaSearch } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
 import { BACKEND_URL } from "../../lib/config";
 import HallCards from "../../components/HallCards";
 
-export default function HomePage() {
+
+function HomePageContent() {
   const [halls, setHalls] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState("");
@@ -213,6 +214,14 @@ export default function HomePage() {
           </div>
         </main>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomePageContent />
+    </Suspense>
   );
 }
 
