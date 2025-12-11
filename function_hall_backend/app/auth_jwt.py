@@ -83,6 +83,14 @@ def vendor_register():
     db.session.add(vendor)
     db.session.commit()
 
+    # Send OTP to vendor's phone number
+    from app import otp_service
+    otp_result = None
+    if phone:
+        otp_result = otp_service.send_otp(phone)
+    else:
+        otp_result = {'success': False, 'message': 'No phone number provided for OTP.'}
+
     return jsonify({
         'message': 'Vendor registration successful! Your account is pending approval.',
         'vendor': {
@@ -91,7 +99,8 @@ def vendor_register():
             'email': vendor.email,
             'business_name': vendor.business_name,
             'is_approved': False
-        }
+        },
+        'otp_status': otp_result
     }), 201
 
 @auth_jwt.route('/api/admin/logout', methods=['POST'])

@@ -86,7 +86,7 @@ export default function MainNavbar() {
       localStorage.removeItem('vendorData');
       setIsVendorLoggedIn(false);
       setVendorName("");
-      window.location.href = "/vendor/login";
+      window.location.href = "/home";
     } else {
       // Logout customer
       localStorage.removeItem('customerToken');
@@ -343,52 +343,14 @@ export default function MainNavbar() {
                       <FaUser size={18} />
                       <span className="font-medium">Dashboard</span>
                     </Link>
-
                     <Link
-                      href="/admin/halls"
-                      onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
-                    >
-                      <FaBuilding size={18} />
-                      <span className="font-medium">Function Halls</span>
-                    </Link>
-
-                    <Link
-                      href="/admin/bookings"
-                      onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
-                    >
-                      <FaCalendarAlt size={18} />
-                      <span className="font-medium">Manage Bookings</span>
-                    </Link>
-
-                    <Link
-                      href="/admin/customers"
+                      href="/admin/profile"
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
                     >
                       <FaUser size={18} />
-                      <span className="font-medium">Manage Customers</span>
+                      <span className="font-medium">Profile</span>
                     </Link>
-
-                    <Link
-                      href="/admin/customers-list"
-                      onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
-                    >
-                      <FaUser size={18} />
-                      <span className="font-medium">Customer List</span>
-                    </Link>
-
-                    <Link
-                      href="/admin/vendors"
-                      onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
-                    >
-                      <FaUserShield size={18} />
-                      <span className="font-medium">Vendors</span>
-                    </Link>
-
                     <Link
                       href="/admin/enquiries"
                       onClick={() => setSidebarOpen(false)}

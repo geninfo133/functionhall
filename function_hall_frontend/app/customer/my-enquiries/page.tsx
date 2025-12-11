@@ -7,6 +7,7 @@ import Link from "next/link";
 
 interface Enquiry {
   id: number;
+  customer_id: number;
   customer_name: string;
   email: string;
   phone: string;

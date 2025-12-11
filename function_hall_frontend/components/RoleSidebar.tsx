@@ -29,12 +29,9 @@ const sidebarOptions: Record<Role, { label: string; href: string; icon: ReactEle
     { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
   ],
   admin: [
-    { label: "Admin Dashboard", href: "/admin/dashboard", icon: <FaTachometerAlt /> },
-    { label: "Approve Halls", href: "/admin/halls", icon: <FaCheckCircle /> },
-    { label: "Manage Users", href: "/admin/users", icon: <FaUsers /> },
-    { label: "Manage Bookings", href: "/admin/bookings", icon: <FaCalendarCheck /> },
-    { label: "Revenue/Reports", href: "/admin/reports", icon: <FaFileInvoiceDollar /> },
-    { label: "System Settings", href: "/admin/settings", icon: <FaCog /> },
+    { label: "Dashboard", href: "/admin/dashboard", icon: <FaTachometerAlt /> },
+    { label: "Profile", href: "/admin/profile", icon: <FaUser /> },
+    { label: "Enquiries", href: "/admin/enquiries", icon: <FaEnvelope /> },
     { label: "Logout", href: "/logout", icon: <FaSignOutAlt /> },
   ],
 };
