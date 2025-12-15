@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BACKEND_URL } from "../../lib/config";
-import HallCalendar from "../../components/HallCalendar";
+import { BACKEND_URL } from "../../../lib/config";
+import HallCalendar from "../../../components/HallCalendar";
 import { FaBuilding, FaMapMarkerAlt, FaUsers, FaUser, FaEnvelope, FaCalendarAlt, FaBox, FaRupeeSign, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-
 
 function BookingPageContent() {
   const router = useRouter();
