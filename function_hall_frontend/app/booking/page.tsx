@@ -1,6 +1,6 @@
 
-import dynamic from "next/dynamic";
-const BookingPageClient = dynamic(() => import("./client/BookingPageClient"), { ssr: false });
+
+import BookingPageClient from "./client/BookingPageClient";
 
 export default function BookingPage() {
   return <BookingPageClient />;
