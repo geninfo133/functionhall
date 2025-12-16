@@ -357,7 +357,7 @@ def add_booking():
     
     if not customer.is_approved or customer.approval_status != 'approved':
         return jsonify({
-            "error": "Your account is not approved yet. Please wait for admin approval.",
+            "error": "Customer Registration not confirmed by Admin",
             "status": "not_approved"
         }), 403
     
