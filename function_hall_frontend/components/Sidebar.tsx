@@ -24,21 +24,9 @@ export default function Sidebar() {
         </div>
         <ul className="space-y-2">
           <li>
-            <a href="/admin/dashboard" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
-              <FaTachometerAlt className="text-slate-400" />
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/enquiries" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
-              <FaHeadset className="text-slate-400" />
-              <span>View Enquiries</span>
-            </a>
-          </li>
-          <li>
-            <a href="/customer/enquiry" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
-              <FaHeadset className="text-slate-400" />
-              <span>Send Enquiry</span>
+            <a href="/admin/customers" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+              <FaUsers className="text-slate-400" />
+              <span>Customers</span>
             </a>
           </li>
           <li>
@@ -48,21 +36,15 @@ export default function Sidebar() {
             </a>
           </li>
           <li>
+            <a href="/admin/enquiries" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+              <FaHeadset className="text-slate-400" />
+              <span>View Enquiries</span>
+            </a>
+          </li>
+          <li>
             <a href="/admin/bookings" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
               <FaFileInvoice className="text-slate-400" />
               <span>Manage Bookings</span>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/customers" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
-              <FaUsers className="text-slate-400" />
-              <span>Customers</span>
-            </a>
-          </li>
-          <li>
-            <a href="/admin/customers-list" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
-              <FaUsers className="text-slate-400" />
-              <span>Customer List</span>
             </a>
           </li>
           <li>

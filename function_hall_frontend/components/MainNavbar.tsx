@@ -1,9 +1,8 @@
 "use client";
-
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield } from "react-icons/fa";
+import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield, FaUsers, FaFileInvoice, FaHeadset } from "react-icons/fa";
 
 export default function MainNavbar() {
   const router = useRouter();
@@ -250,7 +249,7 @@ export default function MainNavbar() {
       </nav>
 
       {/* Customer/Vendor/Admin Sidebar */}
-      {(isCustomerLoggedIn || isVendorLoggedIn || (isAdminLoggedIn && isAdminPage)) && (
+      {(isCustomerLoggedIn || isVendorLoggedIn || (isAdminLoggedIn && isAdminPage && pathname !== '/admin/profile')) && (
         <>
           {/* Overlay */}
           {sidebarOpen && (
@@ -336,12 +335,12 @@ export default function MainNavbar() {
                 ) : isAdminLoggedIn ? (
                   <>
                     <Link
-                      href="/admin/dashboard"
+                      href="/admin/customers"
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
                     >
-                      <FaUser size={18} />
-                      <span className="font-medium">Dashboard</span>
+                      <FaUsers size={18} />
+                      <span className="font-medium">Customers</span>
                     </Link>
                     <Link
                       href="/admin/profile"
@@ -352,12 +351,36 @@ export default function MainNavbar() {
                       <span className="font-medium">Profile</span>
                     </Link>
                     <Link
+                      href="/admin/halls"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                    >
+                      <FaBuilding size={18} />
+                      <span className="font-medium">Function Halls</span>
+                    </Link>
+                    <Link
                       href="/admin/enquiries"
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
                     >
-                      <FaInfoCircle size={18} />
-                      <span className="font-medium">Enquiries</span>
+                      <FaHeadset size={18} />
+                      <span className="font-medium">View Enquiries</span>
+                    </Link>
+                    <Link
+                      href="/admin/bookings"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                    >
+                      <FaFileInvoice size={18} />
+                      <span className="font-medium">Manage Bookings</span>
+                    </Link>
+                    <Link
+                      href="/admin/vendors"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                    >
+                      <FaUserShield size={18} />
+                      <span className="font-medium">Vendors</span>
                     </Link>
                   </>
                 ) : (
