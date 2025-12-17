@@ -1,6 +1,8 @@
 
 from flask import Flask
+from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_marshmallow import Marshmallow
 import os
@@ -8,8 +10,10 @@ import os
 # Initialize extensions
 db = SQLAlchemy()
 ma = Marshmallow()
+migrate = Migrate()
 
 def create_app():
+    load_dotenv()  # Ensure .env variables are loaded
     app = Flask(__name__)
     
     # Configure session - Simplified for localhost
@@ -35,15 +39,13 @@ def create_app():
          methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 
     # Configure Database - PostgreSQL
-    # Import configuration
-    import config
-    
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{config.DB_USER}:{config.DB_PASSWORD}@{config.DB_HOST}:{config.DB_PORT}/{config.DB_NAME}'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+    # Use DATABASE_URL from environment (Railway or .env)
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    print("DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])  # Debug: Print the DB URI being used
     # Initialize extensions
     db.init_app(app)
     ma.init_app(app)
+    migrate.init_app(app, db)
 
     # Register routes
     from app.routes import main
