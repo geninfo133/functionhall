@@ -110,9 +110,71 @@ export default function CustomerListPage() {
                           Rejected
                         </span>
                       ) : (
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
-                          Pending
-                        </span>
+                        <div className="flex gap-2 items-center">
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
+                            Pending
+                          </span>
+                          <button
+                            className="ml-2 px-3 py-1 rounded bg-green-500 text-white text-xs font-semibold hover:bg-green-600 transition"
+                            onClick={async () => {
+                              if (!confirm('Approve this customer?')) return;
+                              const token = localStorage.getItem('adminToken');
+                              if (!token) {
+                                alert('Not authenticated. Please login again.');
+                                router.push('/admin/login');
+                                return;
+                              }
+                              try {
+                                const res = await fetch(`${BACKEND_URL}/api/admin/customers/${customer.id}/approve`, {
+                                  method: 'POST',
+                                  headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                  },
+                                });
+                                if (res.ok) {
+                                  alert('Customer approved!');
+                                  fetchCustomers();
+                                } else {
+                                  alert('Failed to approve customer');
+                                }
+                              } catch (err) {
+                                alert('Error approving customer');
+                              }
+                            }}
+                          >Approve</button>
+                          <button
+                            className="ml-2 px-3 py-1 rounded bg-red-500 text-white text-xs font-semibold hover:bg-red-600 transition"
+                            onClick={async () => {
+                              const reason = prompt('Reject this customer? Enter reason (optional):');
+                              if (reason === null) return;
+                              const token = localStorage.getItem('adminToken');
+                              if (!token) {
+                                alert('Not authenticated. Please login again.');
+                                router.push('/admin/login');
+                                return;
+                              }
+                              try {
+                                const res = await fetch(`${BACKEND_URL}/api/admin/customers/${customer.id}/reject`, {
+                                  method: 'POST',
+                                  headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({ reason: reason || 'No reason provided' }),
+                                });
+                                if (res.ok) {
+                                  alert('Customer rejected!');
+                                  fetchCustomers();
+                                } else {
+                                  alert('Failed to reject customer');
+                                }
+                              } catch (err) {
+                                alert('Error rejecting customer');
+                              }
+                            }}
+                          >Reject</button>
+                        </div>
                       )}
                     </td>
                   </tr>
