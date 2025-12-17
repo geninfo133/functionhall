@@ -31,12 +31,8 @@ def create_app():
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
     # Configure CORS to support credentials - include both localhost and 127.0.0.1
-    CORS(app, 
-         supports_credentials=True, 
-         origins=['http://localhost:3000', 'http://localhost:3001', 'http://127.0.0.1:3000', 'http://127.0.0.1:3001'],
-         allow_headers=['Content-Type', 'Authorization'],
-         expose_headers=['Set-Cookie'],
-         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+    # TEMP: Allow all origins for CORS debugging
+    CORS(app, supports_credentials=True)
 
     # Configure Database - PostgreSQL
     # Use DATABASE_URL from environment (Railway or .env)

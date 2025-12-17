@@ -263,7 +263,7 @@ export default function AdminDashboard() {
               <span className="text-lg font-semibold text-blue-700 flex items-center gap-2"><FaClipboardList className="text-blue-500 animate-bounce" /> Manage Bookings</span>
               <p className="text-sm text-gray-600 mt-1">View and update all bookings.</p>
             </Link>
-            <Link href="/admin/customers" className="block backdrop-blur-lg bg-white/60 rounded-xl shadow-md p-5 hover:bg-blue-100 border border-gray-200 transition-transform duration-200 hover:scale-105">
+            <Link href="/admin/customers-list" className="block backdrop-blur-lg bg-white/60 rounded-xl shadow-md p-5 hover:bg-blue-100 border border-gray-200 transition-transform duration-200 hover:scale-105">
               <span className="text-lg font-semibold text-blue-700 flex items-center gap-2"><FaUsers className="text-blue-600 animate-bounce" /> Manage Customers</span>
               <p className="text-sm text-gray-600 mt-1">View and manage customer details.</p>
             </Link>

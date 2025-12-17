@@ -21,7 +21,7 @@ export default function AdminDashboard() {
             <span className="text-xl font-semibold text-orange-500">Manage Bookings</span>
             <p className="text-gray-600 mt-2">View and update all bookings.</p>
           </Link>
-          <Link href="/admin/customers" className="block bg-white rounded-xl shadow p-6 hover:bg-orange-50 border border-gray-200">
+          <Link href="/admin/customers-list" className="block bg-white rounded-xl shadow p-6 hover:bg-orange-50 border border-gray-200">
             <span className="text-xl font-semibold text-orange-500">Manage Customers</span>
             <p className="text-gray-600 mt-2">View and manage customer details.</p>
           </Link>

@@ -54,7 +54,7 @@ export default function Sidebar() {
             </a>
           </li>
           <li>
-            <a href="/admin/customers" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+            <a href="/admin/customers-list" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
               <FaUsers className="text-slate-400" />
               <span>Customers</span>
             </a>
