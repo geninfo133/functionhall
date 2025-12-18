@@ -50,6 +50,46 @@ export default function CustomerListPage() {
     }
   };
 
+  const handleApprove = async (customerId: number) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/customers/${customerId}/approve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        setCustomers((prev) =>
+          prev.map((c) =>
+            c.id === customerId ? { ...c, approval_status: "approved" } : c
+          )
+        );
+      } else {
+        alert("Failed to approve customer");
+      }
+    } catch (err) {
+      alert("Error approving customer");
+    }
+  };
+
+  const handleReject = async (customerId: number) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/customers/${customerId}/reject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        setCustomers((prev) =>
+          prev.map((c) =>
+            c.id === customerId ? { ...c, approval_status: "rejected" } : c
+          )
+        );
+      } else {
+        alert("Failed to reject customer");
+      }
+    } catch (err) {
+      alert("Error rejecting customer");
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -110,9 +150,23 @@ export default function CustomerListPage() {
                           Rejected
                         </span>
                       ) : (
-                        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
-                          Pending
-                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800">
+                            Pending
+                          </span>
+                          <button
+                            className="bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-3 py-1 rounded"
+                            onClick={() => handleApprove(customer.id)}
+                          >
+                            Approve
+                          </button>
+                          <button
+                            className="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold px-3 py-1 rounded"
+                            onClick={() => handleReject(customer.id)}
+                          >
+                            Reject
+                          </button>
+                        </div>
                       )}
                     </td>
                   </tr>
