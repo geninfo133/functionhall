@@ -50,11 +50,20 @@ export default function CustomerListPage() {
     }
   };
 
+
   const handleApprove = async (customerId: number) => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      alert("Admin token missing. Please login again.");
+      return;
+    }
     try {
-      const response = await fetch(`${BACKEND_URL}/api/customers/${customerId}/approve`, {
+      const response = await fetch(`${BACKEND_URL}/api/admin/customers/${customerId}/approve`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
       });
       if (response.ok) {
         setCustomers((prev) =>
@@ -63,7 +72,8 @@ export default function CustomerListPage() {
           )
         );
       } else {
-        alert("Failed to approve customer");
+        const data = await response.json();
+        alert(data.error || "Failed to approve customer");
       }
     } catch (err) {
       alert("Error approving customer");
@@ -71,10 +81,19 @@ export default function CustomerListPage() {
   };
 
   const handleReject = async (customerId: number) => {
+    const token = localStorage.getItem("adminToken");
+    if (!token) {
+      alert("Admin token missing. Please login again.");
+      return;
+    }
     try {
-      const response = await fetch(`${BACKEND_URL}/api/customers/${customerId}/reject`, {
+      const response = await fetch(`${BACKEND_URL}/api/admin/customers/${customerId}/reject`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ reason: "Rejected by admin" }),
       });
       if (response.ok) {
         setCustomers((prev) =>
@@ -83,7 +102,8 @@ export default function CustomerListPage() {
           )
         );
       } else {
-        alert("Failed to reject customer");
+        const data = await response.json();
+        alert(data.error || "Failed to reject customer");
       }
     } catch (err) {
       alert("Error rejecting customer");
