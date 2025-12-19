@@ -174,11 +174,11 @@ export default function HallDetailsPage() {
             {/* Gallery and About This Hall - Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Gallery */}
-              {hall.photos && hall.photos.length > 0 && (
+              {hall.photos && hall.photos.length > 1 && (
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <h2 className="text-2xl font-bold text-blue-700 mb-4">Photo Gallery</h2>
                   <div className="grid grid-cols-2 gap-3">
-                    {hall.photos.map((photo: string, index: number) => (
+                    {hall.photos.slice(1, 9).map((photo: string, index: number) => (
                       <div 
                         key={index} 
                         className="relative h-32 rounded-lg overflow-hidden cursor-pointer"
@@ -186,7 +186,7 @@ export default function HallDetailsPage() {
                       >
                         <img
                           src={photo}
-                          alt={`${hall.name} ${index + 1}`}
+                          alt={`${hall.name} ${index + 2}`}
                           className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                         />
                       </div>
