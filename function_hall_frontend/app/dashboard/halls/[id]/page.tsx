@@ -39,13 +39,23 @@ export default function HallDetails({ params }: { params: { id: string } }) {
       {hall.packages && hall.packages.length > 0 && (
         <div className="mt-6">
           <strong>Packages:</strong>
-          <marquee behavior="scroll" direction="left" scrollamount="6" style={{background:'#f0f4f8', padding:'8px 0', borderRadius:'6px', marginTop:'8px'}}>
+          <div
+            style={{
+              display: "flex",
+              overflowX: "auto",
+              background: "#f0f4f8",
+              padding: "8px 0",
+              borderRadius: "6px",
+              marginTop: "8px",
+              whiteSpace: "nowrap"
+            }}
+          >
             {hall.packages.map((pkg: any, idx: number) => (
-              <span key={pkg.id || idx} style={{marginRight: 32}}>
+              <span key={pkg.id || idx} style={{ marginRight: 32 }}>
                 <b>{pkg.package_name}</b> (₹{pkg.price}) - {pkg.details}
               </span>
             ))}
-          </marquee>
+          </div>
         </div>
       )}
     </div>
