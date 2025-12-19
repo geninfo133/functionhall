@@ -4,7 +4,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaMapMarkerAlt, FaUsers, FaStar, FaHeart, FaRegHeart, FaEdit, FaTrash } from "react-icons/fa";
-import { BACKEND_URL } from "../lib/config";
+
+// const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://functionhall-production.up.railway.app";
+const BACKEND_URL = "http://localhost:5000";
 
 type HallCardsProps = {
   halls?: any[];

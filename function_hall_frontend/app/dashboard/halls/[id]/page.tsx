@@ -34,6 +34,20 @@ export default function HallDetails({ params }: { params: { id: string } }) {
       <p><strong>Capacity:</strong> {hall.capacity}</p>
       <p><strong>Price:</strong> ₹{hall.price_per_day}</p>
       {hall.description && <p className="mt-4"><strong>Description:</strong> {hall.description}</p>}
+
+      {/* Marquee for packages */}
+      {hall.packages && hall.packages.length > 0 && (
+        <div className="mt-6">
+          <strong>Packages:</strong>
+          <marquee behavior="scroll" direction="left" scrollamount="6" style={{background:'#f0f4f8', padding:'8px 0', borderRadius:'6px', marginTop:'8px'}}>
+            {hall.packages.map((pkg: any, idx: number) => (
+              <span key={pkg.id || idx} style={{marginRight: 32}}>
+                <b>{pkg.package_name}</b> (₹{pkg.price}) - {pkg.details}
+              </span>
+            ))}
+          </marquee>
+        </div>
+      )}
     </div>
   );
 }

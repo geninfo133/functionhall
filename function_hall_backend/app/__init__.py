@@ -43,9 +43,11 @@ def create_app():
     ma.init_app(app)
     migrate.init_app(app, db)
 
+
     # Register routes
     from app.routes import main
     app.register_blueprint(main)
+
 
     # Register auth routes
     from app.auth import auth
