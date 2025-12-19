@@ -123,7 +123,8 @@ def add_hall():
         files = request.files.getlist('photos')
         print(f"📝 Adding new hall with {len(files)} photo files: {data}")
         
-        # Save uploaded files and get their paths
+        # Save uploaded files and get their full URLs
+        backend_url = os.environ.get('BACKEND_URL', 'http://localhost:5000')
         photo_paths = []
         for file in files:
             if file and file.filename:
@@ -131,12 +132,12 @@ def add_hall():
                 ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
                 filename = f"{uuid.uuid4().hex}.{ext}"
                 filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-                
                 # Save file
                 file.save(filepath)
-                # Store relative path for URL generation
-                photo_paths.append(f"/uploads/hall_photos/{filename}")
-                print(f"💾 Saved photo: {filename}")
+                # Store full URL for frontend access
+                photo_url = f"{backend_url}/uploads/hall_photos/{filename}"
+                photo_paths.append(photo_url)
+                print(f"💾 Saved photo: {filename} at {photo_url}")
     else:
         # Handle JSON request (for backward compatibility)
         data = request.get_json()
