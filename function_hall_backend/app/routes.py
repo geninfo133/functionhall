@@ -136,6 +136,7 @@ def add_hall():
         # Save uploaded files and get their full URLs
         import os
         backend_url = os.environ.get("BACKEND_URL", "http://localhost:5000")
+        print("[DEBUG] Using BACKEND_URL for photo URLs:", backend_url)
         photo_paths = []
         for file in files:
             if file and file.filename:
