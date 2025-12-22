@@ -58,8 +58,9 @@ export default function VendorLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+          <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-blue-600 mb-2">Vendor Login</h1>
           <p className="text-gray-600">Access your vendor dashboard</p>
@@ -124,6 +125,7 @@ export default function VendorLoginPage() {
           <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
             ← Back to Home
           </Link>
+        </div>
         </div>
       </div>
     </div>

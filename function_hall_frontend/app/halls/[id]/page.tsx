@@ -63,32 +63,23 @@ export default function HallDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ background: 'var(--background)' }}>
       {/* Hero Section with Images */}
-      <div className="relative h-32 bg-blue-600 mx-4 sm:mx-6 lg:mx-8 mt-8 rounded-2xl overflow-hidden shadow-lg">
-        {hall.photos && hall.photos.length > 0 ? (
-          <div className="relative h-full w-full">
-            <img
-              src={hall.photos[0]}
-              alt={hall.name}
-              className="w-full h-full object-cover opacity-30"
-            />
-          </div>
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <div className="text-white text-8xl mb-4">🏛️</div>
-            </div>
-          </div>
-        )}
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div
+          className="relative overflow-hidden shadow-lg flex flex-col justify-center items-center rounded-2xl"
+          style={{ background: '#0d316cff', minHeight: '7.5rem', height: '120px' }}
+        >
+        {/* No image in hero section as per request */}
         
         {/* Hall Name Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h1 className="text-2xl font-bold text-white">{hall.name}</h1>
-          <p className="text-sm text-white flex items-center">
+          <h1 className="text-2xl font-bold" style={{ color: '#fff', letterSpacing: '1px' }}>{hall.name}</h1>
+          <p className="text-sm mt-1" style={{ color: '#fff' }}>
             <span className="mr-1">📍</span>
             {hall.location}
           </p>
+        </div>
         </div>
       </div>
 
@@ -100,38 +91,38 @@ export default function HallDetailsPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* Hall Information Card */}
               <div className="bg-white rounded-2xl shadow-lg p-6 md:col-span-2">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4">Hall Information</h2>
+                <h2 className="text-2xl font-bold mb-4" style={{ color: '#20056a' }}>Hall Information</h2>
                 
                 <div className="space-y-4">
                   <div className="flex items-start">
                     <span className="text-2xl mr-3">👤</span>
                     <div>
-                      <p className="text-sm text-gray-500">Owner</p>
-                      <p className="font-semibold text-blue-700">{hall.owner_name}</p>
+                      <p className="text-sm font-bold" style={{ color: '#20056a' }}>Owner</p>
+                      <p className="font-semibold" style={{ color: '#0d316cff' }}>{hall.owner_name}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <span className="text-2xl mr-3">👥</span>
                     <div>
-                      <p className="text-sm text-gray-500">Capacity</p>
-                      <p className="font-semibold text-blue-700">{hall.capacity} Guests</p>
+                      <p className="text-sm font-bold" style={{ color: '#20056a' }}>Capacity</p>
+                      <p className="font-semibold" style={{ color: '#0d316cff' }}>{hall.capacity} Guests</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <span className="text-2xl mr-3">💰</span>
                     <div>
-                      <p className="text-sm text-gray-500">Price Per Day</p>
-                      <p className="font-semibold text-blue-600 text-2xl">₹{hall.price_per_day.toLocaleString()}</p>
+                      <p className="text-sm font-bold" style={{ color: '#20056a' }}>Price Per Day</p>
+                      <p className="font-semibold text-2xl" style={{ color: '#0d316cff' }}>₹{hall.price_per_day.toLocaleString()}</p>
                     </div>
                   </div>
 
                   <div className="flex items-start">
                     <span className="text-2xl mr-3">📞</span>
                     <div>
-                      <p className="text-sm text-gray-500">Contact</p>
-                      <p className="font-semibold text-blue-700">{hall.contact_number}</p>
+                      <p className="text-sm font-bold" style={{ color: '#20056a' }}>Contact</p>
+                      <p className="font-semibold" style={{ color: '#0d316cff' }}>{hall.contact_number}</p>
                     </div>
                   </div>
                 </div>
@@ -139,33 +130,36 @@ export default function HallDetailsPage() {
 
               {/* Action Buttons Card */}
               <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-center">
-                <h2 className="text-xl font-bold text-blue-700 mb-3">Take Action</h2>
+                <h2 className="text-xl font-bold mb-3" style={{ color: 'var(--secondary)' }}>Take Action</h2>
                 <div className="space-y-2">
                   <button
                     onClick={() => router.push(`/booking?hallId=${hallId}`)}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:bg-blue-700 transition shadow-lg"
+                    className="w-full py-2 px-4 rounded-lg font-semibold text-sm transition shadow-lg"
+                    style={{ background: '#20056a', color: '#fff' }}
                   >
                     📅 Book Now
                   </button>
                   
                   <button
                     onClick={() => router.push(`/customer/enquiry`)}
-                    className="w-full bg-white text-blue-600 border-2 border-blue-600 py-2 px-4 rounded-lg font-semibold text-sm hover:bg-blue-50 transition"
+                    className="w-full py-2 px-4 rounded-lg font-semibold text-sm transition"
+                    style={{ background: '#20056a', color: '#fff' }}
                   >
                     ✉️ Send Enquiry
                   </button>
 
                   <button
                     onClick={() => router.back()}
-                    className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-lg font-medium text-sm hover:bg-gray-200 transition"
+                    className="w-full py-2 px-4 rounded-lg font-medium text-sm transition"
+                    style={{ background: '#20056a', color: '#fff' }}
                   >
                     ← Back to List
                   </button>
                   
                   {/* Call to Action Banner */}
-                  <div className="mt-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl p-3 text-center">
+                  <div className="mt-3" style={{ background: 'var(--navbar)', color: '#fff', borderRadius: '0.75rem', padding: '0.75rem', textAlign: 'center' }}>
                     <p className="text-sm font-bold mb-0.5">🎉 Special Offer!</p>
-                    <p className="text-blue-100 text-xs">Book now and get exclusive benefits</p>
+                    <p className="text-xs" style={{ color: 'var(--info)' }}>Book now and get exclusive benefits</p>
                   </div>
                 </div>
               </div>
@@ -176,7 +170,7 @@ export default function HallDetailsPage() {
               {/* Gallery */}
               {hall.photos && hall.photos.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <h2 className="text-2xl font-bold text-blue-700 mb-4">Photo Gallery</h2>
+                  <h2 className="text-2xl font-bold mb-4" style={{ color: '#20056a' }}>Photo Gallery</h2>
                   <div className="grid grid-cols-2 gap-3">
                     {hall.photos.map((photo: string, index: number) => (
                       <div 
@@ -197,40 +191,40 @@ export default function HallDetailsPage() {
 
               {/* About This Hall */}
               <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+                <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: '#20056a' }}>
                   <span className="text-3xl mr-2">🏛️</span>
                   About This Hall
                 </h2>
                 
-                <p className="text-gray-700 leading-relaxed text-sm">
+                <p className="leading-relaxed text-sm" style={{ color: '#0d316cff' }}>
                   {hall.description || "Experience elegance and sophistication in our beautifully designed function hall. Whether you're planning a grand wedding, corporate event, or special celebration, our venue offers the perfect blend of style, comfort, and exceptional service."}
                 </p>
 
                 {/* Key Highlights */}
                 <div className="grid grid-cols-2 gap-2 mt-4">
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2" style={{ background: 'var(--light)', borderRadius: '0.5rem' }}>
                     <div className="text-2xl mb-1">✨</div>
-                    <p className="text-xs font-semibold text-blue-700">Premium Ambiance</p>
+                    <p className="text-xs font-semibold" style={{ color: 'var(--secondary)' }}>Premium Ambiance</p>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2" style={{ background: 'var(--light)', borderRadius: '0.5rem' }}>
                     <div className="text-2xl mb-1">🎵</div>
-                    <p className="text-xs font-semibold text-blue-700">Sound & Lighting</p>
+                    <p className="text-xs font-semibold" style={{ color: 'var(--secondary)' }}>Sound & Lighting</p>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2" style={{ background: 'var(--light)', borderRadius: '0.5rem' }}>
                     <div className="text-2xl mb-1">🍽️</div>
-                    <p className="text-xs font-semibold text-blue-700">Catering</p>
+                    <p className="text-xs font-semibold" style={{ color: 'var(--secondary)' }}>Catering</p>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2" style={{ background: 'var(--light)', borderRadius: '0.5rem' }}>
                     <div className="text-2xl mb-1">🅿️</div>
-                    <p className="text-xs font-semibold text-blue-700">Parking</p>
+                    <p className="text-xs font-semibold" style={{ color: 'var(--secondary)' }}>Parking</p>
                   </div>
                 </div>
 
                 {/* Why Choose This Hall */}
                 <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="text-xl font-bold text-blue-700 mb-3">Why Choose This Hall?</h3>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: '#20056a' }}>Why Choose This Hall?</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="flex items-center text-gray-700">
+                    <div className="flex items-center" style={{ color: 'var(--foreground)' }}>
                       <span className="text-xl mr-3 text-green-500">✓</span>
                       <span className="text-sm">Professional event coordination</span>
                     </div>
@@ -265,7 +259,7 @@ export default function HallDetailsPage() {
           <div className="lg:col-span-1">
             {packages.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-4 overflow-hidden">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+                <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: 'var(--secondary)' }}>
                   <span className="text-3xl mr-2">🎁</span>
                   Available Packages
                 </h2>
@@ -310,8 +304,8 @@ export default function HallDetailsPage() {
                           }
                         }}
                       >
-                        <h3 className="font-bold text-lg text-blue-600">{pkg.package_name}</h3>
-                        <div className="text-2xl font-bold text-blue-600 mt-2">₹{pkg.price?.toLocaleString()}</div>
+                        <h3 className="font-bold text-lg" style={{ color: 'var(--primary)' }}>{pkg.package_name}</h3>
+                        <div className="text-2xl font-bold mt-2" style={{ color: 'var(--primary)' }}>₹{pkg.price?.toLocaleString()}</div>
                         <div 
                           className="package-details text-gray-600 text-xs whitespace-pre-line leading-relaxed mt-2 overflow-hidden transition-all duration-500"
                           style={{ maxHeight: '0', opacity: '0' }}

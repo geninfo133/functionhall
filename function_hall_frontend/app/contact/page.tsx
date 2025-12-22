@@ -30,36 +30,33 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 pt-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Hero Section */}
-        <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-2xl shadow-xl p-8 mb-12 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-48 h-48 bg-white opacity-5 rounded-full -mr-24 -mt-24"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full -ml-16 -mb-16"></div>
-          
-          <div className="relative z-10">
-            <div className="inline-block mb-3">
-              <div className="text-4xl mb-2">📞</div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
+      {/* Hero Section with unified navbar gap */}
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="relative rounded-2xl shadow-xl p-4 mb-0 text-center overflow-hidden flex items-center justify-center" style={{ background: '#0d316cff', minHeight: '7.5rem', height: '120px' }}>
+          <div className="page-width">
+            <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
+              {/* First line: Icon and Heading */}
+              <div className="flex flex-col sm:flex-row items-center justify-center w-full">
+                <span className="text-3xl text-white mb-1 sm:mb-0 sm:mr-3">📞</span>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Contact Us</h1>
+              </div>
+              {/* Second line: Subtext and Tagline */}
+              <div className="flex flex-col sm:flex-row items-center justify-center w-full mt-1">
+                <span className="text-base text-white font-light sm:mr-3">Get in Touch with GenS Services</span>
+                <span className="text-xs text-white italic">We're here to help you plan the perfect event</span>
+              </div>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">
-              Contact Us
-            </h1>
-            <div className="w-16 h-1 bg-blue-300 mx-auto mb-3 rounded-full"></div>
-            <p className="text-lg text-blue-50 mb-2 font-light">
-              Get in Touch with GenS Services
-            </p>
-            <p className="text-sm text-blue-200 italic">
-              We're here to help you plan the perfect event
-            </p>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      </div>
+      <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Contact Information */}
           <div>
             {/* Company Info Card */}
-            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+            <div className="bg-white rounded-xl shadow-md p-8 mb-6 w-full mx-auto">
+              <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: '#0d316cff' }}>
                 <FaBuilding className="mr-3" />
                 GenS Services
               </h2>
@@ -157,8 +154,8 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+          <div className="bg-white rounded-xl shadow-md p-8 w-full mx-auto">
+            <h2 className="text-2xl font-bold mb-4 flex items-center" style={{ color: '#0d316cff' }}>
               <FaEnvelope className="mr-3" />
               Send Us a Message
             </h2>
@@ -239,7 +236,7 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
+                className="w-full bg-[#0d316cff] text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
               >
                 Send Message
               </button>
@@ -248,7 +245,7 @@ export default function ContactPage() {
         </div>
 
         {/* Quick Links */}
-        <div className="mt-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-center">
+        <div className="mt-8 bg-gradient-to-r from-[#0d316cff] to-[#0d316cff] rounded-xl shadow-lg p-6 text-center">
           <h2 className="text-2xl font-bold text-white mb-3">Looking for Function Halls?</h2>
           <p className="text-base text-blue-100 mb-4">
             Browse our collection of beautiful venues for your special occasions

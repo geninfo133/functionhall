@@ -69,24 +69,26 @@ function HomePageContent() {
     <div className="min-h-screen">
       <main className="p-4 sm:p-6 lg:p-8">
           {/* Hero Banner with Search */}
-          <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
+
+          {/* Hero Section */}
+          <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg" style={{ background: '#0d316cff' }}>
 
             <div className="px-6 sm:px-8 lg:px-12 py-4">
               <div className="max-w-6xl mx-auto">
                 <div className="text-center">
-                  <h1 className="text-base sm:text-lg font-bold text-white leading-tight">
+                <h1 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#fff', fontFamily: 'Inter, Arial, sans-serif' }}>
                     Find Your Perfect Venue
-                  </h1>
-                  <p className="text-xs text-blue-100 mt-1 max-w-2xl mx-auto">
-                    Discover beautiful function halls for weddings, corporate events, and celebrations
-                  </p>
+                </h1>
+                <p className="text-base mt-2 max-w-2xl mx-auto" style={{ color: '#18c9e8ff', fontFamily: 'Inter, Arial, sans-serif' }}>
+                  Discover beautiful function halls for weddings, corporate events, and celebrations
+                </p>
                 </div>
 
                 <div className="mt-3">
                   <div className="bg-white rounded-xl shadow-lg p-3 max-w-5xl mx-auto">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Location</label>
+                        <label className="block text-base font-bold" style={{ color: '#20056a' }}>Location</label>
                         <FaMapMarkerAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
                         <input
                           type="text"
@@ -98,7 +100,7 @@ function HomePageContent() {
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
+                        <label className="block text-base font-bold" style={{ color: '#20056a' }}>Event Date</label>
                         <FaCalendarAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
                         <input
                           type="date"
@@ -109,7 +111,7 @@ function HomePageContent() {
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Guests</label>
+                        <label className="block text-base font-bold" style={{ color: '#20056a' }}>Guests</label>
                         <FaUsers className="absolute left-2.5 top-7 text-gray-400 text-xs" />
                         <input
                           type="number"
@@ -123,7 +125,8 @@ function HomePageContent() {
                       <div className="flex gap-2 items-end">
                         <button
                           onClick={handleSearch}
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                          className="flex-1 sample-btn text-xs font-semibold py-1.5 rounded-lg transition flex items-center justify-center gap-1.5"
+                          style={{ background: '#20056a', color: '#fff' }}
                         >
                           <FaSearch className="text-xs" />
                           Search
@@ -136,7 +139,8 @@ function HomePageContent() {
                               setDate("");
                               setGuests("");
                             }}
-                            className="px-2.5 py-1.5 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+                            className="sample-btn text-xs font-semibold px-2.5 py-1.5 rounded-lg transition"
+                            style={{ background: '#20056a', color: '#fff' }}
                           >
                             Clear
                           </button>
@@ -205,8 +209,8 @@ function HomePageContent() {
           <div>
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900">Featured Halls</h2>
-                <p className="text-gray-600 mt-1">Choose from our curated collection</p>
+                <h2 className="text-3xl font-bold" style={{ color: '#20056a' }}>Featured Halls</h2>
+                <p className="mt-1" style={{ color: '#057080' }}>Choose from our curated collection</p>
               </div>
             </div>
 
@@ -224,4 +228,21 @@ export default function HomePage() {
     </Suspense>
   );
 }
+
+// Custom button color classes for use in this page
+import React from "react";
+
+export const style = (
+  <style jsx global>{`
+    .btn-primary { background: #010509; color: #fff; }
+    .btn-secondary { background: #20056a; color: #fff; }
+    .btn-success { background: #28a745; color: #fff; }
+    .btn-danger { background: #eb4007; color: #fff; }
+    .btn-warning { background: #ffc107; color: #333; }
+    .btn-info { background: #057080; color: #fff; }
+    .btn-light { background: #f8f9fa; color: #333; border: 1px solid #ccc; }
+    .btn-dark { background: #343a40; color: #fff; }
+    .sample-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.12); opacity: 0.92; }
+  `}</style>
+);
 

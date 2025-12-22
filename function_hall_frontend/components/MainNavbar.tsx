@@ -100,7 +100,7 @@ export default function MainNavbar() {
 
   return (
     <>
-      <nav className="bg-black sticky top-0 z-50 shadow-lg">
+      <nav className="sticky top-0 z-50 shadow-lg" style={{ background: '#2d3e50' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -203,7 +203,7 @@ export default function MainNavbar() {
                   <div className="relative" ref={dropdownRef}>
                     <button
                       onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
+                      className="bg-[#20056a] hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
                     >
                       <FaUserPlus />
                       Register

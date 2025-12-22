@@ -1,3 +1,17 @@
+/* Utility classes for consistent page layout (from /home) */
+.page-width {
+  max-width: 72rem; /* 1152px, same as max-w-6xl */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
 @import "tailwindcss";
 
 :root {

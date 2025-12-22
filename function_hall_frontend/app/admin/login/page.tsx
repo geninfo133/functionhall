@@ -75,8 +75,9 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <div className="p-4 sm:p-6 lg:p-8 flex items-center justify-center">
+        <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
@@ -167,6 +168,8 @@ export default function AdminLoginPage() {
           <p className="text-xs text-gray-500">
             Protected admin area. Unauthorized access is prohibited.
           </p>
+        </div>
+      </div>
         </div>
       </div>
     </div>
