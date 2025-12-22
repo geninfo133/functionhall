@@ -170,7 +170,6 @@ export default function AdminLoginPage() {
           </p>
         </div>
       </div>
-        </div>
       </div>
     </div>
   );
