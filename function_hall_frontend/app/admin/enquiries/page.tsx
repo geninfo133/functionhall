@@ -134,46 +134,45 @@ export default function AdminEnquiriesPage() {
       <main className="p-8 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
-              <FaEnvelope className="text-blue-600 text-3xl" />
-              <h1 className="text-3xl font-bold text-blue-700">Customer Enquiries</h1>
+              <FaEnvelope className="text-3xl" style={{ color: '#20056a' }} />
+              <h1 className="text-3xl font-bold" style={{ color: '#20056a' }}>Customer Enquiries</h1>
             </div>
             <div className="text-sm text-gray-600">
-              Total: <span className="font-bold text-blue-600">{filteredEnquiries.length}</span> enquiries
+              Total: <span className="font-bold" style={{ color: '#20056a' }}>{filteredEnquiries.length}</span> enquiries
             </div>
           </div>
 
-          {/* Filters and Sorting */}
+          {/* Filters */}
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Sort By */}
               <div>
-                <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaSort className="text-blue-600" />
-                  <span>Sort By</span>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                  <FaMapMarkerAlt style={{ color: '#0d316cff' }} />
+                  <span>Filter by Location</span>
                 </label>
                 <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  value={filterLocation}
+                  onChange={(e) => setFilterLocation(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 >
-                  <option value="date">Date (Newest First)</option>
-                  <option value="date-asc">Date (Oldest First)</option>
-                  <option value="name">Customer Name</option>
-                  <option value="hall">Hall Name</option>
-                  <option value="location">Location</option>
+                  <option value="">All Locations</option>
+                  {locations.map((loc) => (
+                    <option key={loc} value={loc}>
+                      {loc}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              {/* Filter by Hall */}
               <div>
-                <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaBuilding className="text-blue-600" />
+                <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                  <FaBuilding style={{ color: '#0d316cff' }} />
                   <span>Filter by Hall</span>
                 </label>
                 <select
                   value={filterHall}
                   onChange={(e) => setFilterHall(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 >
                   <option value="">All Halls</option>
                   {halls.map((hall) => (
@@ -184,41 +183,24 @@ export default function AdminEnquiriesPage() {
                 </select>
               </div>
 
-              {/* Filter by Location */}
               <div>
-                <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaMapMarkerAlt className="text-blue-600" />
-                  <span>Filter by Location</span>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center space-x-2">
+                  <FaSort style={{ color: '#0d316cff' }} />
+                  <span>Sort By</span>
                 </label>
                 <select
-                  value={filterLocation}
-                  onChange={(e) => setFilterLocation(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                 >
-                  <option value="">All Locations</option>
-                  {locations.map((loc) => (
-                    <option key={loc} value={loc}>
-                      {loc}
-                    </option>
-                  ))}
+                  <option value="date">Newest First</option>
+                  <option value="date-asc">Oldest First</option>
+                  <option value="name">Customer Name</option>
+                  <option value="hall">Hall Name</option>
+                  <option value="location">Location</option>
                 </select>
               </div>
             </div>
-
-            {/* Clear Filters */}
-            {(filterHall || filterLocation) && (
-              <div className="mt-4">
-                <button
-                  onClick={() => {
-                    setFilterHall("");
-                    setFilterLocation("");
-                  }}
-                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
-                >
-                  Clear Filters
-                </button>
-              </div>
-            )}
           </div>
 
           {/* Enquiries List */}
@@ -237,16 +219,16 @@ export default function AdminEnquiriesPage() {
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <FaUser className="text-blue-600" />
-                        <h3 className="text-lg font-bold text-blue-700">{enquiry.customer_name}</h3>
+                        <FaUser style={{ color: '#0d316cff' }} />
+                        <h3 className="text-lg font-bold" style={{ color: '#0d316cff' }}>{enquiry.customer_name}</h3>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
-                          <FaPhone className="text-blue-600" />
+                          <FaPhone style={{ color: '#0d316cff' }} />
                           <span>{enquiry.customer_phone}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <FaCalendarAlt className="text-blue-600" />
+                          <FaCalendarAlt style={{ color: '#0d316cff' }} />
                           <span>
                             {enquiry.created_at ? (() => {
                               const date = new Date(enquiry.created_at);
@@ -262,13 +244,13 @@ export default function AdminEnquiriesPage() {
                         </div>
                         {enquiry.hall_name && (
                           <div className="flex items-center space-x-2">
-                            <FaBuilding className="text-blue-600" />
+                            <FaBuilding style={{ color: '#0d316cff' }} />
                             <span>{enquiry.hall_name}</span>
                           </div>
                         )}
                         {enquiry.location && (
                           <div className="flex items-center space-x-2">
-                            <FaMapMarkerAlt className="text-blue-600" />
+                            <FaMapMarkerAlt style={{ color: '#0d316cff' }} />
                             <span>{enquiry.location}</span>
                           </div>
                         )}
@@ -320,7 +302,7 @@ export default function AdminEnquiriesPage() {
                       }
                     </p>
                     {enquiry.message.length > 100 && (
-                      <button className="text-blue-600 hover:text-blue-700 text-xs font-semibold mt-1">
+                      <button className="text-xs font-semibold mt-1" style={{ color: '#0d316cff' }}>
                         {selectedEnquiry === enquiry.id ? 'Show less' : 'Read more'}
                       </button>
                     )}

@@ -30,7 +30,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section with unified navbar gap */}
       <div className="p-4 sm:p-6 lg:p-8">
         <div className="relative rounded-2xl shadow-xl p-4 mb-0 text-center overflow-hidden flex items-center justify-center" style={{ background: '#0d316cff', minHeight: '7.5rem', height: '120px' }}>
@@ -68,7 +68,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 {/* Address */}
                 <div className="flex items-start">
-                  <FaMapMarkerAlt className="text-blue-600 text-xl mr-3 mt-1 flex-shrink-0" />
+                  <FaMapMarkerAlt className="text-xl mr-3 mt-1 flex-shrink-0" style={{ color: '#0d316cff' }} />
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Visit Us</h3>
                     <p className="text-gray-600 text-sm">
@@ -81,10 +81,10 @@ export default function ContactPage() {
 
                 {/* Phone */}
                 <div className="flex items-start">
-                  <FaPhone className="text-blue-600 text-xl mr-3 mt-1 flex-shrink-0" />
+                  <FaPhone className="text-xl mr-3 mt-1 flex-shrink-0" style={{ color: '#0d316cff' }} />
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Call Us</h3>
-                    <a href="tel:+919866168995" className="text-blue-600 hover:text-blue-700 font-medium">
+                    <a href="tel:+919866168995" className="font-medium" style={{ color: '#0d316cff' }}>
                       +91 9866168995
                     </a>
                   </div>
@@ -92,14 +92,15 @@ export default function ContactPage() {
 
                 {/* Website */}
                 <div className="flex items-start">
-                  <FaGlobe className="text-blue-600 text-xl mr-3 mt-1 flex-shrink-0" />
+                  <FaGlobe className="text-xl mr-3 mt-1 flex-shrink-0" style={{ color: '#0d316cff' }} />
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Website</h3>
                     <a 
                       href="https://www.geninfotech.netlify.app" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 break-all"
+                      className="break-all"
+                      style={{ color: '#0d316cff' }}
                     >
                       www.geninfotech.netlify.app
                     </a>
@@ -134,8 +135,8 @@ export default function ContactPage() {
             </div>
 
             {/* Map or Additional Info */}
-            <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
-              <h3 className="text-lg font-bold text-blue-700 mb-3">Business Hours</h3>
+            <div className="rounded-xl p-6 border-2" style={{ background: '#e8f0fe', borderColor: '#b3c7e6' }}>
+              <h3 className="text-lg font-bold mb-3" style={{ color: '#0d316cff' }}>Business Hours</h3>
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex justify-between">
                   <span className="font-medium">Monday - Friday:</span>
@@ -182,7 +183,8 @@ export default function ContactPage() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 outline-none"
+                  style={{ focusVisible: { ringColor: '#0d316cff', borderColor: '#0d316cff' } }}
                   placeholder="Enter your name"
                 />
               </div>
@@ -198,7 +200,8 @@ export default function ContactPage() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 outline-none"
+                  style={{ focusVisible: { ringColor: '#0d316cff', borderColor: '#0d316cff' } }}
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -213,7 +216,8 @@ export default function ContactPage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 outline-none"
+                  style={{ focusVisible: { ringColor: '#0d316cff', borderColor: '#0d316cff' } }}
                   placeholder="+91 XXXXXXXXXX"
                 />
               </div>
@@ -229,14 +233,18 @@ export default function ContactPage() {
                   value={formData.message}
                   onChange={handleChange}
                   rows={5}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 outline-none resize-none"
+                  style={{ focusVisible: { ringColor: '#0d316cff', borderColor: '#0d316cff' } }}
                   placeholder="Tell us how we can help you..."
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#0d316cff] text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition shadow-lg"
+                className="w-full text-white py-3 rounded-lg font-bold transition shadow-lg"
+                style={{ background: '#0d316cff' }}
+                onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+                onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
               >
                 Send Message
               </button>
@@ -245,21 +253,23 @@ export default function ContactPage() {
         </div>
 
         {/* Quick Links */}
-        <div className="mt-8 bg-gradient-to-r from-[#0d316cff] to-[#0d316cff] rounded-xl shadow-lg p-6 text-center">
+        <div className="mt-8 rounded-xl shadow-lg p-6 text-center" style={{ background: '#0d316cff' }}>
           <h2 className="text-2xl font-bold text-white mb-3">Looking for Function Halls?</h2>
-          <p className="text-base text-blue-100 mb-4">
+          <p className="text-base mb-4" style={{ color: '#b3c7e6' }}>
             Browse our collection of beautiful venues for your special occasions
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="/halls"
-              className="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-50 transition shadow-lg inline-block"
+              className="bg-white px-6 py-3 rounded-lg font-bold text-base transition shadow-lg inline-block"
+              style={{ color: '#0d316cff' }}
             >
               Browse Function Halls
             </a>
             <a
               href="/customer/enquiry"
-              className="bg-blue-800 text-white px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-900 transition shadow-lg inline-block"
+              className="text-white px-6 py-3 rounded-lg font-bold text-base transition shadow-lg inline-block"
+              style={{ background: '#082451' }}
             >
               Send Enquiry
             </a>

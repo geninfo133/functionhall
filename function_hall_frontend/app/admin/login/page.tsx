@@ -41,7 +41,6 @@ export default function AdminLoginPage() {
 
       if (response.ok && data.token) {
         console.log("✅ Admin login successful! Token received");
-        console.log("📋 Admin role:", data.admin.role);
         
         // Clear any vendor session data first
         localStorage.removeItem('vendorToken');
@@ -51,17 +50,8 @@ export default function AdminLoginPage() {
         localStorage.setItem('adminToken', data.token);
         localStorage.setItem('adminUser', JSON.stringify(data.admin));
         
-        // Redirect based on role
-        if (data.admin.role === 'super_admin') {
-          window.location.href = "/admin/dashboard";
-        } else if (data.admin.role === 'vendor') {
-          // If someone logs in as vendor from admin login page, redirect to vendor dashboard
-          localStorage.setItem('vendorToken', data.token);
-          localStorage.setItem('vendorData', JSON.stringify(data.admin));
-          window.location.href = "/vendor/dashboard";
-        } else {
-          window.location.href = "/admin/dashboard";
-        }
+        // Redirect to admin dashboard
+        window.location.href = "/admin/dashboard";
       } else {
         console.error("❌ Login failed:", data.error);
         setError(data.error || "Login failed. Please try again.");
@@ -80,10 +70,10 @@ export default function AdminLoginPage() {
         <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: '#0d316cff' }}>
             <Shield size={32} className="text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#20056a' }}>
             Admin Portal
           </h1>
           <p className="text-gray-600">
@@ -117,6 +107,7 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  style={{ color: '#20056a' }}
                   required
                   autoComplete="username"
                 />
@@ -135,6 +126,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                  style={{ color: '#20056a' }}
                   required
                   autoComplete="current-password"
                 />
@@ -144,7 +136,10 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/30"
+              className="w-full text-white py-3 rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              style={{ background: '#20056a' }}
+              onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+              onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
             >
               {loading ? "Signing in..." : "Sign In as Admin"}
             </button>

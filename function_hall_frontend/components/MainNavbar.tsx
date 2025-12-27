@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield } from "react-icons/fa";
+import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield, FaHome, FaSearch } from "react-icons/fa";
 
 export default function MainNavbar() {
   const router = useRouter();
@@ -116,11 +116,11 @@ export default function MainNavbar() {
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/home" className="text-gray-300 hover:text-white transition font-medium flex items-center gap-2">
-                <FaBuilding />
+                <FaHome />
                 Home
               </Link>
               <Link href="/halls" className="text-gray-300 hover:text-white transition font-medium flex items-center gap-2">
-                <FaBuilding />
+                <FaSearch />
                 Browse Halls
               </Link>
               {!isCustomerLoggedIn && !isAdminLoggedIn && !isVendorLoggedIn && (
@@ -203,7 +203,10 @@ export default function MainNavbar() {
                   <div className="relative" ref={dropdownRef}>
                     <button
                       onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
-                      className="bg-[#20056a] hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
+                      className="text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
+                      style={{ background: '#20056a' }}
+                      onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+                      onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
                     >
                       <FaUserPlus />
                       Register
@@ -268,7 +271,7 @@ export default function MainNavbar() {
           >
             <div className="flex flex-col h-full">
               {/* Sidebar Header */}
-              <div className={`${isVendorLoggedIn ? 'bg-green-600' : 'bg-blue-600'} text-white p-6`}>
+              <div className={`${isVendorLoggedIn ? 'bg-green-600' : ''} text-white p-6`} style={!isVendorLoggedIn ? { background: '#0d316cff' } : {}}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold">Menu</h2>
                   <button
@@ -279,7 +282,7 @@ export default function MainNavbar() {
                   </button>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 ${isVendorLoggedIn ? 'bg-green-700' : 'bg-blue-700'} rounded-full flex items-center justify-center`}>
+                  <div className={`w-12 h-12 ${isVendorLoggedIn ? 'bg-green-700' : ''} rounded-full flex items-center justify-center`} style={!isVendorLoggedIn ? { background: '#0a2554' } : {}}>
                     {isVendorLoggedIn ? <FaBuilding size={20} /> : <FaUser size={20} />}
                   </div>
                   <div>

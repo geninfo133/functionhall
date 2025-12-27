@@ -62,7 +62,7 @@ export default function VendorLoginPage() {
       <div className="p-4 sm:p-6 lg:p-8 flex items-center justify-center">
           <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">Vendor Login</h1>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#0d316cff' }}>Vendor Login</h1>
           <p className="text-gray-600">Access your vendor dashboard</p>
         </div>
 
@@ -106,7 +106,10 @@ export default function VendorLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full text-white font-semibold py-3 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            style={{ background: '#20056a' }}
+            onMouseOver={(e) => !loading && (e.currentTarget.style.opacity = '0.9')}
+            onMouseOut={(e) => !loading && (e.currentTarget.style.opacity = '1')}
           >
             {loading ? "Logging in..." : "Login"}
           </button>

@@ -16,57 +16,57 @@ const menu = [
 export default function Sidebar() {
   const pathname = usePathname();
   return (
-    <aside className="w-64 bg-slate-900 h-screen shadow-lg flex flex-col p-6 rounded-r-2xl border-r border-slate-700">
+    <aside className="w-48 h-screen shadow-lg flex flex-col p-6 border-r border-slate-700" style={{ background: '#0d316cff' }}>
       
       <nav className="flex-1">
-        <div className="mb-4 px-4">
-          <p className="text-lg tracking-wider text-slate-300 font-bold pb-2 border-b-2 border-slate-600" style={{ fontFamily: 'Arial, sans-serif' }}>Navigation Menu</p>
+        <div className="mb-3 px-2">
+          <p className="text-xs tracking-wider text-slate-300 font-bold pb-2 border-b-2 border-slate-600 whitespace-nowrap" style={{ fontFamily: 'Arial, sans-serif' }}>Navigation Menu</p>
         </div>
         <ul className="space-y-2">
           <li>
-            <a href="/admin/dashboard" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+            <a href="/admin/dashboard" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaTachometerAlt className="text-slate-400" />
               <span>Dashboard</span>
             </a>
           </li>
           <li>
-            <a href="/admin/enquiries" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+            <a href="/admin/enquiries" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaHeadset className="text-slate-400" />
-              <span>View Enquiries</span>
+              <span>Enquiries</span>
             </a>
           </li>
           <li>
-            <a href="/customer/enquiry" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+            <a href="/customer/enquiry" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaHeadset className="text-slate-400" />
               <span>Send Enquiry</span>
             </a>
           </li>
           <li>
-            <a href="/admin/halls" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+            <a href="/admin/halls" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaBuilding className="text-slate-400" />
-              <span>Function Halls</span>
+              <span>Halls</span>
             </a>
           </li>
           <li>
-            <a href="/admin/bookings" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition">
+            <a href="/admin/bookings" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaFileInvoice className="text-slate-400" />
-              <span>Manage Bookings</span>
+              <span>Bookings</span>
             </a>
           </li>
           <li>
-            <a href="/admin/customers-list" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+            <a href="/admin/customers-list" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaUsers className="text-slate-400" />
               <span>Customers</span>
             </a>
           </li>
           <li>
-            <a href="/admin/customers-list" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+            <a href="/admin/customers-list" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaUsers className="text-slate-400" />
               <span>Customer List</span>
             </a>
           </li>
           <li>
-            <a href="/admin/vendors" className="flex items-center space-x-3 w-full px-4 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 font-bold transition whitespace-nowrap">
+            <a href="/admin/vendors" className="flex items-center space-x-2 w-full px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white text-slate-300 text-xs transition whitespace-nowrap">
               <FaUserShield className="text-slate-400" />
               <span>Vendors</span>
             </a>
@@ -89,25 +89,28 @@ function LogoutButton() {
   return (
     <>
       <button
-        className="flex items-center justify-center space-x-2 w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold transition"
+        className="flex items-center justify-center space-x-2 w-full py-2 rounded-lg text-white text-sm transition"
+        style={{ background: '#0d316cff' }}
         onClick={() => setShow(true)}
       >
         <FaSignOutAlt />
         <span>Logout</span>
       </button>
       {show && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-blue-600 bg-opacity-30">
-          <div className="bg-blue-600 text-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-30" style={{ background: 'rgba(13, 49, 108, 0.3)' }}>
+          <div className="text-white rounded-xl shadow-lg p-8 flex flex-col items-center" style={{ background: '#0d316cff' }}>
             <span className="text-lg font-semibold mb-4">Are you sure you want to logout?</span>
             <div className="flex gap-4">
               <button
-                className="px-6 py-2 rounded-lg bg-white text-blue-600 font-bold border border-blue-600 hover:bg-blue-100 transition"
+                className="px-6 py-2 rounded-lg bg-white font-bold border transition"
+                style={{ color: '#0d316cff', borderColor: '#0d316cff' }}
                 onClick={() => setShow(false)}
               >
                 Cancel
               </button>
               <button
-                className="px-6 py-2 rounded-lg bg-blue-600 text-white font-bold border border-blue-600 hover:bg-blue-700 transition"
+                className="px-6 py-2 rounded-lg text-white font-bold border transition"
+                style={{ background: '#0d316cff', borderColor: '#0d316cff' }}
                 onClick={handleLogout}
               >
                 Logout

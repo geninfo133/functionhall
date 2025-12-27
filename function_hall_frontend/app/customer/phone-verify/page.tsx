@@ -127,13 +127,13 @@ export default function PhoneVerifyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: '#e8f0fe' }}>
             <span className="text-3xl">📱</span>
           </div>
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#0d316cff' }}>
             {step === 1 ? "Verify Your Phone" : "Enter OTP"}
           </h1>
           <p className="text-gray-600">
@@ -165,7 +165,8 @@ export default function PhoneVerifyPage() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ""))}
                 placeholder="Enter your phone number"
-                className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+                className="w-full px-4 py-3 border-2 rounded-lg focus:ring-2 text-lg"
+                style={{ outlineColor: '#0d316cff' }}
                 required
                 maxLength={15}
               />
@@ -180,7 +181,10 @@ export default function PhoneVerifyPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition disabled:bg-gray-400 shadow-lg"
+              className="w-full text-white py-3 rounded-lg font-semibold text-lg transition disabled:bg-gray-400 shadow-lg"
+              style={{ background: loading ? '#9ca3af' : '#20056a' }}
+              onMouseOver={(e) => !loading && (e.currentTarget.style.opacity = '0.9')}
+              onMouseOut={(e) => !loading && (e.currentTarget.style.opacity = '1')}
             >
               {loading ? "Sending..." : "Send OTP"}
             </button>
@@ -190,7 +194,8 @@ export default function PhoneVerifyPage() {
               <button
                 type="button"
                 onClick={() => router.push("/customer/login")}
-                className="text-blue-600 font-semibold hover:underline"
+                className="font-semibold hover:underline"
+                style={{ color: '#0d316cff' }}
               >
                 Login here
               </button>
@@ -213,7 +218,8 @@ export default function PhoneVerifyPage() {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                    className="w-12 h-14 text-center text-2xl font-bold border-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-12 h-14 text-center text-2xl font-bold border-2 rounded-lg focus:ring-2"
+                    style={{ outlineColor: '#0d316cff' }}
                   />
                 ))}
               </div>
@@ -228,7 +234,10 @@ export default function PhoneVerifyPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition disabled:bg-gray-400 shadow-lg"
+              className="w-full text-white py-3 rounded-lg font-semibold text-lg transition disabled:bg-gray-400 shadow-lg"
+              style={{ background: loading ? '#9ca3af' : '#20056a' }}
+              onMouseOver={(e) => !loading && (e.currentTarget.style.opacity = '0.9')}
+              onMouseOut={(e) => !loading && (e.currentTarget.style.opacity = '1')}
             >
               {loading ? "Verifying..." : "Verify OTP"}
             </button>
@@ -242,7 +251,8 @@ export default function PhoneVerifyPage() {
                 <button
                   type="button"
                   onClick={handleResendOTP}
-                  className="text-sm text-blue-600 font-semibold hover:underline"
+                  className="text-sm font-semibold hover:underline"
+                  style={{ color: '#0d316cff' }}
                 >
                   Resend OTP
                 </button>

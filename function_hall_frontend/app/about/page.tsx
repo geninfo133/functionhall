@@ -18,8 +18,8 @@ export default function AboutPage() {
                   <p className="text-lg max-w-2xl mx-auto mb-1" style={{ color: '#18c9e8ff', fontFamily: 'Inter, Arial, sans-serif' }}>
                     Your Premier Function Hall Booking Platform
                   </p>
-                  <div className="w-16 h-1 bg-blue-300 mx-auto mb-2 rounded-full"></div>
-                  <p className="text-sm text-blue-200 italic mt-1">
+                  <div className="w-16 h-1 mx-auto mb-2 rounded-full" style={{ background: '#0d316cff' }}></div>
+                  <p className="text-sm italic mt-1" style={{ color: '#b3c7e6' }}>
                     (A wing of GenInfotech)
                   </p>
                 </div>
@@ -41,14 +41,14 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className="bg-blue-50 rounded-lg p-4 text-center">
               <div className="text-3xl mb-2">🎓</div>
-              <h3 className="text-lg font-bold text-blue-700 mb-1">Training Excellence</h3>
-              <p className="text-3xl font-bold text-blue-600">20+</p>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Training Excellence</h3>
+              <p className="text-3xl font-bold" style={{ color: '#0d316cff' }}>20+</p>
               <p className="text-sm text-gray-600 mt-1">Years of Experience</p>
             </div>
 
             <div className="bg-blue-50 rounded-lg p-4 text-center">
               <div className="text-3xl mb-2">💻</div>
-              <h3 className="text-lg font-bold text-blue-700 mb-1">Software Development</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Software Development</h3>
               <p className="text-sm text-gray-600 mt-1">Innovative Solutions & Custom Applications</p>
             </div>
           </div>
@@ -72,39 +72,39 @@ export default function AboutPage() {
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
           <h2 className="text-2xl font-bold mb-4" style={{ color: '#0d316cff' }}>What We Offer</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
+            <div className="border-2 rounded-lg p-4 hover:shadow-md transition" style={{ borderColor: '#b3c7e6' }}>
               <div className="text-3xl mb-2">🔍</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Easy Search</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Easy Search</h3>
               <p className="text-sm text-gray-600">Browse and search function halls by location, capacity, and price</p>
             </div>
 
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
+            <div className="border-2 rounded-lg p-4 hover:shadow-md transition" style={{ borderColor: '#b3c7e6' }}>
               <div className="text-3xl mb-2">📅</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Real-time Availability</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Real-time Availability</h3>
               <p className="text-sm text-gray-600">Check hall availability and book your preferred dates instantly</p>
             </div>
 
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
+            <div className="border-2 rounded-lg p-4 hover:shadow-md transition" style={{ borderColor: '#b3c7e6' }}>
               <div className="text-3xl mb-2">💰</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Transparent Pricing</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Transparent Pricing</h3>
               <p className="text-sm text-gray-600">View detailed packages and pricing with no hidden costs</p>
             </div>
 
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
+            <div className="border-2 rounded-lg p-4 hover:shadow-md transition" style={{ borderColor: '#b3c7e6' }}>
               <div className="text-3xl mb-2">📸</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Photo Galleries</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Photo Galleries</h3>
               <p className="text-sm text-gray-600">Explore high-quality photos of venues before you book</p>
             </div>
 
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
+            <div className="border-2 rounded-lg p-4 hover:shadow-md transition" style={{ borderColor: '#b3c7e6' }}>
               <div className="text-3xl mb-2">💬</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Direct Communication</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Direct Communication</h3>
               <p className="text-sm text-gray-600">Send enquiries and communicate directly with hall owners</p>
             </div>
 
-            <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
+            <div className="border-2 rounded-lg p-4 hover:shadow-md transition" style={{ borderColor: '#b3c7e6' }}>
               <div className="text-3xl mb-2">🛡️</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Secure Bookings</h3>
+              <h3 className="text-lg font-bold mb-1" style={{ color: '#0d316cff' }}>Secure Bookings</h3>
               <p className="text-sm text-gray-600">Safe and secure booking process with confirmed reservations</p>
             </div>
           </div>
@@ -155,19 +155,21 @@ export default function AboutPage() {
         {/* Call to Action */}
         <div className="bg-gradient-to-r from-[#0d316cff] to-[#0d316cff] rounded-xl shadow-lg p-6 text-center">
           <h2 className="text-2xl font-bold text-white mb-3">Ready to Book Your Perfect Venue?</h2>
-          <p className="text-base text-blue-100 mb-6">
+          <p className="text-base mb-6" style={{ color: '#b3c7e6' }}>
             Explore our collection of beautiful function halls and make your event unforgettable
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="/halls"
-              className="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-50 transition shadow-lg"
+              className="px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-50 transition shadow-lg"
+              style={{ background: 'white', color: '#0d316cff' }}
             >
               Browse Function Halls
             </a>
             <a
               href="/customer/register"
-              className="bg-blue-800 text-white px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-900 transition shadow-lg"
+              className="text-white px-6 py-3 rounded-lg font-bold text-base transition shadow-lg"
+              style={{ background: '#082451' }}
             >
               Register Now
             </a>

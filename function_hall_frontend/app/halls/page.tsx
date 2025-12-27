@@ -47,10 +47,10 @@ export default function BrowseHallsPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <main className="p-4 sm:p-6 lg:p-8 pt-8">
         {/* Hero Banner with Search */}
-        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
+        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg" style={{ background: '#0d316cff' }}>
           <div className="px-6 py-3">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-3">
@@ -101,7 +101,10 @@ export default function BrowseHallsPage() {
                       <div className="flex gap-2 items-end">
                         <button
                           type="submit"
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
+                          className="flex-1 text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
+                          style={{ background: '#20056a' }}
+                          onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
+                          onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
                         >
                           <FaSearch className="text-xs" />
                           Search

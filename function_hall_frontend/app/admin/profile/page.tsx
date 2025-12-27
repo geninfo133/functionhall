@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "../../../components/Sidebar";
-import Topbar from "../../../components/Topbar";
 import { BACKEND_URL } from "../../../lib/config";
 import { User, Mail, Shield, Calendar } from "lucide-react";
 
@@ -68,35 +67,32 @@ export default function AdminProfilePage() {
     <div className="flex min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <Topbar />
-        <main className="p-8">
-          <div className="max-w-7xl mx-auto">
+        <main className="p-6">
+          <div className="max-w-6xl mx-auto">
             {/* Hero Header Card */}
-            <div className="bg-blue-700 rounded-3xl shadow-2xl p-10 mb-8 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32 blur-2xl"></div>
-              <div className="relative flex flex-col md:flex-row items-center gap-8">
+            <div className="rounded-xl shadow-lg p-5 mb-6 text-white relative overflow-hidden" style={{ background: '#0d316cff' }}>
+              <div className="relative flex items-center gap-4">
                 <div className="relative">
-                  <div className="w-32 h-32 rounded-3xl overflow-hidden border-4 border-white shadow-2xl bg-white">
+                  <div className="w-16 h-16 rounded-full overflow-hidden border-3 border-white shadow-lg bg-white">
                     <img 
                       src="/hani1.jpg" 
                       alt={admin.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white shadow-lg"></div>
+                  <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                 </div>
-                <div className="flex-1 text-center md:text-left">
-                  <div className="inline-flex items-center gap-2 bg-blue-700/80 backdrop-blur-sm px-4 py-2 rounded-full mb-3">
-                    <Shield size={18} />
-                    <span className="font-semibold text-sm uppercase tracking-wider">
-                      {admin.role === 'super_admin' ? 'Super Administrator' : admin.role === 'vendor' ? 'Vendor Account' : 'Administrator'}
+                <div className="flex-1">
+                  <div className="inline-flex items-center gap-2 bg-white/20 px-3 py-1 rounded-full mb-2">
+                    <Shield size={14} />
+                    <span className="font-semibold text-xs uppercase tracking-wider">
+                      Super Administrator
                     </span>
                   </div>
-                  <h1 className="text-2xl md:text-2xl font-extrabold mb-2">
+                  <h1 className="text-xl font-bold mb-1">
                     {admin.name}
                   </h1>
-                  <p className="text-white/90 text-lg">
+                  <p className="text-white/80 text-sm">
                     Welcome to your admin dashboard
                   </p>
                 </div>
@@ -104,108 +100,113 @@ export default function AdminProfilePage() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm font-medium mb-1">Total Halls</p>
-                    <p className="text-3xl font-bold text-orange-600">0</p>
+                    <p className="text-gray-500 text-xs font-medium mb-1">Total Halls</p>
+                    <p className="text-2xl font-bold" style={{ color: '#20056a' }}>0</p>
                   </div>
-                  <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center">
-                    <Calendar size={24} className="text-orange-600" />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                    <Calendar size={20} className="text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+              <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm font-medium mb-1">Total Users</p>
-                    <p className="text-3xl font-bold text-blue-600">0</p>
+                    <p className="text-gray-500 text-xs font-medium mb-1">Total Users</p>
+                    <p className="text-2xl font-bold" style={{ color: '#20056a' }}>0</p>
                   </div>
-                  <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-                    <User size={24} className="text-blue-600" />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                    <User size={20} className="text-white" />
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+              <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-gray-500 text-sm font-medium mb-1">Total Enquiries</p>
-                    <p className="text-3xl font-bold text-purple-600">0</p>
+                    <p className="text-gray-500 text-xs font-medium mb-1">Total Enquiries</p>
+                    <p className="text-2xl font-bold" style={{ color: '#20056a' }}>0</p>
                   </div>
-                  <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center">
-                    <Mail size={24} className="text-purple-600" />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                    <Mail size={20} className="text-white" />
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Profile Information Card */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-pink-500 rounded-xl flex items-center justify-center">
-                  <User size={20} className="text-white" />
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h2 className="text-lg font-bold mb-4 flex items-center gap-2" style={{ color: '#20056a' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                  <User size={16} className="text-white" />
                 </div>
                 Profile Information
               </h2>
 
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Name */}
-                <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                      <User size={24} className="text-white" />
+                <div className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                      <User size={18} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 font-medium mb-1">Full Name</p>
-                      <p className="text-xl font-bold text-gray-800">{admin.name}</p>
+                      <p className="text-xs text-gray-500 font-medium mb-1">Full Name</p>
+                      <p className="text-sm font-bold text-gray-800">{admin.name}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Email */}
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                      <Mail size={24} className="text-white" />
+                <div className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                      <Mail size={18} className="text-white" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-600 font-medium mb-1">Email Address</p>
-                      <p className="text-xl font-bold text-gray-800 truncate">{admin.email}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Role */}
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                      <Shield size={24} className="text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium mb-1">Account Role</p>
-                      <p className="text-xl font-bold text-gray-800 capitalize">{admin.role.replace('_', ' ')}</p>
+                      <p className="text-xs text-gray-500 font-medium mb-1">Email Address</p>
+                      <p className="text-sm font-bold text-gray-800 truncate">{admin.email}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Admin ID */}
-                <div className="bg-gradient-to-br from-green-50 to-green-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
-                      <Calendar size={24} className="text-white" />
+                <div className="bg-gray-50 rounded-lg p-4 hover:shadow-md transition">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                      <Shield size={18} className="text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600 font-medium mb-1">User ID</p>
-                      <p className="text-xl font-bold text-gray-800">#{admin.id}</p>
+                      <p className="text-xs text-gray-500 font-medium mb-1">User ID</p>
+                      <p className="text-sm font-bold text-gray-800">#{admin.id}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
+            </div>
+
+            {/* About Section */}
+            <div className="bg-white rounded-xl shadow-lg p-6 mt-6">
+              <h2 className="text-lg font-bold mb-4 flex items-center gap-2" style={{ color: '#20056a' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#20056a' }}>
+                  <User size={16} className="text-white" />
+                </div>
+                About Admin
+              </h2>
+              <div className="bg-gray-50 rounded-lg p-5">
+                <p className="text-sm text-gray-700 leading-relaxed mb-3">
+                  <strong style={{ color: '#20056a' }}>Suhasini</strong> is the Super Administrator of this Function Hall Management System. With extensive experience in event management and venue operations, Suhasini oversees all aspects of the platform including hall bookings, vendor management, customer relations, and enquiry handling.
+                </p>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  As the primary administrator, Suhasini ensures smooth operations, maintains high service standards, and provides exceptional support to both customers and vendors. The role includes managing function hall listings, approving bookings, coordinating with vendors, and ensuring customer satisfaction throughout the event planning process.
+                </p>
+              </div>
             </div>
           </div>
         </main>
