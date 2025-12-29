@@ -204,9 +204,9 @@ export default function MainNavbar() {
                     <button
                       onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
                       className="text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
-                      style={{ backgroundColor: '#0d316c' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#091f48'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0d316c'}
+                      style={{ backgroundColor: '#20056a' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#150442'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#20056a'}
                     >
                       <FaUserPlus />
                       Register
