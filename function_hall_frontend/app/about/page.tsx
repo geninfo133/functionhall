@@ -5,20 +5,20 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 pt-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 rounded-2xl shadow-xl p-8 mb-12 text-center relative overflow-hidden">
+        <div className="rounded-2xl shadow-xl p-6 mb-12 text-center relative overflow-hidden" style={{ backgroundColor: '#0d316c' }}>
           {/* Decorative Elements */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-white opacity-5 rounded-full -mr-24 -mt-24"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full -ml-16 -mb-16"></div>
           
           <div className="relative z-10">
-            <div className="inline-block mb-3">
-              <div className="text-4xl mb-2">🏛️</div>
+            <div className="inline-block mb-2">
+              <div className="text-3xl mb-1">🏛️</div>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white mb-3 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
               GenS Services
             </h1>
-            <div className="w-16 h-1 bg-blue-300 mx-auto mb-3 rounded-full"></div>
-            <p className="text-lg text-blue-50 mb-2 font-light">
+            <div className="w-16 h-1 bg-blue-300 mx-auto mb-2 rounded-full"></div>
+            <p className="text-base text-blue-50 mb-1 font-light">
               Your Premier Function Hall Booking Platform
             </p>
             <p className="text-sm text-blue-200 italic">
@@ -152,7 +152,7 @@ export default function AboutPage() {
         </div>
 
         {/* Call to Action */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-center">
+        <div className="rounded-xl shadow-lg p-6 text-center" style={{ backgroundColor: '#0d316c' }}>
           <h2 className="text-2xl font-bold text-white mb-3">Ready to Book Your Perfect Venue?</h2>
           <p className="text-base text-blue-100 mb-6">
             Explore our collection of beautiful function halls and make your event unforgettable
@@ -160,13 +160,16 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="/halls"
-              className="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-50 transition shadow-lg"
+              className="text-white px-6 py-3 rounded-lg font-bold text-base transition shadow-lg"
+              style={{ backgroundColor: '#20056a' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#150442'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#20056a'}
             >
               Browse Function Halls
             </a>
             <a
               href="/customer/register"
-              className="bg-blue-800 text-white px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-900 transition shadow-lg"
+              className="bg-white text-[#0d316c] px-6 py-3 rounded-lg font-bold text-base hover:bg-blue-50 transition shadow-lg"
             >
               Register Now
             </a>
