@@ -69,7 +69,7 @@ function HomePageContent() {
     <div className="min-h-screen">
       <main className="p-4 sm:p-6 lg:p-8">
           {/* Hero Banner with Search */}
-          <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
+          <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg" style={{ backgroundColor: '#0d316c' }}>
 
             <div className="px-6 sm:px-8 lg:px-12 py-4">
               <div className="max-w-6xl mx-auto">
@@ -123,7 +123,10 @@ function HomePageContent() {
                       <div className="flex gap-2 items-end">
                         <button
                           onClick={handleSearch}
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                          className="flex-1 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                          style={{ backgroundColor: '#20056a' }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#150442'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#20056a'}
                         >
                           <FaSearch className="text-xs" />
                           Search
