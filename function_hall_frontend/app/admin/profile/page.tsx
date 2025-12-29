@@ -72,7 +72,7 @@ export default function AdminProfilePage() {
         <main className="p-8">
           <div className="max-w-7xl mx-auto">
             {/* Hero Header Card */}
-            <div className="bg-blue-700 rounded-3xl shadow-2xl p-10 mb-8 text-white relative overflow-hidden">
+            <div className="bg-[#150442] rounded-3xl shadow-2xl p-10 mb-8 text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32 blur-2xl"></div>
               <div className="relative flex flex-col md:flex-row items-center gap-8">
@@ -87,7 +87,7 @@ export default function AdminProfilePage() {
                   <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full border-4 border-white shadow-lg"></div>
                 </div>
                 <div className="flex-1 text-center md:text-left">
-                  <div className="inline-flex items-center gap-2 bg-blue-700/80 backdrop-blur-sm px-4 py-2 rounded-full mb-3">
+                  <div className="inline-flex items-center gap-2 bg-[#150442]/80 backdrop-blur-sm px-4 py-2 rounded-full mb-3">
                     <Shield size={18} />
                     <span className="font-semibold text-sm uppercase tracking-wider">
                       {admin.role === 'super_admin' ? 'Super Administrator' : admin.role === 'vendor' ? 'Vendor Account' : 'Administrator'}

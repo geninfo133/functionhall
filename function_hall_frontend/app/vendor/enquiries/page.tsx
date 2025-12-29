@@ -165,7 +165,7 @@ export default function VendorEnquiriesPage() {
           </p>
           <button
             onClick={handleLogout}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+            className="bg-[#20056a] hover:bg-[#150442] text-white px-6 py-2 rounded-lg font-semibold transition"
           >
             Logout
           </button>
@@ -204,7 +204,7 @@ export default function VendorEnquiriesPage() {
               </Link>
             </li>
             <li>
-              <Link href="/vendor/enquiries" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold transition">
+              <Link href="/vendor/enquiries" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#20056a] text-white font-semibold transition">
                 <FaEnvelope />
                 <span>Enquiries</span>
               </Link>
@@ -270,7 +270,7 @@ export default function VendorEnquiriesPage() {
                 onClick={() => setFilter("all")}
                 className={`px-4 py-2 rounded-lg font-semibold transition ${
                   filter === "all"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#20056a] text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >

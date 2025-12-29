@@ -65,7 +65,7 @@ export default function HallDetailsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with Images */}
-      <div className="relative h-32 bg-blue-600 mx-4 sm:mx-6 lg:mx-8 mt-8 rounded-2xl overflow-hidden shadow-lg">
+      <div className="relative h-32 bg-[#20056a] mx-4 sm:mx-6 lg:mx-8 mt-8 rounded-2xl overflow-hidden shadow-lg">
         {hall.photos && hall.photos.length > 0 ? (
           <div className="relative h-full w-full">
             <img
@@ -143,7 +143,7 @@ export default function HallDetailsPage() {
                 <div className="space-y-2">
                   <button
                     onClick={() => router.push(`/booking?hallId=${hallId}`)}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold text-sm hover:bg-blue-700 transition shadow-lg"
+                    className="w-full bg-[#20056a] text-white py-2 px-4 rounded-lg font-semibold text-sm hover:bg-[#150442] transition shadow-lg"
                   >
                     📅 Book Now
                   </button>

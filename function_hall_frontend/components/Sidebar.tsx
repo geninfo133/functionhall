@@ -89,15 +89,15 @@ function LogoutButton() {
   return (
     <>
       <button
-        className="flex items-center justify-center space-x-2 w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold transition"
+        className="flex items-center justify-center space-x-2 w-full py-2 rounded-lg bg-[#20056a] hover:bg-[#150442] text-white font-bold transition"
         onClick={() => setShow(true)}
       >
         <FaSignOutAlt />
         <span>Logout</span>
       </button>
       {show && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-blue-600 bg-opacity-30">
-          <div className="bg-blue-600 text-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-[#20056a] bg-opacity-30">
+          <div className="bg-[#20056a] text-white rounded-xl shadow-lg p-8 flex flex-col items-center">
             <span className="text-lg font-semibold mb-4">Are you sure you want to logout?</span>
             <div className="flex gap-4">
               <button
@@ -107,7 +107,7 @@ function LogoutButton() {
                 Cancel
               </button>
               <button
-                className="px-6 py-2 rounded-lg bg-blue-600 text-white font-bold border border-blue-600 hover:bg-blue-700 transition"
+                className="px-6 py-2 rounded-lg bg-[#20056a] text-white font-bold border border-blue-600 hover:bg-[#150442] transition"
                 onClick={handleLogout}
               >
                 Logout

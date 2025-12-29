@@ -203,7 +203,10 @@ export default function MainNavbar() {
                   <div className="relative" ref={dropdownRef}>
                     <button
                       onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
+                      className="text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
+                      style={{ backgroundColor: '#0d316c' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#091f48'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#0d316c'}
                     >
                       <FaUserPlus />
                       Register
@@ -268,7 +271,7 @@ export default function MainNavbar() {
           >
             <div className="flex flex-col h-full">
               {/* Sidebar Header */}
-              <div className={`${isVendorLoggedIn ? 'bg-green-600' : 'bg-blue-600'} text-white p-6`}>
+              <div className={`${isVendorLoggedIn ? 'bg-green-600' : 'bg-[#20056a]'} text-white p-6`}>
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold">Menu</h2>
                   <button
@@ -279,7 +282,7 @@ export default function MainNavbar() {
                   </button>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 ${isVendorLoggedIn ? 'bg-green-700' : 'bg-blue-700'} rounded-full flex items-center justify-center`}>
+                  <div className={`w-12 h-12 ${isVendorLoggedIn ? 'bg-green-700' : 'bg-[#150442]'} rounded-full flex items-center justify-center`}>
                     {isVendorLoggedIn ? <FaBuilding size={20} /> : <FaUser size={20} />}
                   </div>
                   <div>

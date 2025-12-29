@@ -105,7 +105,7 @@ export default function VendorLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full bg-[#20056a] hover:bg-[#150442] text-white font-semibold py-3 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

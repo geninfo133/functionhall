@@ -172,7 +172,7 @@ export default function CustomersPage() {
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-blue-600 text-white">
+                <thead className="bg-[#20056a] text-white">
                   <tr>
                     <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
                       <div className="flex items-center gap-2"><FaIdCard /> ID</div>

@@ -196,7 +196,7 @@ export default function ProfilePage() {
 
                   <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6 hover:shadow-md transition">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-[#20056a] rounded-xl flex items-center justify-center shadow-lg">
                         <FaMapMarkerAlt className="text-white text-lg" />
                       </div>
                       <div>

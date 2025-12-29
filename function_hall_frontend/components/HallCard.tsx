@@ -26,7 +26,7 @@ export default function HallCard({ hall }: Props) {
         <p className="text-slate-300 font-semibold mb-3">
           ₹{hall.price_per_day.toLocaleString()} per day
         </p>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+        <button className="bg-[#20056a] text-white px-4 py-2 rounded-md hover:bg-[#150442] transition">
           View Details
         </button>
       </div>

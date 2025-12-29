@@ -79,7 +79,7 @@ export default function MyBookingsPage() {
               <p className="text-gray-600 mb-4">You haven't made any bookings yet.</p>
               <a
                 href="/home"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+                className="inline-block bg-[#20056a] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#150442] transition"
               >
                 Browse Halls
               </a>

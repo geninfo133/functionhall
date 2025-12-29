@@ -217,7 +217,7 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <main className="p-8 max-w-6xl mx-auto">
           {/* Welcome Banner */}
-          <div className="flex items-center justify-between bg-blue-600 text-white rounded-2xl shadow-lg px-8 py-6 mb-10 animate-fade-in">
+          <div className="flex items-center justify-between bg-[#20056a] text-white rounded-2xl shadow-lg px-8 py-6 mb-10 animate-fade-in">
             <div>
               <h1 className="text-4xl font-extrabold mb-2 drop-shadow">Welcome, {admin.name}!</h1>
               <p className="text-lg font-medium opacity-90">Manage your function halls, bookings, and more with ease.</p>

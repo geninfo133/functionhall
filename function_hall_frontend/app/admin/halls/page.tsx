@@ -216,7 +216,7 @@ export default function AdminHallsPage() {
               <Link href="/admin/hall-requests" className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg font-semibold shadow transition flex items-center gap-2">
                 <span>⏳</span> Pending Approvals
               </Link>
-              <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition" onClick={handleAdd}>+ Add New Hall</button>
+              <button className="bg-[#20056a] text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-[#150442] transition" onClick={handleAdd}>+ Add New Hall</button>
             </div>
           </div>
 
@@ -271,7 +271,7 @@ export default function AdminHallsPage() {
                       <div className="flex gap-2 items-end">
                         <button
                           type="button"
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                          className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
                         >
                           Search
                         </button>
@@ -344,7 +344,7 @@ export default function AdminHallsPage() {
                     )}
                   </div>
                   
-                  <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition mt-2 md:col-span-2">Add Hall</button>
+                  <button type="submit" className="bg-[#20056a] text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-[#150442] transition mt-2 md:col-span-2">Add Hall</button>
                   {error && <div className="text-red-500 font-semibold mt-2 md:col-span-2">{error}</div>}
                   {success && <div className="text-green-500 font-semibold mt-2 md:col-span-2">{success}</div>}
                 </form>
@@ -396,7 +396,7 @@ export default function AdminHallsPage() {
                     )}
                   </div>
                   
-                  <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-blue-700 transition mt-2 md:col-span-2">Update Hall</button>
+                  <button type="submit" className="bg-[#20056a] text-white px-6 py-2 rounded-lg font-semibold shadow hover:bg-[#150442] transition mt-2 md:col-span-2">Update Hall</button>
                   {error && <div className="text-red-500 font-semibold mt-2">{error}</div>}
                   {success && <div className="text-green-500 font-semibold mt-2">{success}</div>}
                 </form>
@@ -412,7 +412,7 @@ export default function AdminHallsPage() {
                 <h2 className="text-2xl font-bold mb-4 text-blue-600">Delete Hall</h2>
                 <div className="text-gray-700 mb-4">Are you sure you want to delete <span className="font-bold">{selectedHall.name}</span>?</div>
                 <div className="flex gap-4 justify-end">
-                  <button className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700" onClick={() => setShowDeleteModal(false)}>Cancel</button>
+                  <button className="bg-[#20056a] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#150442]" onClick={() => setShowDeleteModal(false)}>Cancel</button>
                   <button className="bg-red-700 text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-red-600" onClick={submitDelete}>Delete</button>
                 </div>
                 {error && <div className="text-red-500 font-semibold mt-2">{error}</div>}

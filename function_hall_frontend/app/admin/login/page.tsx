@@ -79,7 +79,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#20056a] rounded-full mb-4">
             <Shield size={32} className="text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/30"
+              className="w-full bg-[#20056a] text-white py-3 rounded-lg font-semibold hover:bg-[#150442] transition disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-600/30"
             >
               {loading ? "Signing in..." : "Sign In as Admin"}
             </button>

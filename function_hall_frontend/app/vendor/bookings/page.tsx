@@ -160,7 +160,7 @@ export default function VendorBookingsPage() {
           </p>
           <button
             onClick={handleLogout}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+            className="bg-[#20056a] hover:bg-[#150442] text-white px-6 py-2 rounded-lg font-semibold transition"
           >
             Logout
           </button>
@@ -193,7 +193,7 @@ export default function VendorBookingsPage() {
               </Link>
             </li>
             <li>
-              <Link href="/vendor/bookings" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold transition">
+              <Link href="/vendor/bookings" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#20056a] text-white font-semibold transition">
                 <FaCalendarCheck />
                 <span>Bookings</span>
               </Link>
@@ -271,7 +271,7 @@ export default function VendorBookingsPage() {
                 onClick={() => setFilter("all")}
                 className={`px-4 py-2 rounded-lg font-semibold transition ${
                   filter === "all"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#20056a] text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -301,7 +301,7 @@ export default function VendorBookingsPage() {
                 onClick={() => setFilter("completed")}
                 className={`px-4 py-2 rounded-lg font-semibold transition ${
                   filter === "completed"
-                    ? "bg-blue-600 text-white"
+                    ? "bg-[#20056a] text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >

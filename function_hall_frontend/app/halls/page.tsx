@@ -101,7 +101,7 @@ export default function BrowseHallsPage() {
                       <div className="flex gap-2 items-end">
                         <button
                           type="submit"
-                          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
+                          className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
                         >
                           <FaSearch className="text-xs" />
                           Search

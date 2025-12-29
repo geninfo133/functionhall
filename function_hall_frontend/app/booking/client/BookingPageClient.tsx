@@ -309,7 +309,7 @@ function BookingPageContent() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-gray-400"
+                className="w-full bg-[#20056a] text-white py-3 rounded-lg font-semibold hover:bg-[#150442] transition disabled:bg-gray-400"
               >
                 {loading ? "Processing..." : "Confirm Booking"}
               </button>

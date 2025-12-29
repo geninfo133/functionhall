@@ -179,7 +179,7 @@ export default function AboutPage() {
           <p className="text-sm text-gray-600 mb-3">Have questions? We'd love to hear from you!</p>
           <a
             href="/customer/enquiry"
-            className="inline-block bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold text-sm hover:bg-blue-700 transition"
+            className="inline-block bg-[#20056a] text-white px-5 py-2 rounded-lg font-semibold text-sm hover:bg-[#150442] transition"
           >
             Send an Enquiry
           </a>

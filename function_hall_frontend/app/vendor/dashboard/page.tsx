@@ -228,7 +228,7 @@ export default function VendorDashboardPage() {
           </p>
           <button
             onClick={handleLogout}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+            className="bg-[#20056a] hover:bg-[#150442] text-white px-6 py-2 rounded-lg font-semibold transition"
           >
             Logout
           </button>
@@ -249,7 +249,7 @@ export default function VendorDashboardPage() {
         <nav className="flex-1">
           <ul className="space-y-2">
             <li>
-              <Link href="/vendor/dashboard" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold transition">
+              <Link href="/vendor/dashboard" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#20056a] text-white font-semibold transition">
                 <FaTachometerAlt />
                 <span>Dashboard</span>
               </Link>
@@ -368,7 +368,7 @@ export default function VendorDashboardPage() {
             <h2 className="text-xl font-bold text-gray-800">Approved Halls</h2>
             <button
               onClick={() => setShowAddModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition"
+              className="bg-[#20056a] hover:bg-[#150442] text-white px-4 py-2 rounded-lg font-semibold flex items-center gap-2 transition"
             >
               <FaPlus /> Add New Hall
             </button>
@@ -547,7 +547,7 @@ export default function VendorDashboardPage() {
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition"
+                    className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white px-4 py-2 rounded-lg font-semibold transition"
                   >
                     Add Hall
                   </button>

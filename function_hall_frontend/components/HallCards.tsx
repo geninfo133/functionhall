@@ -117,7 +117,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                 </button>
 
                 {/* Price Badge */}
-                <div className="absolute top-3 left-3 bg-blue-600 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
+                <div className="absolute top-3 left-3 bg-[#20056a] text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg">
                   ₹{hall.price_per_day.toLocaleString()}/day
                 </div>
 
@@ -214,7 +214,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                       </Link>
                       <Link
                         href={`/booking?hallId=${hall.id}`}
-                        className="flex-1 text-center bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition shadow-md"
+                        className="flex-1 text-center bg-[#20056a] text-white py-2.5 rounded-lg font-semibold hover:bg-[#150442] transition shadow-md"
                       >
                         Book Now
                       </Link>
