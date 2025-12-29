@@ -211,7 +211,7 @@ export default function AdminHallsPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <main className="p-8 w-full">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-blue-600">All Halls</h2>
+            <h2 className="text-2xl font-bold text-[#20056a]">All Halls</h2>
             <div className="flex gap-3">
               <Link href="/admin/hall-requests" className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg font-semibold shadow transition flex items-center gap-2">
                 <span>⏳</span> Pending Approvals
@@ -305,7 +305,7 @@ export default function AdminHallsPage() {
             <div className="fixed inset-0 bg-blue-50/85 backdrop-blur-sm flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-3xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
                 <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onClick={() => setShowAddModal(false)}>&times;</button>
-                <h2 className="text-2xl font-bold mb-4 text-blue-600">Add New Hall</h2>
+                <h2 className="text-2xl font-bold mb-4 text-[#20056a]">Add New Hall</h2>
                 <form onSubmit={submitAdd} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input name="name" value={form.name} onChange={handleInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
                   <input name="owner_name" value={form.owner_name} onChange={handleInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
@@ -331,7 +331,7 @@ export default function AdminHallsPage() {
                                 setSelectedPackages(selectedPackages.filter(id => id !== pkg.id));
                               }
                             }}
-                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            className="w-4 h-4 text-[#20056a] border-gray-300 rounded focus:ring-blue-500"
                           />
                           <span className="text-sm text-gray-700">
                             {pkg.package_name} - ₹{pkg.price?.toLocaleString()}
@@ -357,7 +357,7 @@ export default function AdminHallsPage() {
             <div className="fixed inset-0 bg-blue-50/85 backdrop-blur-sm flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-3xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
                 <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onClick={() => setShowEditModal(false)}>&times;</button>
-                <h2 className="text-2xl font-bold mb-4 text-blue-600">Edit Hall</h2>
+                <h2 className="text-2xl font-bold mb-4 text-[#20056a]">Edit Hall</h2>
                 <form onSubmit={submitEdit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <input name="name" value={editForm.name} onChange={handleEditInput} placeholder="Hall Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
                   <input name="owner_name" value={editForm.owner_name} onChange={handleEditInput} placeholder="Owner Name" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400" required />
@@ -383,7 +383,7 @@ export default function AdminHallsPage() {
                                 setEditSelectedPackages(editSelectedPackages.filter(id => id !== pkg.id));
                               }
                             }}
-                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            className="w-4 h-4 text-[#20056a] border-gray-300 rounded focus:ring-blue-500"
                           />
                           <span className="text-sm text-gray-700">
                             {pkg.package_name} - ₹{pkg.price?.toLocaleString()}
@@ -409,7 +409,7 @@ export default function AdminHallsPage() {
             <div className="fixed inset-0 bg-blue-50/85 backdrop-blur-sm flex items-center justify-center z-50">
               <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-lg border border-gray-200 relative">
                 <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl" onClick={() => setShowDeleteModal(false)}>&times;</button>
-                <h2 className="text-2xl font-bold mb-4 text-blue-600">Delete Hall</h2>
+                <h2 className="text-2xl font-bold mb-4 text-[#20056a]">Delete Hall</h2>
                 <div className="text-gray-700 mb-4">Are you sure you want to delete <span className="font-bold">{selectedHall.name}</span>?</div>
                 <div className="flex gap-4 justify-end">
                   <button className="bg-[#20056a] text-white px-5 py-2 rounded-lg font-semibold hover:bg-[#150442]" onClick={() => setShowDeleteModal(false)}>Cancel</button>

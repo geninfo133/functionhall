@@ -156,36 +156,36 @@ function HomePageContent() {
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 mb-12 overflow-hidden py-4">
             <div className="flex items-center gap-12 animate-marquee whitespace-nowrap">
               <div className="flex items-center gap-3 px-6">
-                <div className="text-2xl font-bold text-blue-600">{halls.length}</div>
+                <div className="text-2xl font-bold text-[#20056a]">{halls.length}</div>
                 <p className="text-gray-600 font-medium">Premium Halls</p>
               </div>
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">24/7</div>
+                <div className="text-2xl font-bold text-[#20056a]">24/7</div>
                 <p className="text-gray-600 font-medium">Customer Support</p>
               </div>
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">1000+</div>
+                <div className="text-2xl font-bold text-[#20056a]">1000+</div>
                 <p className="text-gray-600 font-medium">Events Hosted</p>
               </div>
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">⭐</div>
+                <div className="text-2xl font-bold text-[#20056a]">⭐</div>
                 <p className="text-gray-600 font-medium">Top Rated Service</p>
               </div>
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">100%</div>
+                <div className="text-2xl font-bold text-[#20056a]">100%</div>
                 <p className="text-gray-600 font-medium">Verified Venues</p>
               </div>
               {/* Duplicate for seamless loop */}
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">{halls.length}</div>
+                <div className="text-2xl font-bold text-[#20056a]">{halls.length}</div>
                 <p className="text-gray-600 font-medium">Premium Halls</p>
               </div>
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">24/7</div>
+                <div className="text-2xl font-bold text-[#20056a]">24/7</div>
                 <p className="text-gray-600 font-medium">Customer Support</p>
               </div>
               <div className="flex items-center gap-3 px-6 border-l border-gray-200">
-                <div className="text-2xl font-bold text-blue-600">1000+</div>
+                <div className="text-2xl font-bold text-[#20056a]">1000+</div>
                 <p className="text-gray-600 font-medium">Events Hosted</p>
               </div>
             </div>

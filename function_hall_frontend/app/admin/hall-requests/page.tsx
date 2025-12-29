@@ -122,7 +122,7 @@ export default function AdminHallRequestsPage() {
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-            <FaBuilding className="text-blue-600" />
+            <FaBuilding className="text-[#20056a]" />
             Vendor Hall Requests
           </h1>
           <p className="text-gray-600 mt-2">Manage vendor hall addition, edit, and deletion requests</p>
@@ -135,7 +135,7 @@ export default function AdminHallRequestsPage() {
               onClick={() => setFilter("pending")}
               className={`flex-1 px-6 py-4 font-semibold transition ${
                 filter === "pending"
-                  ? "border-b-2 border-blue-600 text-blue-600"
+                  ? "border-b-2 border-blue-600 text-[#20056a]"
                   : "text-gray-600 hover:text-gray-800"
               }`}
             >

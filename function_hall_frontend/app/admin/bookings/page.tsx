@@ -80,7 +80,7 @@ export default function AdminBookingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
       <main className="p-8 w-full">
-          <h1 className="text-3xl font-bold text-blue-600 mb-6">Manage Bookings</h1>
+          <h1 className="text-3xl font-bold text-[#20056a] mb-6">Manage Bookings</h1>
           
           {loading ? (
             <div className="text-center py-12">Loading bookings...</div>
@@ -121,7 +121,7 @@ export default function AdminBookingsPage() {
                           day: 'numeric'
                         })}
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-blue-600">
+                      <td className="px-6 py-4 text-sm font-semibold text-[#20056a]">
                         ₹{booking.total_amount}
                       </td>
                       <td className="px-6 py-4">

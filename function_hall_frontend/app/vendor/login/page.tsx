@@ -61,7 +61,7 @@ export default function VendorLoginPage() {
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">Vendor Login</h1>
+          <h1 className="text-3xl font-bold text-[#20056a] mb-2">Vendor Login</h1>
           <p className="text-gray-600">Access your vendor dashboard</p>
         </div>
 
@@ -114,7 +114,7 @@ export default function VendorLoginPage() {
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link href="/vendor/register" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/vendor/register" className="text-[#20056a] hover:text-[#20056a] font-medium">
               Register here
             </Link>
           </p>

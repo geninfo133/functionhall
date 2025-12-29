@@ -142,9 +142,9 @@ function BookingPageContent() {
         <main className="p-8 max-w-7xl mx-auto">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FaCalendarAlt className="text-3xl text-blue-600" />
+              <FaCalendarAlt className="text-3xl text-[#20056a]" />
             </div>
-            <h1 className="text-3xl font-bold text-blue-600 mb-2">Book a Function Hall</h1>
+            <h1 className="text-3xl font-bold text-[#20056a] mb-2">Book a Function Hall</h1>
             <p className="text-gray-600">Select your hall and date to book</p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -153,23 +153,23 @@ function BookingPageContent() {
             {hall && (
               <div className="bg-white rounded-xl shadow p-6 mb-6">
                 <div className="flex items-center space-x-2 mb-4">
-                  <FaBuilding className="text-blue-600 text-2xl" />
-                  <h2 className="text-2xl font-bold text-blue-700">{hall.name}</h2>
+                  <FaBuilding className="text-[#20056a] text-2xl" />
+                  <h2 className="text-2xl font-bold text-[#20056a]">{hall.name}</h2>
                 </div>
                 <div className="space-y-2">
                   <p className="flex items-center space-x-2 text-gray-600">
-                    <FaMapMarkerAlt className="text-blue-600" />
+                    <FaMapMarkerAlt className="text-[#20056a]" />
                     <span><span className="font-semibold">Location:</span> {hall.location}</span>
                   </p>
                   <p className="flex items-center space-x-2 text-gray-600">
-                    <FaUsers className="text-blue-600" />
+                    <FaUsers className="text-[#20056a]" />
                     <span><span className="font-semibold">Capacity:</span> {hall.capacity} guests</span>
                   </p>
                   <p className="flex items-center space-x-2 text-gray-600">
-                    <FaUser className="text-blue-600" />
+                    <FaUser className="text-[#20056a]" />
                     <span><span className="font-semibold">Owner:</span> {hall.owner_name}</span>
                   </p>
-                  <p className="flex items-center space-x-2 text-blue-600 font-bold text-xl mt-2">
+                  <p className="flex items-center space-x-2 text-[#20056a] font-bold text-xl mt-2">
                     <FaRupeeSign />
                     <span>{hall.price_per_day}/day</span>
                   </p>
@@ -202,7 +202,7 @@ function BookingPageContent() {
           </div>
               <div>
                 <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <FaUser className="text-blue-600" />
+                  <FaUser className="text-[#20056a]" />
                   <span>Customer Name</span>
                 </label>
                 <input
@@ -214,7 +214,7 @@ function BookingPageContent() {
               </div>
               <div>
                 <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                  <FaEnvelope className="text-blue-600" />
+                  <FaEnvelope className="text-[#20056a]" />
                   <span>Email</span>
                 </label>
                 <input
@@ -227,7 +227,7 @@ function BookingPageContent() {
               {eventDate && (
                 <div>
                   <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
-                    <FaCalendarAlt className="text-blue-600" />
+                    <FaCalendarAlt className="text-[#20056a]" />
                     <span>Selected Event Date</span>
                   </label>
                   <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -255,7 +255,7 @@ function BookingPageContent() {
           {packages.length > 0 && (
             <div>
               <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
-                <FaBox className="text-blue-600" />
+                <FaBox className="text-[#20056a]" />
                 <span>Select Package (Optional)</span>
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -272,13 +272,13 @@ function BookingPageContent() {
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-bold text-lg text-gray-800">{pkg.package_name}</h3>
                       {selectedPackage?.id === pkg.id && (
-                        <FaCheckCircle className="text-blue-500 text-xl" />
+                        <FaCheckCircle className="text-[#20056a] text-xl" />
                       )}
                     </div>
                     <p className="text-gray-600 text-sm mt-2 mb-3">{pkg.details}</p>
                     <div className="flex items-center justify-between pt-3 border-t border-gray-200">
                       <span className="text-gray-500 text-xs font-medium">Package Price</span>
-                      <span className="text-blue-600 font-bold text-lg">₹{pkg.price.toLocaleString()}</span>
+                      <span className="text-[#20056a] font-bold text-lg">₹{pkg.price.toLocaleString()}</span>
                     </div>
                   </div>
                 ))}
@@ -318,7 +318,7 @@ function BookingPageContent() {
           {/* Right Column - Calendar */}
           <div className="lg:sticky lg:top-8 lg:self-start">
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="text-xl font-bold text-blue-700 mb-4">Select Event Date</h2>
+              <h2 className="text-xl font-bold text-[#20056a] mb-4">Select Event Date</h2>
               {selectedHallId ? (
                 <HallCalendar
                   hallId={parseInt(selectedHallId)}

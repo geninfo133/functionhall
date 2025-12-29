@@ -181,7 +181,7 @@ export default function EnquiryPage() {
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                   <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <FaEnvelope className="text-blue-600" />
+                    <FaEnvelope className="text-[#20056a]" />
                   </div>
                   <span>Email Address</span>
                   <span className="text-red-500">*</span>

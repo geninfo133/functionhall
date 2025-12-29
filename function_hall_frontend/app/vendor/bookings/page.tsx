@@ -230,7 +230,7 @@ export default function VendorBookingsPage() {
         <div className="bg-white shadow-sm border-b">
           <div className="px-8 py-4">
             <div>
-              <h1 className="text-2xl font-bold text-blue-600">Bookings Management</h1>
+              <h1 className="text-2xl font-bold text-[#20056a]">Bookings Management</h1>
               <p className="text-sm text-gray-600">View and manage all bookings for your halls</p>
             </div>
           </div>
@@ -241,7 +241,7 @@ export default function VendorBookingsPage() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-xl shadow p-6 border-l-4 border-blue-600">
-              <div className="text-3xl font-bold text-blue-600">{bookings.length}</div>
+              <div className="text-3xl font-bold text-[#20056a]">{bookings.length}</div>
               <div className="text-gray-600 mt-1">Total Bookings</div>
             </div>
             <div className="bg-white rounded-xl shadow p-6 border-l-4 border-yellow-600">
@@ -380,7 +380,7 @@ export default function VendorBookingsPage() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="text-sm text-gray-900 flex items-center gap-2">
-                            <FaBuilding className="text-blue-600" />
+                            <FaBuilding className="text-[#20056a]" />
                             {booking.hall_name}
                           </div>
                         </td>

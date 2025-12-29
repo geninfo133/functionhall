@@ -155,7 +155,7 @@ export default function CustomersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white p-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-blue-600">Customer List</h1>
+          <h1 className="text-4xl font-bold text-[#20056a]">Customer List</h1>
         </div>
 
         {error && (

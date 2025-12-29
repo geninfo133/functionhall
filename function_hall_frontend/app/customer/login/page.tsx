@@ -54,7 +54,7 @@ export default function CustomerLogin() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">
+          <h1 className="text-3xl font-bold text-[#20056a] mb-2">
             Customer Login
           </h1>
           <p className="text-gray-600">Welcome back to GenS Services</p>
@@ -108,7 +108,7 @@ export default function CustomerLogin() {
 
         <p className="text-center text-gray-600 mt-6">
           Don't have an account?{" "}
-          <Link href="/customer/phone-verify" className="text-blue-600 font-semibold hover:underline">
+          <Link href="/customer/phone-verify" className="text-[#20056a] font-semibold hover:underline">
             Register here
           </Link>
         </p>

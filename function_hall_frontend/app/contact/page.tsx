@@ -59,7 +59,7 @@ export default function ContactPage() {
           <div>
             {/* Company Info Card */}
             <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-              <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+              <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
                 <FaBuilding className="mr-3" />
                 GenS Services
               </h2>
@@ -71,7 +71,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 {/* Address */}
                 <div className="flex items-start">
-                  <FaMapMarkerAlt className="text-blue-600 text-xl mr-3 mt-1 flex-shrink-0" />
+                  <FaMapMarkerAlt className="text-[#20056a] text-xl mr-3 mt-1 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Visit Us</h3>
                     <p className="text-gray-600 text-sm">
@@ -84,10 +84,10 @@ export default function ContactPage() {
 
                 {/* Phone */}
                 <div className="flex items-start">
-                  <FaPhone className="text-blue-600 text-xl mr-3 mt-1 flex-shrink-0" />
+                  <FaPhone className="text-[#20056a] text-xl mr-3 mt-1 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Call Us</h3>
-                    <a href="tel:+919866168995" className="text-blue-600 hover:text-blue-700 font-medium">
+                    <a href="tel:+919866168995" className="text-[#20056a] hover:text-[#20056a] font-medium">
                       +91 9866168995
                     </a>
                   </div>
@@ -95,14 +95,14 @@ export default function ContactPage() {
 
                 {/* Website */}
                 <div className="flex items-start">
-                  <FaGlobe className="text-blue-600 text-xl mr-3 mt-1 flex-shrink-0" />
+                  <FaGlobe className="text-[#20056a] text-xl mr-3 mt-1 flex-shrink-0" />
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Website</h3>
                     <a 
                       href="https://www.geninfotech.netlify.app" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 break-all"
+                      className="text-[#20056a] hover:text-[#20056a] break-all"
                     >
                       www.geninfotech.netlify.app
                     </a>
@@ -138,7 +138,7 @@ export default function ContactPage() {
 
             {/* Map or Additional Info */}
             <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
-              <h3 className="text-lg font-bold text-blue-700 mb-3">Business Hours</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-3">Business Hours</h3>
               <div className="space-y-2 text-sm text-gray-700">
                 <div className="flex justify-between">
                   <span className="font-medium">Monday - Friday:</span>
@@ -158,7 +158,7 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+            <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
               <FaEnvelope className="mr-3" />
               Send Us a Message
             </h2>

@@ -86,7 +86,7 @@ export default function AdminLoginPage() {
             Admin Portal
           </h1>
           <p className="text-gray-600">
-            Welcome to <span className="font-semibold text-blue-600">GenS Services</span> Administration
+            Welcome to <span className="font-semibold text-[#20056a]">GenS Services</span> Administration
           </p>
         </div>
 
@@ -154,7 +154,7 @@ export default function AdminLoginPage() {
               Not an admin?{" "}
               <Link
                 href="/auth/login"
-                className="text-blue-600 font-semibold hover:text-blue-700 transition"
+                className="text-[#20056a] font-semibold hover:text-[#20056a] transition"
               >
                 Customer Login
               </Link>

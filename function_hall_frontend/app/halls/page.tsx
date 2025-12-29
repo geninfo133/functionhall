@@ -128,7 +128,7 @@ export default function BrowseHallsPage() {
         {!loading && (
           <div className="mb-6">
             <p className="text-gray-600">
-              <span className="font-semibold text-blue-600">{halls.length}</span> halls found
+              <span className="font-semibold text-[#20056a]">{halls.length}</span> halls found
             </p>
           </div>
         )}

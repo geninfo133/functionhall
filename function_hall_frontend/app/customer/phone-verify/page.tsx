@@ -133,7 +133,7 @@ export default function PhoneVerifyPage() {
           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">📱</span>
           </div>
-          <h1 className="text-3xl font-bold text-blue-600 mb-2">
+          <h1 className="text-3xl font-bold text-[#20056a] mb-2">
             {step === 1 ? "Verify Your Phone" : "Enter OTP"}
           </h1>
           <p className="text-gray-600">
@@ -190,7 +190,7 @@ export default function PhoneVerifyPage() {
               <button
                 type="button"
                 onClick={() => router.push("/customer/login")}
-                className="text-blue-600 font-semibold hover:underline"
+                className="text-[#20056a] font-semibold hover:underline"
               >
                 Login here
               </button>
@@ -242,7 +242,7 @@ export default function PhoneVerifyPage() {
                 <button
                   type="button"
                   onClick={handleResendOTP}
-                  className="text-sm text-blue-600 font-semibold hover:underline"
+                  className="text-sm text-[#20056a] font-semibold hover:underline"
                 >
                   Resend OTP
                 </button>

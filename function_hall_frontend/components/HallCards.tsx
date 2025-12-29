@@ -125,7 +125,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <Link
                     href={`/halls/${hall.id}`}
-                    className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold shadow-xl hover:bg-blue-50 transition transform scale-90 group-hover:scale-100"
+                    className="bg-white text-[#20056a] px-6 py-3 rounded-lg font-semibold shadow-xl hover:bg-blue-50 transition transform scale-90 group-hover:scale-100"
                   >
                     Quick View
                   </Link>
@@ -138,7 +138,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                 <div className="mb-3">
                   <h3 className="text-lg font-bold text-gray-900 mb-1 line-clamp-1">{hall.name}</h3>
                   <div className="flex items-center text-gray-500 text-sm">
-                    <FaMapMarkerAlt className="mr-1.5 text-blue-500" />
+                    <FaMapMarkerAlt className="mr-1.5 text-[#20056a]" />
                     <span className="line-clamp-1">{hall.location}</span>
                   </div>
                 </div>
@@ -155,7 +155,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                     <span className="text-xs text-gray-600 ml-1">({hall.rating || 4}.0)</span>
                   </div>
                   <div className="flex items-center text-gray-700 text-sm font-semibold">
-                    <FaUsers className="mr-1.5 text-blue-500" />
+                    <FaUsers className="mr-1.5 text-[#20056a]" />
                     {hall.capacity}
                   </div>
                 </div>
@@ -171,7 +171,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                     {hall.tags.slice(0, 3).map((tag: string, idx: number) => (
                       <span
                         key={idx}
-                        className="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium"
+                        className="text-xs bg-blue-50 text-[#20056a] px-3 py-1 rounded-full font-medium"
                       >
                         {tag}
                       </span>
@@ -189,7 +189,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                           e.preventDefault();
                           onEdit(hall);
                         }}
-                        className="flex-1 text-center border-2 border-blue-600 text-blue-600 py-2.5 rounded-lg font-semibold hover:bg-blue-50 transition flex items-center justify-center gap-2"
+                        className="flex-1 text-center border-2 border-blue-600 text-[#20056a] py-2.5 rounded-lg font-semibold hover:bg-blue-50 transition flex items-center justify-center gap-2"
                       >
                         <FaEdit className="text-sm" /> Edit
                       </button>
@@ -208,7 +208,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                     <>
                       <Link
                         href={`/halls/${hall.id}`}
-                        className="flex-1 text-center border-2 border-blue-600 text-blue-600 py-2.5 rounded-lg font-semibold hover:bg-blue-50 transition"
+                        className="flex-1 text-center border-2 border-blue-600 text-[#20056a] py-2.5 rounded-lg font-semibold hover:bg-blue-50 transition"
                       >
                         Details
                       </Link>

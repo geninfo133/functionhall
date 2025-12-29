@@ -32,7 +32,7 @@ export default function AboutPage() {
           <div className="flex items-center mb-4">
             <span className="text-3xl mr-3">🏢</span>
             <div>
-              <h2 className="text-2xl font-bold text-blue-700">GenInfotech</h2>
+              <h2 className="text-2xl font-bold text-[#20056a]">GenInfotech</h2>
               <p className="text-lg text-gray-600">Software Development and Training HUB</p>
             </div>
           </div>
@@ -40,14 +40,14 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
             <div className="bg-blue-50 rounded-lg p-4 text-center">
               <div className="text-3xl mb-2">🎓</div>
-              <h3 className="text-lg font-bold text-blue-700 mb-1">Training Excellence</h3>
-              <p className="text-3xl font-bold text-blue-600">20+</p>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Training Excellence</h3>
+              <p className="text-3xl font-bold text-[#20056a]">20+</p>
               <p className="text-sm text-gray-600 mt-1">Years of Experience</p>
             </div>
 
             <div className="bg-blue-50 rounded-lg p-4 text-center">
               <div className="text-3xl mb-2">💻</div>
-              <h3 className="text-lg font-bold text-blue-700 mb-1">Software Development</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Software Development</h3>
               <p className="text-sm text-gray-600 mt-1">Innovative Solutions & Custom Applications</p>
             </div>
           </div>
@@ -55,7 +55,7 @@ export default function AboutPage() {
 
         {/* About GenS Services */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+          <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
             <span className="text-3xl mr-2">🏛️</span>
             About GenS Services
           </h2>
@@ -69,41 +69,41 @@ export default function AboutPage() {
 
         {/* Our Services */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <h2 className="text-2xl font-bold text-blue-700 mb-4">What We Offer</h2>
+          <h2 className="text-2xl font-bold text-[#20056a] mb-4">What We Offer</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
               <div className="text-3xl mb-2">🔍</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Easy Search</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Easy Search</h3>
               <p className="text-sm text-gray-600">Browse and search function halls by location, capacity, and price</p>
             </div>
 
             <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
               <div className="text-3xl mb-2">📅</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Real-time Availability</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Real-time Availability</h3>
               <p className="text-sm text-gray-600">Check hall availability and book your preferred dates instantly</p>
             </div>
 
             <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
               <div className="text-3xl mb-2">💰</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Transparent Pricing</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Transparent Pricing</h3>
               <p className="text-sm text-gray-600">View detailed packages and pricing with no hidden costs</p>
             </div>
 
             <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
               <div className="text-3xl mb-2">📸</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Photo Galleries</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Photo Galleries</h3>
               <p className="text-sm text-gray-600">Explore high-quality photos of venues before you book</p>
             </div>
 
             <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
               <div className="text-3xl mb-2">💬</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Direct Communication</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Direct Communication</h3>
               <p className="text-sm text-gray-600">Send enquiries and communicate directly with hall owners</p>
             </div>
 
             <div className="border-2 border-blue-200 rounded-lg p-4 hover:border-blue-500 hover:shadow-md transition">
               <div className="text-3xl mb-2">🛡️</div>
-              <h3 className="text-lg font-bold text-blue-600 mb-1">Secure Bookings</h3>
+              <h3 className="text-lg font-bold text-[#20056a] mb-1">Secure Bookings</h3>
               <p className="text-sm text-gray-600">Safe and secure booking process with confirmed reservations</p>
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function AboutPage() {
 
         {/* Why Choose Us */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-          <h2 className="text-2xl font-bold text-blue-700 mb-4">Why Choose GenS Services?</h2>
+          <h2 className="text-2xl font-bold text-[#20056a] mb-4">Why Choose GenS Services?</h2>
           <div className="space-y-3">
             <div className="flex items-start">
               <span className="text-xl mr-3 text-green-500">✓</span>
@@ -178,7 +178,7 @@ export default function AboutPage() {
 
         {/* Contact Info */}
         <div className="bg-white rounded-xl shadow-md p-6 mt-6 text-center">
-          <h2 className="text-xl font-bold text-blue-700 mb-3">Get in Touch</h2>
+          <h2 className="text-xl font-bold text-[#20056a] mb-3">Get in Touch</h2>
           <p className="text-sm text-gray-600 mb-3">Have questions? We'd love to hear from you!</p>
           <a
             href="/customer/enquiry"

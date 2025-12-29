@@ -101,7 +101,7 @@ function LogoutButton() {
             <span className="text-lg font-semibold mb-4">Are you sure you want to logout?</span>
             <div className="flex gap-4">
               <button
-                className="px-6 py-2 rounded-lg bg-white text-blue-600 font-bold border border-blue-600 hover:bg-blue-100 transition"
+                className="px-6 py-2 rounded-lg bg-white text-[#20056a] font-bold border border-blue-600 hover:bg-blue-100 transition"
                 onClick={() => setShow(false)}
               >
                 Cancel

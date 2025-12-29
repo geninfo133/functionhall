@@ -183,7 +183,7 @@ export default function MainNavbar() {
                           onClick={() => setLoginDropdownOpen(false)}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition text-gray-700"
                         >
-                          <FaUser className="text-blue-600" />
+                          <FaUser className="text-[#20056a]" />
                           <span className="font-medium">Customer</span>
                         </Link>
                         <div className="border-t border-gray-200"></div>
@@ -220,7 +220,7 @@ export default function MainNavbar() {
                           onClick={() => setRegisterDropdownOpen(false)}
                           className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition text-gray-700"
                         >
-                          <FaUser className="text-blue-600" />
+                          <FaUser className="text-[#20056a]" />
                           <span className="font-medium">Customer</span>
                         </Link>
                         <div className="border-t border-gray-200"></div>
@@ -341,7 +341,7 @@ export default function MainNavbar() {
                     <Link
                       href="/admin/dashboard"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaUser size={18} />
                       <span className="font-medium">Dashboard</span>
@@ -349,7 +349,7 @@ export default function MainNavbar() {
                     <Link
                       href="/admin/profile"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaUser size={18} />
                       <span className="font-medium">Profile</span>
@@ -357,7 +357,7 @@ export default function MainNavbar() {
                     <Link
                       href="/admin/enquiries"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaInfoCircle size={18} />
                       <span className="font-medium">Enquiries</span>
@@ -368,7 +368,7 @@ export default function MainNavbar() {
                     <Link
                       href="/profile"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaUser size={18} />
                       <span className="font-medium">Profile</span>
@@ -377,7 +377,7 @@ export default function MainNavbar() {
                     <Link
                       href="/customer/enquiry"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaPhone size={18} />
                       <span className="font-medium">Send Enquiry</span>
@@ -386,7 +386,7 @@ export default function MainNavbar() {
                     <Link
                       href="/my-bookings"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaCalendarAlt size={18} />
                       <span className="font-medium">My Bookings</span>
@@ -395,7 +395,7 @@ export default function MainNavbar() {
                     <Link
                       href="/halls"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaBuilding size={18} />
                       <span className="font-medium">Browse Halls</span>
@@ -404,7 +404,7 @@ export default function MainNavbar() {
                     <Link
                       href="/booking"
                       onClick={() => setSidebarOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition mb-2"
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
                       <FaCalendarPlus size={18} />
                       <span className="font-medium">Book</span>

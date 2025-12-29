@@ -258,7 +258,7 @@ export default function ProfilePage() {
 
                     <div>
                       <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                        <FaMapMarkerAlt className="text-blue-600" />
+                        <FaMapMarkerAlt className="text-[#20056a]" />
                         <span>Address</span>
                       </label>
                       <textarea

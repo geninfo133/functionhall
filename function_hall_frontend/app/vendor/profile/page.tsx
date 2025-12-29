@@ -109,7 +109,7 @@ export default function VendorProfilePage() {
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <Link href="/vendor/dashboard" className="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2">
+            <Link href="/vendor/dashboard" className="text-[#20056a] hover:text-[#20056a] font-semibold flex items-center gap-2">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
@@ -182,10 +182,10 @@ export default function VendorProfilePage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium mb-1">Total Halls</p>
-                <p className="text-3xl font-bold text-blue-600">{stats.totalHalls}</p>
+                <p className="text-3xl font-bold text-[#20056a]">{stats.totalHalls}</p>
               </div>
               <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-                <Building2 size={24} className="text-blue-600" />
+                <Building2 size={24} className="text-[#20056a]" />
               </div>
             </div>
             <div className="mt-3 flex items-center gap-1 text-xs text-gray-500">

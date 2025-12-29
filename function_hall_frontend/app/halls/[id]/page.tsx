@@ -100,14 +100,14 @@ export default function HallDetailsPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* Hall Information Card */}
               <div className="bg-white rounded-2xl shadow-lg p-6 md:col-span-2">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4">Hall Information</h2>
+                <h2 className="text-2xl font-bold text-[#20056a] mb-4">Hall Information</h2>
                 
                 <div className="space-y-4">
                   <div className="flex items-start">
                     <span className="text-2xl mr-3">👤</span>
                     <div>
                       <p className="text-sm text-gray-500">Owner</p>
-                      <p className="font-semibold text-blue-700">{hall.owner_name}</p>
+                      <p className="font-semibold text-[#20056a]">{hall.owner_name}</p>
                     </div>
                   </div>
 
@@ -115,7 +115,7 @@ export default function HallDetailsPage() {
                     <span className="text-2xl mr-3">👥</span>
                     <div>
                       <p className="text-sm text-gray-500">Capacity</p>
-                      <p className="font-semibold text-blue-700">{hall.capacity} Guests</p>
+                      <p className="font-semibold text-[#20056a]">{hall.capacity} Guests</p>
                     </div>
                   </div>
 
@@ -123,7 +123,7 @@ export default function HallDetailsPage() {
                     <span className="text-2xl mr-3">💰</span>
                     <div>
                       <p className="text-sm text-gray-500">Price Per Day</p>
-                      <p className="font-semibold text-blue-600 text-2xl">₹{hall.price_per_day.toLocaleString()}</p>
+                      <p className="font-semibold text-[#20056a] text-2xl">₹{hall.price_per_day.toLocaleString()}</p>
                     </div>
                   </div>
 
@@ -131,7 +131,7 @@ export default function HallDetailsPage() {
                     <span className="text-2xl mr-3">📞</span>
                     <div>
                       <p className="text-sm text-gray-500">Contact</p>
-                      <p className="font-semibold text-blue-700">{hall.contact_number}</p>
+                      <p className="font-semibold text-[#20056a]">{hall.contact_number}</p>
                     </div>
                   </div>
                 </div>
@@ -139,7 +139,7 @@ export default function HallDetailsPage() {
 
               {/* Action Buttons Card */}
               <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-center">
-                <h2 className="text-xl font-bold text-blue-700 mb-3">Take Action</h2>
+                <h2 className="text-xl font-bold text-[#20056a] mb-3">Take Action</h2>
                 <div className="space-y-2">
                   <button
                     onClick={() => router.push(`/booking?hallId=${hallId}`)}
@@ -150,7 +150,7 @@ export default function HallDetailsPage() {
                   
                   <button
                     onClick={() => router.push(`/customer/enquiry`)}
-                    className="w-full bg-white text-blue-600 border-2 border-blue-600 py-2 px-4 rounded-lg font-semibold text-sm hover:bg-blue-50 transition"
+                    className="w-full bg-white text-[#20056a] border-2 border-blue-600 py-2 px-4 rounded-lg font-semibold text-sm hover:bg-blue-50 transition"
                   >
                     ✉️ Send Enquiry
                   </button>
@@ -176,7 +176,7 @@ export default function HallDetailsPage() {
               {/* Gallery */}
               {hall.photos && hall.photos.length > 1 && (
                 <div className="bg-white rounded-2xl shadow-lg p-6">
-                  <h2 className="text-2xl font-bold text-blue-700 mb-4">Photo Gallery</h2>
+                  <h2 className="text-2xl font-bold text-[#20056a] mb-4">Photo Gallery</h2>
                   <div className="grid grid-cols-2 gap-3">
                     {hall.photos.slice(1, 9).map((photo: string, index: number) => (
                       <div 
@@ -197,7 +197,7 @@ export default function HallDetailsPage() {
 
               {/* About This Hall */}
               <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+                <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
                   <span className="text-3xl mr-2">🏛️</span>
                   About This Hall
                 </h2>
@@ -210,25 +210,25 @@ export default function HallDetailsPage() {
                 <div className="grid grid-cols-2 gap-2 mt-4">
                   <div className="text-center p-2 bg-blue-50 rounded-lg">
                     <div className="text-2xl mb-1">✨</div>
-                    <p className="text-xs font-semibold text-blue-700">Premium Ambiance</p>
+                    <p className="text-xs font-semibold text-[#20056a]">Premium Ambiance</p>
                   </div>
                   <div className="text-center p-2 bg-blue-50 rounded-lg">
                     <div className="text-2xl mb-1">🎵</div>
-                    <p className="text-xs font-semibold text-blue-700">Sound & Lighting</p>
+                    <p className="text-xs font-semibold text-[#20056a]">Sound & Lighting</p>
                   </div>
                   <div className="text-center p-2 bg-blue-50 rounded-lg">
                     <div className="text-2xl mb-1">🍽️</div>
-                    <p className="text-xs font-semibold text-blue-700">Catering</p>
+                    <p className="text-xs font-semibold text-[#20056a]">Catering</p>
                   </div>
                   <div className="text-center p-2 bg-blue-50 rounded-lg">
                     <div className="text-2xl mb-1">🅿️</div>
-                    <p className="text-xs font-semibold text-blue-700">Parking</p>
+                    <p className="text-xs font-semibold text-[#20056a]">Parking</p>
                   </div>
                 </div>
 
                 {/* Why Choose This Hall */}
                 <div className="mt-6 pt-6 border-t border-gray-200">
-                  <h3 className="text-xl font-bold text-blue-700 mb-3">Why Choose This Hall?</h3>
+                  <h3 className="text-xl font-bold text-[#20056a] mb-3">Why Choose This Hall?</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="flex items-center text-gray-700">
                       <span className="text-xl mr-3 text-green-500">✓</span>
@@ -265,7 +265,7 @@ export default function HallDetailsPage() {
           <div className="lg:col-span-1">
             {packages.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-4 overflow-hidden">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
+                <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
                   <span className="text-3xl mr-2">🎁</span>
                   Available Packages
                 </h2>
@@ -310,8 +310,8 @@ export default function HallDetailsPage() {
                           }
                         }}
                       >
-                        <h3 className="font-bold text-lg text-blue-600">{pkg.package_name}</h3>
-                        <div className="text-2xl font-bold text-blue-600 mt-2">₹{pkg.price?.toLocaleString()}</div>
+                        <h3 className="font-bold text-lg text-[#20056a]">{pkg.package_name}</h3>
+                        <div className="text-2xl font-bold text-[#20056a] mt-2">₹{pkg.price?.toLocaleString()}</div>
                         <div 
                           className="package-details text-gray-600 text-xs whitespace-pre-line leading-relaxed mt-2 overflow-hidden transition-all duration-500"
                           style={{ maxHeight: '0', opacity: '0' }}

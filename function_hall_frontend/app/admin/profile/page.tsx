@@ -121,10 +121,10 @@ export default function AdminProfilePage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-gray-500 text-sm font-medium mb-1">Total Users</p>
-                    <p className="text-3xl font-bold text-blue-600">0</p>
+                    <p className="text-3xl font-bold text-[#20056a]">0</p>
                   </div>
                   <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-                    <User size={24} className="text-blue-600" />
+                    <User size={24} className="text-[#20056a]" />
                   </div>
                 </div>
               </div>

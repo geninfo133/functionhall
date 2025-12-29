@@ -134,11 +134,11 @@ export default function AdminEnquiriesPage() {
       <main className="p-8 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
-              <FaEnvelope className="text-blue-600 text-3xl" />
-              <h1 className="text-3xl font-bold text-blue-700">Customer Enquiries</h1>
+              <FaEnvelope className="text-[#20056a] text-3xl" />
+              <h1 className="text-3xl font-bold text-[#20056a]">Customer Enquiries</h1>
             </div>
             <div className="text-sm text-gray-600">
-              Total: <span className="font-bold text-blue-600">{filteredEnquiries.length}</span> enquiries
+              Total: <span className="font-bold text-[#20056a]">{filteredEnquiries.length}</span> enquiries
             </div>
           </div>
 
@@ -148,7 +148,7 @@ export default function AdminEnquiriesPage() {
               {/* Sort By */}
               <div>
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaSort className="text-blue-600" />
+                  <FaSort className="text-[#20056a]" />
                   <span>Sort By</span>
                 </label>
                 <select
@@ -167,7 +167,7 @@ export default function AdminEnquiriesPage() {
               {/* Filter by Hall */}
               <div>
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaBuilding className="text-blue-600" />
+                  <FaBuilding className="text-[#20056a]" />
                   <span>Filter by Hall</span>
                 </label>
                 <select
@@ -187,7 +187,7 @@ export default function AdminEnquiriesPage() {
               {/* Filter by Location */}
               <div>
                 <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
-                  <FaMapMarkerAlt className="text-blue-600" />
+                  <FaMapMarkerAlt className="text-[#20056a]" />
                   <span>Filter by Location</span>
                 </label>
                 <select
@@ -213,7 +213,7 @@ export default function AdminEnquiriesPage() {
                     setFilterHall("");
                     setFilterLocation("");
                   }}
-                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
+                  className="text-[#20056a] hover:text-[#20056a] font-semibold text-sm"
                 >
                   Clear Filters
                 </button>
@@ -237,16 +237,16 @@ export default function AdminEnquiriesPage() {
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <FaUser className="text-blue-600" />
-                        <h3 className="text-lg font-bold text-blue-700">{enquiry.customer_name}</h3>
+                        <FaUser className="text-[#20056a]" />
+                        <h3 className="text-lg font-bold text-[#20056a]">{enquiry.customer_name}</h3>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
                         <div className="flex items-center space-x-2">
-                          <FaPhone className="text-blue-600" />
+                          <FaPhone className="text-[#20056a]" />
                           <span>{enquiry.customer_phone}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <FaCalendarAlt className="text-blue-600" />
+                          <FaCalendarAlt className="text-[#20056a]" />
                           <span>
                             {enquiry.created_at ? (() => {
                               const date = new Date(enquiry.created_at);
@@ -262,13 +262,13 @@ export default function AdminEnquiriesPage() {
                         </div>
                         {enquiry.hall_name && (
                           <div className="flex items-center space-x-2">
-                            <FaBuilding className="text-blue-600" />
+                            <FaBuilding className="text-[#20056a]" />
                             <span>{enquiry.hall_name}</span>
                           </div>
                         )}
                         {enquiry.location && (
                           <div className="flex items-center space-x-2">
-                            <FaMapMarkerAlt className="text-blue-600" />
+                            <FaMapMarkerAlt className="text-[#20056a]" />
                             <span>{enquiry.location}</span>
                           </div>
                         )}
@@ -320,7 +320,7 @@ export default function AdminEnquiriesPage() {
                       }
                     </p>
                     {enquiry.message.length > 100 && (
-                      <button className="text-blue-600 hover:text-blue-700 text-xs font-semibold mt-1">
+                      <button className="text-[#20056a] hover:text-[#20056a] text-xs font-semibold mt-1">
                         {selectedEnquiry === enquiry.id ? 'Show less' : 'Read more'}
                       </button>
                     )}

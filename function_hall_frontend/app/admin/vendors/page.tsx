@@ -138,7 +138,7 @@ export default function AdminVendorsPage() {
       <main className="p-8 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-blue-600 mb-2">Vendor List</h1>
+          <h1 className="text-4xl font-bold text-[#20056a] mb-2">Vendor List</h1>
         </div>
 
         {error && (
