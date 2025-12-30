@@ -73,7 +73,7 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                     alt={hall.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     onError={(e) => {
-                      console.error(`Failed to load image for ${hall.name}:`, hall.photos[0]);
+                      // Silently handle missing images - show fallback
                       // Try next photo if available
                       if (hall.photos.length > 1 && !e.currentTarget.dataset.fallbackTried) {
                         e.currentTarget.dataset.fallbackTried = "true";
