@@ -64,23 +64,13 @@ export default function HallDetailsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section with Images */}
+      {/* Hero Section */}
       <div className="relative h-32 bg-[#20056a] mx-4 sm:mx-6 lg:mx-8 mt-8 rounded-2xl overflow-hidden shadow-lg">
-        {hall.photos && hall.photos.length > 0 ? (
-          <div className="relative h-full w-full">
-            <img
-              src={hall.photos[0]}
-              alt={hall.name}
-              className="w-full h-full object-cover opacity-30"
-            />
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="text-white text-8xl mb-4">🏛️</div>
           </div>
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <div className="text-white text-8xl mb-4">🏛️</div>
-            </div>
-          </div>
-        )}
+        </div>
         
         {/* Hall Name Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -174,11 +164,11 @@ export default function HallDetailsPage() {
             {/* Gallery and About This Hall - Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Gallery */}
-              {hall.photos && hall.photos.length > 1 && (
+              {hall.photos && hall.photos.length > 0 && (
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <h2 className="text-2xl font-bold text-[#20056a] mb-4">Photo Gallery</h2>
                   <div className="grid grid-cols-2 gap-3">
-                    {hall.photos.slice(1, 9).map((photo: string, index: number) => (
+                    {hall.photos.slice(0, 8).map((photo: string, index: number) => (
                       <div 
                         key={index} 
                         className="relative h-32 rounded-lg overflow-hidden cursor-pointer"
@@ -186,7 +176,7 @@ export default function HallDetailsPage() {
                       >
                         <img
                           src={photo}
-                          alt={`${hall.name} ${index + 2}`}
+                          alt={`${hall.name} ${index + 1}`}
                           className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                         />
                       </div>
