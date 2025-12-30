@@ -209,7 +209,7 @@ export default function AdminHallsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <main className="p-8 w-full">
+      <main className="p-4 sm:p-6 lg:p-8 w-full">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-[#20056a]">All Halls</h2>
             <div className="flex gap-3">

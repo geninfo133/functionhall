@@ -131,7 +131,7 @@ export default function AdminEnquiriesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <main className="p-8 max-w-7xl mx-auto">
+      <main className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
               <FaEnvelope className="text-[#20056a] text-3xl" />

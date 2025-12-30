@@ -79,7 +79,7 @@ export default function AdminBookingsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <main className="p-8 w-full">
+      <main className="p-4 sm:p-6 lg:p-8 w-full">
           <h1 className="text-3xl font-bold text-[#20056a] mb-6">Manage Bookings</h1>
           
           {loading ? (

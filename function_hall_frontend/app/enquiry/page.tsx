@@ -4,7 +4,7 @@ export default function EnquiryPage() {
   return (
     <>
       <MainNavbar />
-      <main className="p-8">
+      <main className="p-4 sm:p-6 lg:p-8">
         <h1 className="text-2xl font-bold mb-4">Enquiry</h1>
         {/* Contact form will go here */}
       </main>

@@ -69,7 +69,7 @@ export default function AdminProfilePage() {
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <Topbar />
-        <main className="p-8">
+        <main className="p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto">
             {/* Hero Header Card */}
             <div className="bg-[#150442] rounded-3xl shadow-2xl p-10 mb-8 text-white relative overflow-hidden">

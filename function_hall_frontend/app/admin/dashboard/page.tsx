@@ -215,7 +215,7 @@ export default function AdminDashboard() {
   ];
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <main className="p-8 max-w-6xl mx-auto">
+      <main className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
           {/* Welcome Banner */}
           <div className="flex items-center justify-between bg-[#20056a] text-white rounded-2xl shadow-lg px-8 py-6 mb-10 animate-fade-in">
             <div>

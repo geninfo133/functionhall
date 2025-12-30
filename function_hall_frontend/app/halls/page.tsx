@@ -48,7 +48,7 @@ export default function BrowseHallsPage() {
 
   return (
     <div className="min-h-screen">
-      <main className="p-4 sm:p-6 lg:p-8 pt-8">
+      <main className="p-4 sm:p-6 lg:p-8">
         {/* Hero Banner with Search */}
         <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
           <div className="px-6 py-3">

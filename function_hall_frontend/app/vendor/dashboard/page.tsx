@@ -385,7 +385,7 @@ export default function VendorDashboardPage() {
         </div>
 
         {/* Main Content */}
-        <main className="px-8 py-8">
+        <main className="p-4 sm:p-6 lg:p-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow p-6">
