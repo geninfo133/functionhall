@@ -65,7 +65,7 @@ export default function HallDetailsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="relative h-32 bg-[#20056a] mx-4 sm:mx-6 lg:mx-8 mt-8 rounded-2xl overflow-hidden shadow-lg">
+      <div className="relative h-32 bg-[#0d316cff] mx-4 sm:mx-6 lg:mx-8 mt-8 rounded-2xl overflow-hidden shadow-lg">
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
             <div className="text-white text-8xl mb-4">🏛️</div>
@@ -164,7 +164,7 @@ export default function HallDetailsPage() {
             {/* Gallery and About This Hall - Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Gallery */}
-              {hall.photos && hall.photos.length > 0 && (
+              {hall.photos && hall.photos.length > 0 ? (
                 <div className="bg-white rounded-2xl shadow-lg p-6">
                   <h2 className="text-2xl font-bold text-[#20056a] mb-4">Photo Gallery</h2>
                   <div className="grid grid-cols-2 gap-3">
@@ -182,6 +182,11 @@ export default function HallDetailsPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl shadow-lg p-6">
+                  <h2 className="text-2xl font-bold text-[#20056a] mb-4">Photo Gallery</h2>
+                  <p className="text-gray-500">No photos available</p>
                 </div>
               )}
 
