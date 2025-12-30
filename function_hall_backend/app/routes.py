@@ -701,12 +701,42 @@ def verify_otp():
 @main.route('/api/vendor/halls/<int:hall_id>/edit', methods=['POST'])
 def vendor_edit_hall(hall_id):
     """Vendor requests to edit a hall - requires admin approval"""
-    data = request.get_json()
+    from werkzeug.utils import secure_filename
+    import uuid
+    from flask import current_app
+    
+    # Check if request has files or JSON
+    if request.content_type and 'multipart/form-data' in request.content_type:
+        # Handle file upload
+        data = request.form.to_dict()
+        files = request.files.getlist('photos')
+        print(f"📝 Editing hall {hall_id} with {len(files)} photo files: {data}")
+        
+        # Save uploaded files and get their paths
+        photo_paths = []
+        for file in files:
+            if file and file.filename:
+                # Use original filename
+                filename = secure_filename(file.filename)
+                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                
+                # Save file
+                file.save(filepath)
+                # Store relative path for URL generation
+                photo_paths.append(f"/uploads/hall_photos/{filename}")
+                print(f"💾 Saved photo: {filename}")
+    else:
+        # Handle JSON request (for backward compatibility)
+        data = request.get_json()
+        photo_paths = []
+        print(f"📝 Editing hall {hall_id}: {data}")
+    
     vendor_id = data.get('vendor_id')
     
     if not vendor_id:
         return jsonify({"error": "Vendor ID is required"}), 400
     
+    vendor_id = int(vendor_id)
     hall = FunctionHall.query.get_or_404(hall_id)
     
     # Verify vendor owns this hall
@@ -724,15 +754,16 @@ def vendor_edit_hall(hall_id):
         'description': hall.description
     }
     
-    # Store new data
+    # Store new data with photos
     new_data = {
         'name': data.get('name', hall.name),
         'owner_name': data.get('owner_name', hall.owner_name),
         'location': data.get('location', hall.location),
-        'capacity': data.get('capacity', hall.capacity),
-        'price_per_day': data.get('price_per_day', hall.price_per_day),
+        'capacity': int(data.get('capacity', hall.capacity)) if data.get('capacity') else hall.capacity,
+        'price_per_day': int(data.get('price_per_day', hall.price_per_day)) if data.get('price_per_day') else hall.price_per_day,
         'contact_number': data.get('contact_number', hall.contact_number),
-        'description': data.get('description', hall.description)
+        'description': data.get('description', hall.description),
+        'photos': photo_paths if photo_paths else None
     }
     
     # Create change request
@@ -747,6 +778,7 @@ def vendor_edit_hall(hall_id):
     db.session.add(change_request)
     db.session.commit()
     
+    print(f"✅ Edit request created! ID: {change_request.id}")
     return jsonify({
         "message": "Edit request submitted! Pending admin approval.",
         "request_id": change_request.id
@@ -917,6 +949,24 @@ def approve_hall_request(request_id):
             hall.price_per_day = new_data.get('price_per_day')
             hall.contact_number = new_data.get('contact_number')
             hall.description = new_data.get('description')
+            
+            # Add new photos if provided
+            photos = new_data.get('photos', [])
+            if photos:
+                for photo_path in photos:
+                    if photo_path and photo_path.strip():
+                        # Convert relative path to full URL
+                        if photo_path.startswith('/uploads/'):
+                            backend_url = os.environ.get('BACKEND_URL', 'http://localhost:5000')
+                            photo_url = f"{backend_url}{photo_path}"
+                        else:
+                            photo_url = photo_path
+                            
+                        hall_photo = HallPhoto(
+                            hall_id=hall.id,
+                            url=photo_url
+                        )
+                        db.session.add(hall_photo)
     
     elif change_request.action_type == 'delete':
         # Delete hall
