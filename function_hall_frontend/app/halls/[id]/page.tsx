@@ -153,9 +153,9 @@ export default function HallDetailsPage() {
                   </button>
                   
                   {/* Call to Action Banner */}
-                  <div className="mt-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl p-3 text-center">
+                  <div className="mt-3 bg-[#20056a] text-white rounded-xl p-3 text-center">
                     <p className="text-sm font-bold mb-0.5">🎉 Special Offer!</p>
-                    <p className="text-blue-100 text-xs">Book now and get exclusive benefits</p>
+                    <p className="text-purple-100 text-xs">Book now and get exclusive benefits</p>
                   </div>
                 </div>
               </div>
