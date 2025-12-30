@@ -127,9 +127,8 @@ def add_hall():
         photo_paths = []
         for file in files:
             if file and file.filename:
-                # Generate unique filename
-                ext = file.filename.rsplit('.', 1)[1].lower() if '.' in file.filename else 'jpg'
-                filename = f"{uuid.uuid4().hex}.{ext}"
+                # Use original filename
+                filename = secure_filename(file.filename)
                 filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
                 
                 # Save file
