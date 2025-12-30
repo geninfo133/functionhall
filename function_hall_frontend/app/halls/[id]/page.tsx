@@ -17,7 +17,9 @@ export default function HallDetailsPage() {
   useEffect(() => {
     if (hallId) {
       // Fetch hall details
-      fetch(`${BACKEND_URL}/api/halls/${hallId}`)
+      fetch(`${BACKEND_URL}/api/halls/${hallId}`, {
+        cache: 'no-store'
+      })
         .then(res => {
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.json();
@@ -33,7 +35,9 @@ export default function HallDetailsPage() {
         });
       
       // Fetch packages
-      fetch(`${BACKEND_URL}/api/halls/${hallId}/packages`)
+      fetch(`${BACKEND_URL}/api/halls/${hallId}/packages`, {
+        cache: 'no-store'
+      })
         .then(res => {
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.json();
