@@ -66,7 +66,7 @@ function HomePageContent() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white">
       <main className="p-4 sm:p-6 lg:p-8">
           {/* Hero Banner with Search */}
           <div className="relative rounded-2xl overflow-hidden mb-12 shadow-lg" style={{ backgroundColor: '#0d316c' }}>
