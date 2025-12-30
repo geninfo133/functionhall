@@ -893,7 +893,8 @@ def approve_hall_request(request_id):
             if photo_path and photo_path.strip():  # Only add non-empty paths/URLs
                 # Convert relative path to full URL
                 if photo_path.startswith('/uploads/'):
-                    photo_url = f"http://localhost:5000{photo_path}"
+                    backend_url = os.environ.get('BACKEND_URL', 'http://localhost:5000')
+                    photo_url = f"{backend_url}{photo_path}"
                 else:
                     photo_url = photo_path  # Keep external URLs as-is
                     

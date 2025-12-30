@@ -42,7 +42,8 @@ export default function VendorDashboardPage() {
 
     try {
       const res = await fetch(`${BACKEND_URL}/api/admin/check-auth`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
+        cache: 'no-store'
       });
 
       if (!res.ok) {
@@ -73,7 +74,9 @@ export default function VendorDashboardPage() {
 
   const fetchVendorHalls = async (vendorId: number) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/vendor/${vendorId}/halls`);
+      const res = await fetch(`${BACKEND_URL}/api/vendor/${vendorId}/halls`, {
+        cache: 'no-store'
+      });
       if (res.ok) {
         const data = await res.json();
         setHalls(data);
@@ -87,7 +90,9 @@ export default function VendorDashboardPage() {
 
   const fetchVendorRequests = async (vendorId: number) => {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/admin/hall-requests?status=pending`);
+      const res = await fetch(`${BACKEND_URL}/api/admin/hall-requests?status=pending`, {
+        cache: 'no-store'
+      });
       if (res.ok) {
         const data = await res.json();
         // Filter to show only this vendor's requests
