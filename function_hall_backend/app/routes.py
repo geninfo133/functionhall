@@ -4,6 +4,7 @@ from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notifi
 from datetime import datetime, date
 from sms_utils import send_sms
 from app import otp_service
+from cloudinary_config import upload_to_cloudinary
 import json
 import os
 
@@ -123,19 +124,17 @@ def add_hall():
         files = request.files.getlist('photos')
         print(f"📝 Adding new hall with {len(files)} photo files: {data}")
         
-        # Save uploaded files and get their paths
+        # Upload files to Cloudinary and get their URLs
         photo_paths = []
         for file in files:
             if file and file.filename:
-                # Use original filename
-                filename = secure_filename(file.filename)
-                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-                
-                # Save file
-                file.save(filepath)
-                # Store relative path for URL generation
-                photo_paths.append(f"/uploads/hall_photos/{filename}")
-                print(f"💾 Saved photo: {filename}")
+                print(f"☁️ Uploading {file.filename} to Cloudinary...")
+                result = upload_to_cloudinary(file)
+                if result['success']:
+                    photo_paths.append(result['url'])
+                    print(f"✅ Uploaded: {result['url']}")
+                else:
+                    print(f"❌ Upload failed: {result.get('error')}")
     else:
         # Handle JSON request (for backward compatibility)
         data = request.get_json()
@@ -716,15 +715,13 @@ def vendor_edit_hall(hall_id):
         photo_paths = []
         for file in files:
             if file and file.filename:
-                # Use original filename
-                filename = secure_filename(file.filename)
-                filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-                
-                # Save file
-                file.save(filepath)
-                # Store relative path for URL generation
-                photo_paths.append(f"/uploads/hall_photos/{filename}")
-                print(f"💾 Saved photo: {filename}")
+                print(f"☁️ Uploading {file.filename} to Cloudinary...")
+                result = upload_to_cloudinary(file)
+                if result['success']:
+                    photo_paths.append(result['url'])
+                    print(f"✅ Uploaded: {result['url']}")
+                else:
+                    print(f"❌ Upload failed: {result.get('error')}")
     else:
         # Handle JSON request (for backward compatibility)
         data = request.get_json()
@@ -921,17 +918,11 @@ def approve_hall_request(request_id):
         # Create photos if provided
         photos = new_data.get('photos', [])
         for photo_path in photos:
-            if photo_path and photo_path.strip():  # Only add non-empty paths/URLs
-                # Convert relative path to full URL
-                if photo_path.startswith('/uploads/'):
-                    backend_url = os.environ.get('BACKEND_URL', 'http://localhost:5000')
-                    photo_url = f"{backend_url}{photo_path}"
-                else:
-                    photo_url = photo_path  # Keep external URLs as-is
-                    
+            if photo_path and photo_path.strip():
+                # Cloudinary URLs are already complete, no need to modify
                 hall_photo = HallPhoto(
                     hall_id=hall.id,
-                    url=photo_url
+                    url=photo_path
                 )
                 db.session.add(hall_photo)
         
@@ -953,15 +944,9 @@ def approve_hall_request(request_id):
             # Add new photos if provided
             photos = new_data.get('photos', [])
             if photos:
-                for photo_path in photos:
-                    if photo_path and photo_path.strip():
-                        # Convert relative path to full URL
-                        if photo_path.startswith('/uploads/'):
-                            backend_url = os.environ.get('BACKEND_URL', 'http://localhost:5000')
-                            photo_url = f"{backend_url}{photo_path}"
-                        else:
-                            photo_url = photo_path
-                            
+                for photo_url in photos:
+                    if photo_url and photo_url.strip():
+                        # Cloudinary URLs are already complete
                         hall_photo = HallPhoto(
                             hall_id=hall.id,
                             url=photo_url
