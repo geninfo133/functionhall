@@ -13,6 +13,8 @@ export default function VendorDashboardPage() {
   const [hallRequests, setHallRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedHall, setSelectedHall] = useState<any>(null);
   const [form, setForm] = useState({
     name: "",
     owner_name: "",
@@ -144,6 +146,79 @@ export default function VendorDashboardPage() {
     
     setPhotoFiles(photoFiles.filter((_, i) => i !== index));
     setPhotoPreviews(photoPreviews.filter((_, i) => i !== index));
+  };
+
+  const handleEditClick = (hall: any) => {
+    setSelectedHall(hall);
+    setForm({
+      name: hall.name,
+      owner_name: hall.owner_name,
+      location: hall.location,
+      capacity: hall.capacity.toString(),
+      contact_number: hall.contact_number,
+      price_per_day: hall.price_per_day.toString(),
+      description: hall.description || ""
+    });
+    setPhotoFiles([]);
+    setPhotoPreviews([]);
+    setShowEditModal(true);
+  };
+
+  const handleEditHall = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (!selectedHall) return;
+
+    try {
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("owner_name", form.owner_name);
+      formData.append("location", form.location);
+      formData.append("capacity", form.capacity);
+      formData.append("price_per_day", form.price_per_day);
+      formData.append("contact_number", form.contact_number);
+      formData.append("description", form.description);
+      formData.append("vendor_id", vendorData.id);
+
+      photoFiles.forEach(file => {
+        formData.append("photos", file);
+      });
+
+      const res = await fetch(`${BACKEND_URL}/api/vendor/halls/${selectedHall.id}/edit`, {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSuccess(data.message || "Edit request submitted! Pending admin approval.");
+        setForm({
+          name: "",
+          owner_name: "",
+          location: "",
+          capacity: "",
+          contact_number: "",
+          price_per_day: "",
+          description: ""
+        });
+        photoPreviews.forEach(url => URL.revokeObjectURL(url));
+        setPhotoFiles([]);
+        setPhotoPreviews([]);
+        setSelectedHall(null);
+        setShowEditModal(false);
+        fetchVendorHalls(vendorData.id);
+        fetchVendorRequests(vendorData.id);
+        
+        setTimeout(() => setSuccess(""), 5000);
+      } else {
+        setError(data.error || "Failed to submit edit request");
+      }
+    } catch (err) {
+      setError("Network error");
+    }
   };
 
   const handleAddHall = async (e: React.FormEvent) => {
@@ -385,10 +460,7 @@ export default function VendorDashboardPage() {
           <HallCards 
             halls={halls} 
             loading={false}
-            onEdit={(hall) => {
-              // TODO: Implement edit functionality
-              console.log('Edit hall:', hall);
-            }}
+            onEdit={handleEditClick}
             onDelete={(hall) => {
               // TODO: Implement delete functionality
               console.log('Delete hall:', hall);
@@ -555,6 +627,196 @@ export default function VendorDashboardPage() {
                     className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white px-4 py-2 rounded-lg font-semibold transition"
                   >
                     Add Hall
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Hall Modal */}
+      {showEditModal && selectedHall && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4">Edit Hall - {selectedHall.name}</h2>
+              <p className="text-sm text-yellow-600 bg-yellow-50 p-2 rounded mb-4">
+                ⚠️ Changes require admin approval. You can also upload new photos.
+              </p>
+              <form onSubmit={handleEditHall} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Hall Name *</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleInput}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Owner Name</label>
+                  <input
+                    type="text"
+                    name="owner_name"
+                    value={form.owner_name}
+                    onChange={handleInput}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Location *</label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={form.location}
+                    onChange={handleInput}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    required
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Capacity *</label>
+                    <input
+                      type="number"
+                      name="capacity"
+                      value={form.capacity}
+                      onChange={handleInput}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Price/Day *</label>
+                    <input
+                      type="number"
+                      name="price_per_day"
+                      value={form.price_per_day}
+                      onChange={handleInput}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact Number</label>
+                  <input
+                    type="text"
+                    name="contact_number"
+                    value={form.contact_number}
+                    onChange={handleInput}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleInput}
+                    rows={3}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                  />
+                </div>
+
+                {/* Current Photos */}
+                {selectedHall.photos && selectedHall.photos.length > 0 && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Current Photos</label>
+                    <div className="grid grid-cols-3 gap-2 mb-3">
+                      {selectedHall.photos.map((photo: string, index: number) => (
+                        <div key={index} className="relative">
+                          <img
+                            src={photo}
+                            alt={`Current ${index + 1}`}
+                            className="w-full h-24 object-cover rounded-lg border border-gray-300"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Upload New Photos */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Upload New Photos (Optional)</label>
+                  
+                  <div className="mb-3">
+                    <input
+                      type="file"
+                      id="editPhotoUpload"
+                      accept="image/*"
+                      multiple
+                      onChange={handlePhotoSelect}
+                      className="hidden"
+                      disabled={photoFiles.length >= 10}
+                    />
+                    <label
+                      htmlFor="editPhotoUpload"
+                      className={`inline-flex items-center gap-2 px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer transition ${
+                        photoFiles.length >= 10
+                          ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'border-blue-300 bg-blue-50 text-[#20056a] hover:bg-blue-100'
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      {photoFiles.length >= 10 ? 'Maximum 10 photos' : 'Add New Photos'}
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {photoFiles.length}/10 new photos selected
+                    </p>
+                  </div>
+
+                  {/* New Photo Previews */}
+                  {photoPreviews.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {photoPreviews.map((preview, index) => (
+                        <div key={index} className="relative group">
+                          <img
+                            src={preview}
+                            alt={`New Preview ${index + 1}`}
+                            className="w-full h-24 object-cover rounded-lg border border-green-300"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(index)}
+                            className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                          >
+                            ✕
+                          </button>
+                          <div className="absolute bottom-1 left-1 bg-green-500 text-white text-xs px-2 py-0.5 rounded">
+                            NEW
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex gap-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      photoPreviews.forEach(url => URL.revokeObjectURL(url));
+                      setPhotoFiles([]);
+                      setPhotoPreviews([]);
+                      setSelectedHall(null);
+                      setShowEditModal(false);
+                    }}
+                    className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg font-semibold transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white px-4 py-2 rounded-lg font-semibold transition"
+                  >
+                    Submit Edit Request
                   </button>
                 </div>
               </form>
