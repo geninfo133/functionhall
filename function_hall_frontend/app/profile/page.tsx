@@ -81,22 +81,27 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      <main className="p-4 sm:p-6 lg:p-8">
+        <div>
         {/* Header Card */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
-          <div className="relative flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border-4 border-white/30 shadow-xl">
-              <FaUser className="text-2xl text-white" />
+        <div style={{ backgroundColor: '#0d316cff' }} className="rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24 blur-2xl"></div>
+          <div className="relative flex items-center justify-center gap-4">
+            <div className="relative">
+              <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-xl bg-white">
+                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                  <FaUser className="text-2xl text-white" />
+                </div>
+              </div>
             </div>
             <div>
-              <h1 className="text-xl md:text-2xl font-bold mb-1">
-                Welcome back, {customer.name.split(' ')[0]}!
+              <h1 className="text-2xl md:text-3xl font-bold mb-1">
+                {customer.name}
               </h1>
-              <p className="text-purple-100 text-base">
-                Manage your profile and view your activity
+              <p className="text-white/90 text-base">
+                Customer Account
               </p>
             </div>
           </div>
@@ -321,7 +326,8 @@ export default function ProfilePage() {
                 </form>
               )}
         </div>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield } from "react-icons/fa";
+import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield, FaTachometerAlt, FaSearch, FaEnvelope } from "react-icons/fa";
 
 export default function MainNavbar() {
   const router = useRouter();
@@ -305,7 +305,7 @@ export default function MainNavbar() {
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-lg transition mb-2"
                     >
-                      <FaBuilding size={18} />
+                      <FaTachometerAlt size={18} />
                       <span className="font-medium">Dashboard</span>
                     </Link>
 
@@ -323,7 +323,7 @@ export default function MainNavbar() {
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-lg transition mb-2"
                     >
-                      <FaBuilding size={18} />
+                      <FaSearch size={18} />
                       <span className="font-medium">Browse All Halls</span>
                     </Link>
 
@@ -343,7 +343,7 @@ export default function MainNavbar() {
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
-                      <FaUser size={18} />
+                      <FaTachometerAlt size={18} />
                       <span className="font-medium">Dashboard</span>
                     </Link>
                     <Link
@@ -359,7 +359,7 @@ export default function MainNavbar() {
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
-                      <FaInfoCircle size={18} />
+                      <FaEnvelope size={18} />
                       <span className="font-medium">Enquiries</span>
                     </Link>
                   </>
@@ -379,7 +379,7 @@ export default function MainNavbar() {
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
-                      <FaPhone size={18} />
+                      <FaEnvelope size={18} />
                       <span className="font-medium">Send Enquiry</span>
                     </Link>
 
@@ -397,7 +397,7 @@ export default function MainNavbar() {
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
                     >
-                      <FaBuilding size={18} />
+                      <FaSearch size={18} />
                       <span className="font-medium">Browse Halls</span>
                     </Link>
 

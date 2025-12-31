@@ -32,7 +32,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
       <main className="p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto">
+        <div>
         {/* Hero Section */}
         <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
           <div className="px-6 sm:px-8 lg:px-12 py-4">
@@ -287,7 +287,7 @@ export default function ContactPage() {
             </a>
           </div>
         </div>
-      </div>
+        </div>
       </main>
     </div>
   );

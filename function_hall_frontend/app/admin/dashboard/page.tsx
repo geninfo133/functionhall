@@ -215,24 +215,27 @@ export default function AdminDashboard() {
   ];
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-      <main className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
+      <main className="p-4 sm:p-6 lg:p-8">
+        <div>
           {/* Welcome Banner */}
-          <div className="flex items-center justify-between bg-[#20056a] text-white rounded-2xl shadow-lg px-8 py-6 mb-10 animate-fade-in">
-            <div>
-              <h1 className="text-4xl font-extrabold mb-2 drop-shadow">Welcome, {admin.name}!</h1>
-              <p className="text-lg font-medium opacity-90">Manage your function halls, bookings, and more with ease.</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                <img 
-                  src="/G.png" 
-                  alt={admin.name}
-                  className="w-full h-full object-cover"
-                />
+          <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
+            <div className="px-6 sm:px-8 lg:px-12 py-4">
+              <div className="max-w-5xl mx-auto">
+                <div className="text-center relative z-10">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
+                    Admin Dashboard
+                  </h1>
+                  <p className="text-base text-blue-50 mb-1 font-light">
+                    Welcome, {admin.name}!
+                  </p>
+                  <p className="text-sm text-blue-200 italic">
+                    Manage your function halls, bookings, and more with ease.
+                  </p>
+                </div>
               </div>
-              <span className="text-xl font-bold">{admin.name}</span>
             </div>
           </div>
+
           {/* Stat Cards with Glassmorphism and Hover Animation */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10 max-w-5xl">
             {statsDisplay.map((stat, idx) => (
@@ -359,8 +362,8 @@ export default function AdminDashboard() {
             <h2 className="text-2xl font-bold mb-4 text-[#20056a]">Get Started</h2>
             <p className="text-gray-700">Use the quick links above to manage halls, packages, bookings, and customers. More features coming soon!</p>
           </section>
-        </main>
-
+        </div>
+      </main>
     </div>
   );
 }

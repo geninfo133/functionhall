@@ -69,7 +69,7 @@ function HomePageContent() {
     <div className="min-h-screen bg-white">
       <main className="p-4 sm:p-6 lg:p-8">
           {/* Hero Banner with Search */}
-          <div className="relative overflow-hidden mb-12" style={{ backgroundColor: '#0d316c' }}>
+          <div className="relative rounded-2xl overflow-hidden mb-12" style={{ backgroundColor: '#0d316c' }}>
 
             <div className="px-6 sm:px-8 lg:px-12 py-4">
               <div className="max-w-6xl mx-auto">

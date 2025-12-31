@@ -323,7 +323,7 @@ export default function VendorDashboardPage() {
       <div className="flex-1">
         {/* Main Content */}
         <main className="p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto">
+        <div>
         {/* Header */}
         <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
           <div className="px-6 sm:px-8 lg:px-12 py-4">
