@@ -79,7 +79,10 @@ export default function HallDetailsPage() {
         
         {/* Hall Name Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
-          <h1 className="text-2xl font-bold text-white">{hall.name}</h1>
+          <h1 className="text-2xl font-bold text-white flex items-center">
+            <span className="mr-2">🏛️</span>
+            {hall.name}
+          </h1>
           <p className="text-sm text-white flex items-center">
             <span className="mr-1">📍</span>
             {hall.location}
