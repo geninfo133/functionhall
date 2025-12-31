@@ -113,7 +113,7 @@ export default function ContactPage() {
                   <h3 className="font-semibold text-gray-800 mb-3">Follow Us</h3>
                   <div className="flex gap-4">
                     <a 
-                      href="https://www.youtube.com/@geninfotech" 
+                      href="https://www.youtube.com/@GENINFOCOMPUTEREDUCATIONCENTRE" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 transition"
@@ -122,7 +122,7 @@ export default function ContactPage() {
                       <span className="text-sm font-medium">geninfotech</span>
                     </a>
                     <a 
-                      href="https://www.instagram.com/geninfotech_official" 
+                      href="https://www.instagram.com/geninfotech_official/?next=%2F&hl=en" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="flex items-center gap-2 bg-pink-50 text-pink-600 px-4 py-2 rounded-lg hover:bg-pink-100 transition"
@@ -151,6 +151,23 @@ export default function ContactPage() {
                   <span className="font-medium">Sunday:</span>
                   <span>Closed</span>
                 </div>
+              </div>
+            </div>
+
+            {/* Google Map */}
+            <div className="bg-white rounded-xl shadow-md p-6 border-2 border-gray-200">
+              <h3 className="text-lg font-bold text-[#20056a] mb-3">Find Us on Map</h3>
+              <div className="w-full h-64 rounded-lg overflow-hidden border-2 border-gray-300">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.7!2d81.7!3d16.75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a37b7f01ae272ed%3A0x2d67bba4c589ac5a!2sRastrapathi%20Road%2C%20Opp.%20Canara%20Bank%2C%20Tanuku!5e0!3m2!1sen!2sin!4v1234567890"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="GenInfotech Location - Opp. Canara Bank, Rastrapathi Road, Tanuku"
+                ></iframe>
               </div>
             </div>
           </div>
