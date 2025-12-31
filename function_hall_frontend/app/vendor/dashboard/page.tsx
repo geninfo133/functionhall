@@ -318,74 +318,28 @@ export default function VendorDashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Sidebar */}
-      <aside className="w-64 bg-slate-900 min-h-screen shadow-lg flex flex-col p-6 border-r border-slate-700">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white">Vendor Panel</h2>
-          <p className="text-sm text-slate-400 mt-1">Manage your business</p>
-        </div>
-        
-        <nav className="flex-1">
-          <ul className="space-y-2">
-            <li>
-              <Link href="/vendor/dashboard" className="flex items-center space-x-3 px-4 py-3 rounded-lg bg-[#20056a] text-white font-semibold transition">
-                <FaTachometerAlt />
-                <span>Dashboard</span>
-              </Link>
-            </li>
-            <li>
-              <Link href="/vendor/halls" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
-                <FaBuilding />
-                <span>My Halls</span>
-              </Link>
-            </li>
-            <li>
-              <Link href="/vendor/bookings" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
-                <FaCalendarCheck />
-                <span>Bookings</span>
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin/enquiries" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
-                <FaEnvelope />
-                <span>Enquiries</span>
-              </Link>
-            </li>
-            <li>
-              <Link href="/vendor/profile" className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-slate-300 font-semibold transition">
-                <FaUser />
-                <span>Profile</span>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-
-        <div className="mt-auto pt-6 border-t border-slate-700">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center space-x-3 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold transition"
-          >
-            <FaSignOutAlt />
-            <span>Logout</span>
-          </button>
-        </div>
-      </aside>
-
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Main Content */}
       <div className="flex-1">
+        {/* Main Content */}
+        <main className="p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white shadow-sm border-b">
-          <div className="px-8 py-4">
-            <div>
-              <h1 className="text-2xl font-bold text-[#20056a]">Vendor Dashboard</h1>
-              <p className="text-sm text-gray-600">Welcome, {vendorData?.name} - {vendorData?.business_name}</p>
+        <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
+          <div className="px-6 sm:px-8 lg:px-12 py-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center relative z-10">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
+                  Vendor Dashboard
+                </h1>
+                <p className="text-base text-blue-50 mb-1 font-light">
+                  Welcome, {vendorData?.name} - {vendorData?.business_name}
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Main Content */}
-        <main className="p-4 sm:p-6 lg:p-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div className="bg-white rounded-xl shadow p-6">
@@ -466,6 +420,7 @@ export default function VendorDashboardPage() {
               console.log('Delete hall:', hall);
             }}
           />
+        </div>
         </div>
       </main>
 
