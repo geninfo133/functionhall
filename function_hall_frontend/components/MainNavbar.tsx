@@ -106,7 +106,7 @@ export default function MainNavbar() {
             {/* Logo */}
             <Link href="/home" className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full overflow-hidden bg-white flex items-center justify-center">
-                <img src="/g.png" alt="GenS Services" className="w-8 h-8 object-cover" />
+                <img src="/G.png" alt="GenS Services" className="w-8 h-8 object-cover" />
               </div>
               <div>
                 <span className="text-2xl font-bold text-white">GenS Services</span>

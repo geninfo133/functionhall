@@ -68,8 +68,9 @@ export default function HallDetailsPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <main className="p-4 sm:p-6 lg:p-8">
       {/* Hero Section */}
-      <div className="relative h-32 bg-[#0d316cff] rounded-2xl overflow-hidden shadow-lg mx-4 sm:mx-6 lg:mx-8">
+      <div className="relative h-32 bg-[#0d316cff] rounded-2xl overflow-hidden shadow-lg">
         <div className="flex items-center justify-center h-full">
           <div className="text-center">
             <div className="text-white text-8xl mb-4">🏛️</div>
@@ -86,7 +87,7 @@ export default function HallDetailsPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Side - Photos and Hall Info */}
           <div className="lg:col-span-3">
@@ -349,6 +350,7 @@ export default function HallDetailsPage() {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 }

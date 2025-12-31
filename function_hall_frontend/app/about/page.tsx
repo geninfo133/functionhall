@@ -2,28 +2,26 @@
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50 pt-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-50">
+      <main className="p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
-        <div className="rounded-2xl shadow-xl p-6 mb-12 text-center relative overflow-hidden" style={{ backgroundColor: '#0d316c' }}>
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-white opacity-5 rounded-full -mr-24 -mt-24"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-white opacity-5 rounded-full -ml-16 -mb-16"></div>
-          
-          <div className="relative z-10">
-            <div className="inline-block mb-2">
-              <div className="text-3xl mb-1">🏛️</div>
+        <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
+          <div className="px-6 sm:px-8 lg:px-12 py-4">
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center relative z-10">
+                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight flex items-center justify-center gap-3">
+                  <span className="text-3xl">🏛️</span>
+                  GenS Services
+                </h1>
+                <p className="text-base text-blue-50 mb-1 font-light">
+                  Your Premier Function Hall Booking Platform
+                </p>
+                <p className="text-sm text-blue-200 italic">
+                  (A wing of GenInfotech)
+                </p>
+              </div>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
-              GenS Services
-            </h1>
-            <div className="w-16 h-1 bg-blue-300 mx-auto mb-2 rounded-full"></div>
-            <p className="text-base text-blue-50 mb-1 font-light">
-              Your Premier Function Hall Booking Platform
-            </p>
-            <p className="text-sm text-blue-200 italic">
-              (A wing of GenInfotech)
-            </p>
           </div>
         </div>
 
@@ -188,6 +186,7 @@ export default function AboutPage() {
           </a>
         </div>
       </div>
+      </main>
     </div>
   );
 }
