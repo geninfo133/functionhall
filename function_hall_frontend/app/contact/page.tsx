@@ -159,7 +159,7 @@ export default function ContactPage() {
               <h3 className="text-lg font-bold text-[#20056a] mb-3">Find Us on Map</h3>
               <div className="w-full h-64 rounded-lg overflow-hidden border-2 border-gray-300">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.7!2d81.7!3d16.75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a37b7f01ae272ed%3A0x2d67bba4c589ac5a!2sRastrapathi%20Road%2C%20Opp.%20Canara%20Bank%2C%20Tanuku!5e0!3m2!1sen!2sin!4v1234567890"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15309.494838272904!2d81.6786033!3d16.7552157!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a37b7f01ae272ed%3A0x2d67bba4c589ac5a!2sRastrapathi%20Road!5e0!3m2!1sen!2sin!4v1735830000000!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
