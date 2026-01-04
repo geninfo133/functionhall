@@ -22,6 +22,7 @@ function BookingPageContent() {
   const [availability, setAvailability] = useState<{available: boolean, message: string} | null>(null);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [hallBookings, setHallBookings] = useState<any[]>([]);
+  const [loadingPackages, setLoadingPackages] = useState(false);
 
   useEffect(() => {
     // Check if customer is logged in
@@ -55,9 +56,18 @@ function BookingPageContent() {
         .then(res => res.json())
         .then(data => setHall(data));
       // Load packages for this hall
+      setLoadingPackages(true);
       fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/packages`)
         .then(res => res.json())
-        .then(data => setPackages(data));
+        .then(data => {
+          console.log('📦 Packages loaded:', data);
+          setPackages(data);
+        })
+        .catch(err => {
+          console.error('❌ Failed to load packages:', err);
+          setPackages([]);
+        })
+        .finally(() => setLoadingPackages(false));
       // Load bookings for this hall
       fetch(`${BACKEND_URL}/api/bookings?hall_id=${selectedHallId}`)
         .then(res => res.json())
@@ -252,7 +262,12 @@ function BookingPageContent() {
                   )}
                 </div>
               )}
-          {packages.length > 0 && (
+          {loadingPackages ? (
+            <div className="text-center py-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-4 border-blue-100 border-t-blue-600 mx-auto"></div>
+              <p className="text-sm text-gray-500 mt-2">Loading packages...</p>
+            </div>
+          ) : packages.length > 0 ? (
             <div>
               <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
                 <FaBox className="text-[#20056a]" />
@@ -295,7 +310,13 @@ function BookingPageContent() {
                 </div>
               )}
             </div>
-          )}
+          ) : selectedHallId ? (
+            <div className="p-6 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg text-center">
+              <FaBox className="text-gray-400 text-4xl mx-auto mb-2" />
+              <p className="text-gray-600 font-medium">No packages available for this hall</p>
+              <p className="text-gray-500 text-sm mt-1">You can book the hall at base price</p>
+            </div>
+          ) : null}
           {error && (
             <div className="text-red-600 bg-red-50 p-3 rounded-lg">
               {error}

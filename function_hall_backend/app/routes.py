@@ -151,6 +151,14 @@ def add_hall():
     if vendor_id and not is_admin:
         vendor = AdminUser.query.get(vendor_id)
         if vendor and vendor.role == 'vendor':
+            # Parse packages if provided
+            packages_data = None
+            if 'packages' in data:
+                try:
+                    packages_data = json.loads(data['packages']) if isinstance(data['packages'], str) else data['packages']
+                except:
+                    packages_data = None
+            
             # Create a change request for approval
             change_request = HallChangeRequest(
                 vendor_id=vendor_id,
@@ -164,7 +172,8 @@ def add_hall():
                     'contact_number': data.get('contact_number'),
                     'description': data.get('description'),
                     'vendor_id': vendor_id,
-                    'photos': photo_paths
+                    'photos': photo_paths,
+                    'packages': packages_data
                 }),
                 status='pending'
             )
@@ -925,6 +934,19 @@ def approve_hall_request(request_id):
                     url=photo_path
                 )
                 db.session.add(hall_photo)
+        
+        # Create packages if provided
+        packages = new_data.get('packages', [])
+        if packages:
+            for pkg_data in packages:
+                package = Package(
+                    hall_id=hall.id,
+                    package_name=pkg_data.get('package_name'),
+                    price=pkg_data.get('price'),
+                    details=pkg_data.get('details')
+                )
+                db.session.add(package)
+            print(f"✅ Created {len(packages)} packages for hall {hall.id}")
         
         change_request.hall_id = hall.id
         

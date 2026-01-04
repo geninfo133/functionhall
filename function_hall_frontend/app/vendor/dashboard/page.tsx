@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../../lib/config";
-import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaPlus, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarCheck, FaEnvelope, FaCalendarAlt, FaUser, FaSignOutAlt } from "react-icons/fa";
+import { PACKAGE_TEMPLATES } from "../../../lib/data";
+import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaPlus, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarCheck, FaEnvelope, FaCalendarAlt, FaUser, FaSignOutAlt, FaCheckCircle } from "react-icons/fa";
 import Link from "next/link";
 import HallCards from "../../../components/HallCards";
 
@@ -26,6 +27,7 @@ export default function VendorDashboardPage() {
   });
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
+  const [selectedPackages, setSelectedPackages] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -245,6 +247,11 @@ export default function VendorDashboardPage() {
       formData.append('description', form.description || '');
       formData.append('vendor_id', vendorData.id.toString());
       
+      // Append selected packages as JSON
+      if (selectedPackages.length > 0) {
+        formData.append('packages', JSON.stringify(selectedPackages));
+      }
+      
       // Append photo files
       photoFiles.forEach((file, index) => {
         formData.append('photos', file);
@@ -271,10 +278,11 @@ export default function VendorDashboardPage() {
           price_per_day: "",
           description: ""
         });
-        // Clear photos
+        // Clear photos and packages
         photoPreviews.forEach(url => URL.revokeObjectURL(url));
         setPhotoFiles([]);
         setPhotoPreviews([]);
+        setSelectedPackages([]);
         setShowAddModal(false);
         fetchVendorHalls(vendorData.id);
         fetchVendorRequests(vendorData.id);
@@ -507,6 +515,62 @@ export default function VendorDashboardPage() {
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
                   />
                 </div>
+                
+                {/* Package Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Packages (Optional)
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                    {PACKAGE_TEMPLATES.map((pkg, index) => {
+                      const isSelected = selectedPackages.some(p => p.package_name === pkg.package_name);
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => {
+                            if (isSelected) {
+                              setSelectedPackages(selectedPackages.filter(p => p.package_name !== pkg.package_name));
+                            } else {
+                              setSelectedPackages([...selectedPackages, pkg]);
+                            }
+                          }}
+                          className={`border-2 rounded-lg p-3 cursor-pointer transition hover:shadow-md ${
+                            isSelected
+                              ? "border-[#20056a] bg-blue-50 shadow-sm"
+                              : "border-gray-200 hover:border-blue-300"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between mb-1">
+                            <h4 className="font-bold text-sm text-gray-800">{pkg.package_name}</h4>
+                            {isSelected && (
+                              <FaCheckCircle className="text-[#20056a] text-lg" />
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-600 mb-2 line-clamp-2">{pkg.details}</p>
+                          <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                            <span className="text-xs text-gray-500">Price</span>
+                            <span className="text-[#20056a] font-bold text-sm">₹{pkg.price.toLocaleString()}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {selectedPackages.length > 0 && (
+                    <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <p className="text-sm text-green-800 font-semibold mb-2">
+                        {selectedPackages.length} package{selectedPackages.length !== 1 ? 's' : ''} selected:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedPackages.map((pkg, idx) => (
+                          <span key={idx} className="text-xs bg-white px-2 py-1 rounded border border-green-300">
+                            {pkg.package_name} - ₹{pkg.price.toLocaleString()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Hall Photos</label>
                   
