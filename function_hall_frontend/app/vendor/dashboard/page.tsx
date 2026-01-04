@@ -472,7 +472,7 @@ export default function VendorDashboardPage() {
                     name="name"
                     value={form.name}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                     required
                   />
                 </div>
@@ -483,7 +483,7 @@ export default function VendorDashboardPage() {
                     name="owner_name"
                     value={form.owner_name}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                   />
                 </div>
                 <div>
@@ -493,7 +493,7 @@ export default function VendorDashboardPage() {
                     name="location"
                     value={form.location}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                     required
                   />
                 </div>
@@ -505,7 +505,7 @@ export default function VendorDashboardPage() {
                       name="capacity"
                       value={form.capacity}
                       onChange={handleInput}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                       required
                     />
                   </div>
@@ -516,7 +516,7 @@ export default function VendorDashboardPage() {
                       name="price_per_day"
                       value={form.price_per_day}
                       onChange={handleInput}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                       required
                     />
                   </div>
@@ -528,7 +528,7 @@ export default function VendorDashboardPage() {
                     name="contact_number"
                     value={form.contact_number}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                   />
                 </div>
                 <div>
@@ -538,7 +538,7 @@ export default function VendorDashboardPage() {
                     value={form.description}
                     onChange={handleInput}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none placeholder-gray-400"
                   />
                 </div>
                 
@@ -875,7 +875,7 @@ export default function VendorDashboardPage() {
                     name="name"
                     value={form.name}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                   />
                 </div>
                 <div>
@@ -885,7 +885,7 @@ export default function VendorDashboardPage() {
                     name="owner_name"
                     value={form.owner_name}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                   />
                 </div>
                 <div>
@@ -895,7 +895,7 @@ export default function VendorDashboardPage() {
                     name="location"
                     value={form.location}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -906,7 +906,7 @@ export default function VendorDashboardPage() {
                       name="capacity"
                       value={form.capacity}
                       onChange={handleInput}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                     />
                   </div>
                   <div>
@@ -916,7 +916,7 @@ export default function VendorDashboardPage() {
                       name="price_per_day"
                       value={form.price_per_day}
                       onChange={handleInput}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                      className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                     />
                   </div>
                 </div>
@@ -927,7 +927,7 @@ export default function VendorDashboardPage() {
                     name="contact_number"
                     value={form.contact_number}
                     onChange={handleInput}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
                   />
                 </div>
                 <div>
@@ -937,7 +937,7 @@ export default function VendorDashboardPage() {
                     value={form.description}
                     onChange={handleInput}
                     rows={3}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+                    className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none placeholder-gray-400"
                   />
                 </div>
 

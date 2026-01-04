@@ -81,7 +81,7 @@ export default function VendorLoginPage() {
               name="email"
               value={form.email}
               onChange={handleInput}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+              className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition placeholder-gray-400"
               placeholder="vendor@example.com"
               required
             />
@@ -96,7 +96,7 @@ export default function VendorLoginPage() {
               name="password"
               value={form.password}
               onChange={handleInput}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+              className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition placeholder-gray-400"
               placeholder="••••••••"
               required
             />
