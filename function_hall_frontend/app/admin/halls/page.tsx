@@ -313,9 +313,11 @@ export default function AdminHallsPage() {
                   <textarea name="description" value={form.description} onChange={handleInput} placeholder="Description" className="px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 placeholder-gray-400 md:col-span-2" />
                   
                   {/* Package Selection */}
-                  <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 md:col-span-2">
+                  <div className="border-4 border-red-500 p-4 bg-gray-50 md:col-span-2">
+                    <h3 className="text-xl font-bold text-red-600 mb-4">🎁 PACKAGES SECTION - IF YOU SEE THIS, CODE IS LOADED</h3>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">Select Packages</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
+                    <p className="text-sm text-gray-600 mb-2">Total templates: {PACKAGE_TEMPLATES.length}</p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto bg-white p-2 rounded">
                       {PACKAGE_TEMPLATES.map((pkg, index) => {
                         const isSelected = selectedPackages.some(p => p.package_name === pkg.package_name);
                         return (

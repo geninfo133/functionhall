@@ -520,11 +520,13 @@ export default function VendorDashboardPage() {
                 </div>
                 
                 {/* Package Selection */}
-                <div>
+                <div className="border-4 border-red-500 p-4">
+                  <h3 className="text-xl font-bold text-red-600 mb-4">🎁 PACKAGES SECTION - IF YOU SEE THIS, CODE IS LOADED</h3>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Select Packages (Optional)
                   </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-lg">
+                  <p className="text-sm text-gray-600 mb-2">Total templates: {PACKAGE_TEMPLATES.length}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
                     {PACKAGE_TEMPLATES.map((pkg, index) => {
                       const isSelected = selectedPackages.some(p => p.package_name === pkg.package_name);
                       return (
