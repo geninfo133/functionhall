@@ -251,14 +251,21 @@ export default function VendorDashboardPage() {
       formData.append('vendor_id', vendorData.id.toString());
       
       // Append selected packages as JSON
-      console.log('📦 Selected Packages before submit:', selectedPackages);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+      console.log('📦 PACKAGE DEBUG - FRONTEND SUBMISSION');
+      console.log('📦 Selected Packages:', selectedPackages);
       console.log('📦 Selected Packages length:', selectedPackages.length);
+      console.log('📦 Selected Packages stringified:', JSON.stringify(selectedPackages));
+      
       if (selectedPackages.length > 0) {
-        console.log('✅ Appending packages to formData:', JSON.stringify(selectedPackages));
-        formData.append('packages', JSON.stringify(selectedPackages));
+        const packagesJson = JSON.stringify(selectedPackages);
+        formData.append('packages', packagesJson);
+        console.log('✅ APPENDED to formData - key: "packages", value:', packagesJson);
+        console.log('✅ FormData now includes packages');
       } else {
-        console.warn('⚠️ No packages selected - packages not sent to backend');
+        console.error('❌ NO PACKAGES SELECTED - Nothing will be sent to backend!');
       }
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       
       // Append photo files
       photoFiles.forEach((file, index) => {

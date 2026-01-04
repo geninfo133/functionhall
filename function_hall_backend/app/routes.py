@@ -152,38 +152,62 @@ def add_hall():
         vendor = AdminUser.query.get(vendor_id)
         if vendor and vendor.role == 'vendor':
             # Parse packages if provided
+            print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print(f"📦 PACKAGE DEBUG - BACKEND RECEIVING HALL")
+            print(f"📦 All form data keys: {list(data.keys())}")
+            print(f"📦 Looking for 'packages' key...")
+            
             packages_data = None
             if 'packages' in data:
+                print(f"✅ 'packages' key FOUND in data!")
+                raw_packages = data['packages']
+                print(f"📦 Raw packages value: {raw_packages}")
+                print(f"📦 Raw packages type: {type(raw_packages)}")
+                
                 try:
-                    packages_data = json.loads(data['packages']) if isinstance(data['packages'], str) else data['packages']
-                    print(f"📦 Parsed packages data: {packages_data}")
+                    packages_data = json.loads(raw_packages) if isinstance(raw_packages, str) else raw_packages
+                    print(f"✅ Parsed packages data: {packages_data}")
+                    print(f"✅ Number of packages: {len(packages_data) if packages_data else 0}")
                 except Exception as e:
-                    print(f"❌ Error parsing packages: {e}")
+                    print(f"❌ ERROR parsing packages: {e}")
+                    print(f"❌ Exception type: {type(e).__name__}")
                     packages_data = None
             else:
-                print(f"⚠️ No 'packages' key found in data. Keys: {data.keys()}")
+                print(f"❌ 'packages' key NOT FOUND in data!")
+                print(f"❌ Available keys: {data.keys()}")
+            
+            print(f"📦 Final packages_data to store: {packages_data}")
+            print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             
             # Create a change request for approval
+            new_data_dict = {
+                'name': data.get('name'),
+                'owner_name': data.get('owner_name'),
+                'location': data.get('location'),
+                'capacity': int(data.get('capacity')) if data.get('capacity') else 0,
+                'price_per_day': int(data.get('price_per_day')) if data.get('price_per_day') else 0,
+                'contact_number': data.get('contact_number'),
+                'description': data.get('description'),
+                'vendor_id': vendor_id,
+                'photos': photo_paths,
+                'packages': packages_data
+            }
+            
+            print(f"📦 STORING in change request new_data:")
+            print(f"   - packages value: {packages_data}")
+            print(f"   - packages type: {type(packages_data)}")
+            print(f"   - packages count: {len(packages_data) if packages_data else 0}")
+            
             change_request = HallChangeRequest(
                 vendor_id=vendor_id,
                 action_type='add',
-                new_data=json.dumps({
-                    'name': data.get('name'),
-                    'owner_name': data.get('owner_name'),
-                    'location': data.get('location'),
-                    'capacity': int(data.get('capacity')) if data.get('capacity') else 0,
-                    'price_per_day': int(data.get('price_per_day')) if data.get('price_per_day') else 0,
-                    'contact_number': data.get('contact_number'),
-                    'description': data.get('description'),
-                    'vendor_id': vendor_id,
-                    'photos': photo_paths,
-                    'packages': packages_data
-                }),
+                new_data=json.dumps(new_data_dict),
                 status='pending'
             )
             db.session.add(change_request)
             db.session.commit()
-            print(f"📋 Change request created! ID: {change_request.id}")
+            print(f"✅ Change request created! ID: {change_request.id}")
+            print(f"✅ Packages included in request: {packages_data is not None and len(packages_data) > 0 if packages_data else False}")
             return jsonify({
                 "message": "Hall submission received! Pending admin approval.",
                 "request_id": change_request.id,
