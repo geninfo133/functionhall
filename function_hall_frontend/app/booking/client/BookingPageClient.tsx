@@ -25,6 +25,7 @@ function BookingPageContent() {
   const [loadingPackages, setLoadingPackages] = useState(false);
 
   useEffect(() => {
+    console.log('🌐 BACKEND_URL:', BACKEND_URL);
     // Check if customer is logged in
     const customerInfo = localStorage.getItem("customerInfo");
     if (!customerInfo) {
@@ -57,14 +58,23 @@ function BookingPageContent() {
         .then(data => setHall(data));
       // Load packages for this hall
       setLoadingPackages(true);
-      fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/packages`)
-        .then(res => res.json())
+      const packagesUrl = `${BACKEND_URL}/api/halls/${selectedHallId}/packages`;
+      console.log('🔗 Fetching packages from:', packagesUrl);
+      fetch(packagesUrl)
+        .then(res => {
+          console.log('📦 Packages response status:', res.status);
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
+        })
         .then(data => {
           console.log('📦 Packages loaded:', data);
           setPackages(data);
         })
         .catch(err => {
           console.error('❌ Failed to load packages:', err);
+          console.error('❌ URL attempted:', packagesUrl);
           setPackages([]);
         })
         .finally(() => setLoadingPackages(false));
