@@ -54,6 +54,8 @@ class FunctionHall(db.Model):
     calendar_entries = db.relationship('Calendar', backref='hall', lazy=True)
     photos = db.relationship('HallPhoto', backref='hall', lazy=True)
     pending_changes = db.relationship('HallChangeRequest', backref='hall', lazy=True)
+    functional_rooms = db.relationship('FunctionalRoom', backref='hall', lazy=True)
+    guest_rooms = db.relationship('GuestRoom', backref='hall', lazy=True)
 
     def __repr__(self):
         return f'<FunctionHall {self.name}>'
@@ -85,6 +87,45 @@ class Package(db.Model):
 
     def __repr__(self):
         return f'<Package {self.package_name}>'
+
+
+# -------------------------
+# Functional Room Model (VIP, Green Room, Conference)
+# -------------------------
+class FunctionalRoom(db.Model):
+    __tablename__ = 'functional_rooms'
+
+    id = db.Column(db.Integer, primary_key=True)
+    hall_id = db.Column(db.Integer, db.ForeignKey('function_halls.id'), nullable=False)
+    room_type = db.Column(db.String(50), nullable=False)  # 'VIP', 'Green Room', 'Conference/Meeting'
+    room_name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    capacity = db.Column(db.Integer)  # For conference rooms
+    amenities = db.Column(db.Text)  # JSON string or comma-separated
+    description = db.Column(db.Text)
+
+    def __repr__(self):
+        return f'<FunctionalRoom {self.room_type} - {self.room_name}>'
+
+
+# -------------------------
+# Guest Room Model (Hotel-style accommodation)
+# -------------------------
+class GuestRoom(db.Model):
+    __tablename__ = 'guest_rooms'
+
+    id = db.Column(db.Integer, primary_key=True)
+    hall_id = db.Column(db.Integer, db.ForeignKey('function_halls.id'), nullable=False)
+    room_category = db.Column(db.String(50), nullable=False)  # 'Standard', 'Deluxe', 'Suite'
+    total_rooms = db.Column(db.Integer, nullable=False)  # Total number of this room type
+    price_per_room = db.Column(db.Float, nullable=False)
+    bed_type = db.Column(db.String(50))  # 'Single', 'Double', 'Queen', 'King'
+    amenities = db.Column(db.Text)  # AC, TV, WiFi, etc.
+    max_occupancy = db.Column(db.Integer)  # Max persons per room
+    description = db.Column(db.Text)
+
+    def __repr__(self):
+        return f'<GuestRoom {self.room_category} - {self.total_rooms} rooms>'
 
 
 # -------------------------

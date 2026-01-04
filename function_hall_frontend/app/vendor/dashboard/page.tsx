@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../../lib/config";
-import { PACKAGE_TEMPLATES } from "../../../lib/data";
-import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaPlus, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarCheck, FaEnvelope, FaCalendarAlt, FaUser, FaSignOutAlt, FaCheckCircle } from "react-icons/fa";
+import { PACKAGE_TEMPLATES, FUNCTIONAL_ROOM_TYPES, GUEST_ROOM_TYPES } from "../../../lib/data";
+import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaPlus, FaTachometerAlt, FaBuilding, FaPlusCircle, FaBox, FaCalendarCheck, FaEnvelope, FaCalendarAlt, FaUser, FaSignOutAlt, FaCheckCircle, FaDoorOpen, FaBed } from "react-icons/fa";
 import Link from "next/link";
 import HallCards from "../../../components/HallCards";
 
@@ -28,6 +28,8 @@ export default function VendorDashboardPage() {
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [selectedPackages, setSelectedPackages] = useState<any[]>([]);
+  const [functionalRooms, setFunctionalRooms] = useState<any[]>([]);
+  const [guestRooms, setGuestRooms] = useState<any[]>([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -264,6 +266,16 @@ export default function VendorDashboardPage() {
       }
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       
+      // Append functional rooms as JSON
+      if (functionalRooms.length > 0) {
+        formData.append('functional_rooms', JSON.stringify(functionalRooms));
+      }
+      
+      // Append guest rooms as JSON
+      if (guestRooms.length > 0) {
+        formData.append('guest_rooms', JSON.stringify(guestRooms));
+      }
+      
       // Append photo files
       photoFiles.forEach((file, index) => {
         formData.append('photos', file);
@@ -295,6 +307,8 @@ export default function VendorDashboardPage() {
         setPhotoFiles([]);
         setPhotoPreviews([]);
         setSelectedPackages([]);
+        setFunctionalRooms([]);
+        setGuestRooms([]);
         setShowAddModal(false);
         fetchVendorHalls(vendorData.id);
         fetchVendorRequests(vendorData.id);
@@ -576,6 +590,184 @@ export default function VendorDashboardPage() {
                         {selectedPackages.map((pkg, idx) => (
                           <span key={idx} className="text-xs bg-white px-2 py-1 rounded border border-green-300">
                             {pkg.package_name} - ₹{pkg.price.toLocaleString()}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Functional Rooms Section */}
+                <div className="mt-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <FaDoorOpen className="text-purple-600" />
+                    <label className="block text-sm font-medium text-gray-700">
+                      Function Hall Rooms (Optional)
+                    </label>
+                  </div>
+                  <p className="text-xs text-gray-500 mb-3">Add special rooms available in your hall (VIP, Green Room, Conference, etc.)</p>
+                  <div className="space-y-3">
+                    {FUNCTIONAL_ROOM_TYPES.map((roomType, index) => {
+                      const existingRoom = functionalRooms.find(r => r.room_type === roomType.room_type);
+                      const isSelected = !!existingRoom;
+                      
+                      return (
+                        <div key={index} className="border border-gray-200 rounded-lg p-3 hover:border-purple-300 transition">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setFunctionalRooms([...functionalRooms, {
+                                        room_type: roomType.room_type,
+                                        room_name: roomType.room_type,
+                                        price: roomType.typical_price,
+                                        capacity: 0,
+                                        amenities: roomType.amenities,
+                                        description: roomType.description
+                                      }]);
+                                    } else {
+                                      setFunctionalRooms(functionalRooms.filter(r => r.room_type !== roomType.room_type));
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-purple-600"
+                                />
+                                <h4 className="font-semibold text-sm">{roomType.room_type}</h4>
+                              </div>
+                              <p className="text-xs text-gray-600 mb-2">{roomType.description}</p>
+                              <p className="text-xs text-gray-500">Amenities: {roomType.amenities}</p>
+                            </div>
+                            {isSelected && (
+                              <div className="ml-3">
+                                <label className="text-xs text-gray-600">Price</label>
+                                <input
+                                  type="number"
+                                  value={existingRoom.price}
+                                  onChange={(e) => {
+                                    setFunctionalRooms(functionalRooms.map(r => 
+                                      r.room_type === roomType.room_type 
+                                        ? {...r, price: parseInt(e.target.value) || 0}
+                                        : r
+                                    ));
+                                  }}
+                                  className="w-24 px-2 py-1 text-sm border border-gray-300 rounded"
+                                  placeholder="₹"
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {functionalRooms.length > 0 && (
+                    <div className="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg">
+                      <p className="text-sm text-purple-800 font-semibold">
+                        {functionalRooms.length} functional room{functionalRooms.length !== 1 ? 's' : ''} selected
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Guest Rooms Section */}
+                <div className="mt-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <FaBed className="text-blue-600" />
+                    <label className="block text-sm font-medium text-gray-700">
+                      Guest Accommodation Rooms (Optional)
+                    </label>
+                  </div>
+                  <p className="text-xs text-gray-500 mb-3">Add hotel-style rooms available for guests staying overnight</p>
+                  <div className="space-y-3">
+                    {GUEST_ROOM_TYPES.map((roomType, index) => {
+                      const existingRoom = guestRooms.find(r => r.room_category === roomType.room_category);
+                      const isSelected = !!existingRoom;
+                      
+                      return (
+                        <div key={index} className="border border-gray-200 rounded-lg p-3 hover:border-blue-300 transition">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <input
+                                  type="checkbox"
+                                  checked={isSelected}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setGuestRooms([...guestRooms, {
+                                        room_category: roomType.room_category,
+                                        total_rooms: 1,
+                                        price_per_room: roomType.typical_price,
+                                        bed_type: roomType.bed_type,
+                                        max_occupancy: roomType.max_occupancy,
+                                        amenities: roomType.amenities,
+                                        description: roomType.description
+                                      }]);
+                                    } else {
+                                      setGuestRooms(guestRooms.filter(r => r.room_category !== roomType.room_category));
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-blue-600"
+                                />
+                                <h4 className="font-semibold text-sm">{roomType.room_category}</h4>
+                                <span className="text-xs bg-gray-100 px-2 py-0.5 rounded">{roomType.bed_type}</span>
+                                <span className="text-xs text-gray-500">Max: {roomType.max_occupancy} persons</span>
+                              </div>
+                              <p className="text-xs text-gray-600 mb-1">{roomType.description}</p>
+                              <p className="text-xs text-gray-500">Amenities: {roomType.amenities}</p>
+                            </div>
+                            {isSelected && (
+                              <div className="ml-3 flex gap-2">
+                                <div>
+                                  <label className="text-xs text-gray-600">Total Rooms</label>
+                                  <input
+                                    type="number"
+                                    min="1"
+                                    value={existingRoom.total_rooms}
+                                    onChange={(e) => {
+                                      setGuestRooms(guestRooms.map(r => 
+                                        r.room_category === roomType.room_category 
+                                          ? {...r, total_rooms: parseInt(e.target.value) || 1}
+                                          : r
+                                      ));
+                                    }}
+                                    className="w-16 px-2 py-1 text-sm border border-gray-300 rounded"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-xs text-gray-600">Price/Room</label>
+                                  <input
+                                    type="number"
+                                    value={existingRoom.price_per_room}
+                                    onChange={(e) => {
+                                      setGuestRooms(guestRooms.map(r => 
+                                        r.room_category === roomType.room_category 
+                                          ? {...r, price_per_room: parseInt(e.target.value) || 0}
+                                          : r
+                                      ));
+                                    }}
+                                    className="w-24 px-2 py-1 text-sm border border-gray-300 rounded"
+                                    placeholder="₹"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {guestRooms.length > 0 && (
+                    <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-800 font-semibold mb-2">
+                        {guestRooms.length} room type{guestRooms.length !== 1 ? 's' : ''} selected
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {guestRooms.map((room, idx) => (
+                          <span key={idx} className="text-xs bg-white px-2 py-1 rounded border border-blue-300">
+                            {room.total_rooms}x {room.room_category} @ ₹{room.price_per_room.toLocaleString()}/room
                           </span>
                         ))}
                       </div>
