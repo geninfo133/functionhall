@@ -35,14 +35,19 @@ export default function HallDetailsPage() {
         });
       
       // Fetch packages
+      console.log('🔗 Fetching packages from:', `${BACKEND_URL}/api/halls/${hallId}/packages`);
       fetch(`${BACKEND_URL}/api/halls/${hallId}/packages`, {
         cache: 'no-store'
       })
         .then(res => {
+          console.log('📦 Packages response status:', res.status);
           if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
           return res.json();
         })
-        .then(data => setPackages(data))
+        .then(data => {
+          console.log('📦 Packages data received:', data);
+          setPackages(data);
+        })
         .catch(err => {
           console.error('❌ Fetch packages error:', err);
           setPackages([]);
@@ -266,13 +271,14 @@ export default function HallDetailsPage() {
 
           {/* Right Sidebar - Packages (Marquee) */}
           <div className="lg:col-span-1">
-            {packages.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-4 overflow-hidden">
-                <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
-                  <span className="text-3xl mr-2">🎁</span>
-                  Available Packages
-                </h2>
-                <div className="relative h-[780px] overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-4 overflow-hidden">
+              <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
+                <span className="text-3xl mr-2">🎁</span>
+                Available Packages
+              </h2>
+              
+              {packages.length > 0 ? (
+              <div className="relative h-[780px] overflow-hidden">
                   <style jsx>{`
                     @keyframes marquee {
                       0% { transform: translateY(0); }
@@ -326,7 +332,14 @@ export default function HallDetailsPage() {
                   </div>
                 </div>
               </div>
-            )}
+              ) : (
+                <div className="text-center py-8">
+                  <div className="text-6xl mb-4">📦</div>
+                  <p className="text-gray-600 font-medium mb-2">No packages available yet</p>
+                  <p className="text-gray-500 text-sm">Check back soon for special packages!</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
