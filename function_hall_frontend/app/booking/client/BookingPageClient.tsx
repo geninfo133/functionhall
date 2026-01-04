@@ -16,6 +16,10 @@ function BookingPageContent() {
   const [eventDate, setEventDate] = useState("");
   const [packages, setPackages] = useState<any[]>([]);
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
+  const [functionalRooms, setFunctionalRooms] = useState<any[]>([]);
+  const [guestRooms, setGuestRooms] = useState<any[]>([]);
+  const [selectedFunctionalRooms, setSelectedFunctionalRooms] = useState<any[]>([]);
+  const [selectedGuestRooms, setSelectedGuestRooms] = useState<{room: any, quantity: number}[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -78,6 +82,14 @@ function BookingPageContent() {
           setPackages([]);
         })
         .finally(() => setLoadingPackages(false));
+      // Load rooms for this hall
+      fetch(`${BACKEND_URL}/api/halls/${selectedHallId}/rooms`)
+        .then(res => res.json())
+        .then(data => {
+          setFunctionalRooms(data.functional_rooms || []);
+          setGuestRooms(data.guest_rooms || []);
+        })
+        .catch(err => console.error("Failed to fetch rooms", err));
       // Load bookings for this hall
       fetch(`${BACKEND_URL}/api/bookings?hall_id=${selectedHallId}`)
         .then(res => res.json())
@@ -119,7 +131,23 @@ function BookingPageContent() {
       setError("This date is not available. Please select another date.");
       return;
     }
-    const totalAmount = selectedPackage ? selectedPackage.price : hall?.price_per_day || 0;
+    
+    // Calculate total amount including hall, package, and rooms
+    let totalAmount = hall?.price_per_day || 0;
+    if (selectedPackage) {
+      totalAmount = selectedPackage.price;
+    }
+    
+    // Add functional rooms cost
+    selectedFunctionalRooms.forEach(room => {
+      totalAmount += room.price || 0;
+    });
+    
+    // Add guest rooms cost
+    selectedGuestRooms.forEach(item => {
+      totalAmount += (item.room.price_per_room || 0) * item.quantity;
+    });
+    
     const advanceAmount = Math.round(totalAmount / 4);
     // Show confirmation dialog with advance payment details
     const confirmMessage = `Total Amount: ₹${totalAmount}\n\nTo confirm your booking, you need to pay an advance of ₹${advanceAmount} (25% of total amount).\n\nYou will receive payment details via SMS on your registered mobile number.\n\nDo you want to proceed?`;
@@ -327,6 +355,136 @@ function BookingPageContent() {
               <p className="text-gray-500 text-sm mt-1">You can book the hall at base price</p>
             </div>
           ) : null}
+
+          {/* Functional Rooms Section */}
+          {functionalRooms.length > 0 && (
+            <div>
+              <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
+                <FaBox className="text-[#20056a]" />
+                <span>Select Functional Rooms (Optional)</span>
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {functionalRooms.map((room) => {
+                  const isSelected = selectedFunctionalRooms.some(r => r.id === room.id);
+                  return (
+                    <div
+                      key={room.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedFunctionalRooms(selectedFunctionalRooms.filter(r => r.id !== room.id));
+                        } else {
+                          setSelectedFunctionalRooms([...selectedFunctionalRooms, room]);
+                        }
+                      }}
+                      className={`border-2 rounded-xl p-4 cursor-pointer transition hover:shadow-lg ${
+                        isSelected
+                          ? "border-purple-500 bg-purple-50 shadow-md"
+                          : "border-gray-200 hover:border-purple-300"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-bold text-lg text-gray-800">{room.room_type}</h3>
+                        {isSelected && (
+                          <FaCheckCircle className="text-purple-600 text-xl" />
+                        )}
+                      </div>
+                      <p className="text-gray-600 text-sm mb-2">Capacity: {room.capacity} people</p>
+                      {room.amenities && (
+                        <p className="text-gray-500 text-xs mb-3">{room.amenities}</p>
+                      )}
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                        <span className="text-gray-500 text-xs font-medium">Room Price</span>
+                        <span className="text-purple-600 font-bold text-lg">₹{room.price.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {selectedFunctionalRooms.length > 0 && (
+                <div className="mt-4 p-4 bg-purple-50 border-2 border-purple-200 rounded-xl">
+                  <p className="text-sm text-gray-600 mb-2">Selected Functional Rooms:</p>
+                  {selectedFunctionalRooms.map(room => (
+                    <div key={room.id} className="flex items-center justify-between mb-1">
+                      <p className="font-medium text-purple-800">{room.room_type}</p>
+                      <p className="text-purple-600 font-bold">₹{room.price.toLocaleString()}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Guest Rooms Section */}
+          {guestRooms.length > 0 && (
+            <div>
+              <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
+                <FaBox className="text-[#20056a]" />
+                <span>Select Guest Rooms (Optional)</span>
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {guestRooms.map((room) => {
+                  const selected = selectedGuestRooms.find(r => r.room.id === room.id);
+                  const quantity = selected ? selected.quantity : 0;
+                  
+                  return (
+                    <div
+                      key={room.id}
+                      className={`border-2 rounded-xl p-4 transition ${
+                        quantity > 0
+                          ? "border-green-500 bg-green-50 shadow-md"
+                          : "border-gray-200"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-bold text-lg text-gray-800">{room.room_category}</h3>
+                        {quantity > 0 && (
+                          <FaCheckCircle className="text-green-600 text-xl" />
+                        )}
+                      </div>
+                      <p className="text-gray-600 text-sm mb-1">Bed: {room.bed_type}</p>
+                      <p className="text-gray-600 text-sm mb-1">Max Occupancy: {room.max_occupancy}</p>
+                      <p className="text-gray-500 text-xs mb-3">Available: {room.total_rooms} rooms</p>
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-200 mb-3">
+                        <span className="text-gray-500 text-xs font-medium">Price per Room</span>
+                        <span className="text-green-600 font-bold text-lg">₹{room.price_per_room.toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <label className="text-sm text-gray-700">Quantity:</label>
+                        <input
+                          type="number"
+                          min="0"
+                          max={room.total_rooms}
+                          value={quantity}
+                          onChange={(e) => {
+                            const newQty = parseInt(e.target.value) || 0;
+                            if (newQty > 0) {
+                              const updated = selectedGuestRooms.filter(r => r.room.id !== room.id);
+                              setSelectedGuestRooms([...updated, { room, quantity: newQty }]);
+                            } else {
+                              setSelectedGuestRooms(selectedGuestRooms.filter(r => r.room.id !== room.id));
+                            }
+                          }}
+                          className="w-20 px-3 py-1 border border-gray-300 rounded-lg bg-white text-gray-900"
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              {selectedGuestRooms.length > 0 && (
+                <div className="mt-4 p-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                  <p className="text-sm text-gray-600 mb-2">Selected Guest Rooms:</p>
+                  {selectedGuestRooms.map(item => (
+                    <div key={item.room.id} className="flex items-center justify-between mb-1">
+                      <p className="font-medium text-green-800">{item.room.room_category} x{item.quantity}</p>
+                      <p className="text-green-600 font-bold">₹{(item.room.price_per_room * item.quantity).toLocaleString()}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {error && (
             <div className="text-red-600 bg-red-50 p-3 rounded-lg">
               {error}
