@@ -31,6 +31,9 @@ export default function VendorDashboardPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  console.log('📦 PACKAGE_TEMPLATES available:', PACKAGE_TEMPLATES.length, 'packages');
+  console.log('📦 Selected packages:', selectedPackages.length);
+
   useEffect(() => {
     checkAuth();
   }, []);
