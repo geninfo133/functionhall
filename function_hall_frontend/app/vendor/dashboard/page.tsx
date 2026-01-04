@@ -251,8 +251,13 @@ export default function VendorDashboardPage() {
       formData.append('vendor_id', vendorData.id.toString());
       
       // Append selected packages as JSON
+      console.log('📦 Selected Packages before submit:', selectedPackages);
+      console.log('📦 Selected Packages length:', selectedPackages.length);
       if (selectedPackages.length > 0) {
+        console.log('✅ Appending packages to formData:', JSON.stringify(selectedPackages));
         formData.append('packages', JSON.stringify(selectedPackages));
+      } else {
+        console.warn('⚠️ No packages selected - packages not sent to backend');
       }
       
       // Append photo files
@@ -534,9 +539,13 @@ export default function VendorDashboardPage() {
                           key={index}
                           onClick={() => {
                             if (isSelected) {
-                              setSelectedPackages(selectedPackages.filter(p => p.package_name !== pkg.package_name));
+                              const newPackages = selectedPackages.filter(p => p.package_name !== pkg.package_name);
+                              console.log(`🗑️ Removed package: ${pkg.package_name}. New count: ${newPackages.length}`);
+                              setSelectedPackages(newPackages);
                             } else {
-                              setSelectedPackages([...selectedPackages, pkg]);
+                              const newPackages = [...selectedPackages, pkg];
+                              console.log(`✅ Added package: ${pkg.package_name}. New count: ${newPackages.length}`);
+                              setSelectedPackages(newPackages);
                             }
                           }}
                           className={`border-2 rounded-lg p-3 cursor-pointer transition hover:shadow-md ${
