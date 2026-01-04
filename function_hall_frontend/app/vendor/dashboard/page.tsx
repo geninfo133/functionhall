@@ -525,12 +525,27 @@ export default function VendorDashboardPage() {
                 </div>
                 
                 {/* Package Selection */}
-                <div className="border-4 border-red-500 p-4">
-                  <h3 className="text-xl font-bold text-red-600 mb-4">🎁 PACKAGES SECTION - IF YOU SEE THIS, CODE IS LOADED</h3>
+                <div className="border-4 border-red-500 p-4 bg-yellow-50">
+                  <h3 className="text-xl font-bold text-red-600 mb-2">🎁 PACKAGES SECTION - CODE LOADED</h3>
+                  <div className="bg-blue-100 p-3 mb-4 rounded-lg border-2 border-blue-500">
+                    <p className="text-lg font-bold text-blue-900">
+                      ✅ Currently Selected: {selectedPackages.length} packages
+                    </p>
+                    <p className="text-sm text-gray-700">Templates available: {PACKAGE_TEMPLATES.length}</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        alert(`Test: Selected ${selectedPackages.length} packages. Click OK to see list.`);
+                        console.log('🔍 Current selected packages:', selectedPackages);
+                      }}
+                      className="mt-2 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm font-bold"
+                    >
+                      🔍 TEST: Show Selected Packages
+                    </button>
+                  </div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Packages (Optional)
+                    Click packages below to select/deselect:
                   </label>
-                  <p className="text-sm text-gray-600 mb-2">Total templates: {PACKAGE_TEMPLATES.length}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
                     {PACKAGE_TEMPLATES.map((pkg, index) => {
                       const isSelected = selectedPackages.some(p => p.package_name === pkg.package_name);
