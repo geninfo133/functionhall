@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { BACKEND_URL } from "../../../lib/config";
-import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaStar } from "react-icons/fa";
+import { PACKAGE_TEMPLATES } from "../../../lib/data";
+import { FaEdit, FaTrash, FaMapMarkerAlt, FaUsers, FaStar, FaCheckCircle } from "react-icons/fa";
 import Link from "next/link";
 import HallCards from "../../../components/HallCards";
 
@@ -16,9 +17,8 @@ export default function AdminHallsPage() {
   const [searchLocation, setSearchLocation] = useState("");
   const [searchDate, setSearchDate] = useState("");
   const [searchCapacity, setSearchCapacity] = useState("");
-  const [allPackages, setAllPackages] = useState<any[]>([]);
-  const [selectedPackages, setSelectedPackages] = useState<number[]>([]);
-  const [editSelectedPackages, setEditSelectedPackages] = useState<number[]>([]);
+  const [selectedPackages, setSelectedPackages] = useState<any[]>([]);
+  const [editSelectedPackages, setEditSelectedPackages] = useState<any[]>([]);
   const [form, setForm] = useState({
     name: "",
     owner_name: "",
@@ -49,12 +49,6 @@ export default function AdminHallsPage() {
         setFilteredHalls(data);
         setLoading(false);
       });
-    
-    // Fetch all packages
-    fetch(`${BACKEND_URL}/api/packages`)
-      .then(res => res.json())
-      .then(data => setAllPackages(data))
-      .catch(err => console.error('Error fetching packages:', err));
   }, [showAddModal, showEditModal, showDeleteModal]);
 
   useEffect(() => {
@@ -141,7 +135,8 @@ export default function AdminHallsPage() {
           contact_number: form.contact_number,
           price_per_day: Number(form.price_per_day),
           description: form.description,
-          package_ids: selectedPackages
+          packages: selectedPackages,
+          is_admin: true
         })
       });
       if (res.ok) {
@@ -175,7 +170,7 @@ export default function AdminHallsPage() {
           contact_number: editForm.contact_number,
           price_per_day: Number(editForm.price_per_day),
           description: editForm.description,
-          package_ids: editSelectedPackages
+          packages: editSelectedPackages
         })
       });
       if (res.ok) {
@@ -318,29 +313,53 @@ export default function AdminHallsPage() {
                   {/* Package Selection */}
                   <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-3">Select Packages</label>
-                    <div className="max-h-48 overflow-y-auto space-y-2">
-                      {allPackages.map((pkg) => (
-                        <label key={pkg.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={selectedPackages.includes(pkg.id)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setSelectedPackages([...selectedPackages, pkg.id]);
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
+                      {PACKAGE_TEMPLATES.map((pkg, index) => {
+                        const isSelected = selectedPackages.some(p => p.package_name === pkg.package_name);
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              if (isSelected) {
+                                setSelectedPackages(selectedPackages.filter(p => p.package_name !== pkg.package_name));
                               } else {
-                                setSelectedPackages(selectedPackages.filter(id => id !== pkg.id));
+                                setSelectedPackages([...selectedPackages, pkg]);
                               }
                             }}
-                            className="w-4 h-4 text-[#20056a] border-gray-300 rounded focus:ring-blue-500"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {pkg.package_name} - ₹{pkg.price?.toLocaleString()}
-                          </span>
-                        </label>
-                      ))}
+                            className={`border-2 rounded-lg p-3 cursor-pointer transition hover:shadow-md ${
+                              isSelected
+                                ? "border-[#20056a] bg-blue-50 shadow-sm"
+                                : "border-gray-200 hover:border-blue-300"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between mb-1">
+                              <h4 className="font-bold text-sm text-gray-800">{pkg.package_name}</h4>
+                              {isSelected && (
+                                <FaCheckCircle className="text-[#20056a] text-lg" />
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-600 mb-2 line-clamp-2">{pkg.details}</p>
+                            <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                              <span className="text-xs text-gray-500">Price</span>
+                              <span className="text-[#20056a] font-bold text-sm">₹{pkg.price.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                     {selectedPackages.length > 0 && (
-                      <p className="text-xs text-gray-600 mt-2">{selectedPackages.length} package(s) selected</p>
+                      <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <p className="text-sm text-green-800 font-semibold mb-2">
+                          {selectedPackages.length} package{selectedPackages.length !== 1 ? 's' : ''} selected
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedPackages.map((pkg, idx) => (
+                            <span key={idx} className="text-xs bg-white px-2 py-1 rounded border border-green-300">
+                              {pkg.package_name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                   
@@ -370,29 +389,53 @@ export default function AdminHallsPage() {
                   {/* Package Selection */}
                   <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-3">Select Packages</label>
-                    <div className="max-h-48 overflow-y-auto space-y-2">
-                      {allPackages.map((pkg) => (
-                        <label key={pkg.id} className="flex items-center space-x-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={editSelectedPackages.includes(pkg.id)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setEditSelectedPackages([...editSelectedPackages, pkg.id]);
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
+                      {PACKAGE_TEMPLATES.map((pkg, index) => {
+                        const isSelected = editSelectedPackages.some(p => p.package_name === pkg.package_name);
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              if (isSelected) {
+                                setEditSelectedPackages(editSelectedPackages.filter(p => p.package_name !== pkg.package_name));
                               } else {
-                                setEditSelectedPackages(editSelectedPackages.filter(id => id !== pkg.id));
+                                setEditSelectedPackages([...editSelectedPackages, pkg]);
                               }
                             }}
-                            className="w-4 h-4 text-[#20056a] border-gray-300 rounded focus:ring-blue-500"
-                          />
-                          <span className="text-sm text-gray-700">
-                            {pkg.package_name} - ₹{pkg.price?.toLocaleString()}
-                          </span>
-                        </label>
-                      ))}
+                            className={`border-2 rounded-lg p-3 cursor-pointer transition hover:shadow-md ${
+                              isSelected
+                                ? "border-[#20056a] bg-blue-50 shadow-sm"
+                                : "border-gray-200 hover:border-blue-300"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between mb-1">
+                              <h4 className="font-bold text-sm text-gray-800">{pkg.package_name}</h4>
+                              {isSelected && (
+                                <FaCheckCircle className="text-[#20056a] text-lg" />
+                              )}
+                            </div>
+                            <p className="text-xs text-gray-600 mb-2 line-clamp-2">{pkg.details}</p>
+                            <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                              <span className="text-xs text-gray-500">Price</span>
+                              <span className="text-[#20056a] font-bold text-sm">₹{pkg.price.toLocaleString()}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                     {editSelectedPackages.length > 0 && (
-                      <p className="text-xs text-gray-600 mt-2">{editSelectedPackages.length} package(s) selected</p>
+                      <div className="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <p className="text-sm text-green-800 font-semibold mb-2">
+                          {editSelectedPackages.length} package{editSelectedPackages.length !== 1 ? 's' : ''} selected
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {editSelectedPackages.map((pkg, idx) => (
+                            <span key={idx} className="text-xs bg-white px-2 py-1 rounded border border-green-300">
+                              {pkg.package_name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     )}
                   </div>
                   

@@ -200,11 +200,25 @@ def add_hall():
         approval_status='approved'
     )
     db.session.add(hall)
-    db.session.commit()
+    db.session.flush()  # Get hall.id before creating packages
     
-    # Handle package associations
+    # Handle packages - support both old (package_ids) and new (packages array) format
+    packages_data = data.get('packages', [])
     package_ids = data.get('package_ids', [])
-    if package_ids:
+    
+    if packages_data:
+        # New format: array of package objects
+        for pkg_data in packages_data:
+            package = Package(
+                hall_id=hall.id,
+                package_name=pkg_data.get('package_name'),
+                price=pkg_data.get('price'),
+                details=pkg_data.get('details')
+            )
+            db.session.add(package)
+        print(f"✅ Created {len(packages_data)} packages for hall {hall.id}")
+    elif package_ids:
+        # Old format: array of package IDs (backward compatibility)
         for pkg_id in package_ids:
             package = Package.query.get(pkg_id)
             if package:
@@ -217,7 +231,8 @@ def add_hall():
                         details=package.details
                     )
                     db.session.add(new_package)
-        db.session.commit()
+    
+    db.session.commit()
     
     print(f"✅ Hall added successfully! ID: {hall.id}")
     return jsonify({"message": "Hall added successfully!", "id": hall.id}), 201
