@@ -40,8 +40,6 @@ export default function AdminHallsPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  console.log('📦 PACKAGE_TEMPLATES available:', PACKAGE_TEMPLATES.length, 'packages');
-
   useEffect(() => {
     setLoading(true);
     fetch(`${BACKEND_URL}/api/halls`)

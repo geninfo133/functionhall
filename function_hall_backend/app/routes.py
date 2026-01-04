@@ -180,34 +180,26 @@ def add_hall():
             print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             
             # Create a change request for approval
-            new_data_dict = {
-                'name': data.get('name'),
-                'owner_name': data.get('owner_name'),
-                'location': data.get('location'),
-                'capacity': int(data.get('capacity')) if data.get('capacity') else 0,
-                'price_per_day': int(data.get('price_per_day')) if data.get('price_per_day') else 0,
-                'contact_number': data.get('contact_number'),
-                'description': data.get('description'),
-                'vendor_id': vendor_id,
-                'photos': photo_paths,
-                'packages': packages_data
-            }
-            
-            print(f"📦 STORING in change request new_data:")
-            print(f"   - packages value: {packages_data}")
-            print(f"   - packages type: {type(packages_data)}")
-            print(f"   - packages count: {len(packages_data) if packages_data else 0}")
-            
             change_request = HallChangeRequest(
                 vendor_id=vendor_id,
                 action_type='add',
-                new_data=json.dumps(new_data_dict),
+                new_data=json.dumps({
+                    'name': data.get('name'),
+                    'owner_name': data.get('owner_name'),
+                    'location': data.get('location'),
+                    'capacity': int(data.get('capacity')) if data.get('capacity') else 0,
+                    'price_per_day': int(data.get('price_per_day')) if data.get('price_per_day') else 0,
+                    'contact_number': data.get('contact_number'),
+                    'description': data.get('description'),
+                    'vendor_id': vendor_id,
+                    'photos': photo_paths,
+                    'packages': packages_data
+                }),
                 status='pending'
             )
             db.session.add(change_request)
             db.session.commit()
-            print(f"✅ Change request created! ID: {change_request.id}")
-            print(f"✅ Packages included in request: {packages_data is not None and len(packages_data) > 0 if packages_data else False}")
+            print(f"Change request created! ID: {change_request.id}")
             return jsonify({
                 "message": "Hall submission received! Pending admin approval.",
                 "request_id": change_request.id,
@@ -982,13 +974,8 @@ def approve_hall_request(request_id):
         
         # Create packages if provided
         packages = new_data.get('packages', [])
-        print(f"📦 DEBUG - Packages in new_data: {packages}")
-        print(f"📦 DEBUG - Type of packages: {type(packages)}")
-        print(f"📦 DEBUG - new_data keys: {new_data.keys()}")
         if packages:
-            print(f"📦 DEBUG - Processing {len(packages)} packages...")
-            for idx, pkg_data in enumerate(packages):
-                print(f"📦 DEBUG - Package {idx + 1}: {pkg_data}")
+            for pkg_data in packages:
                 package = Package(
                     hall_id=hall.id,
                     package_name=pkg_data.get('package_name'),
@@ -996,10 +983,7 @@ def approve_hall_request(request_id):
                     details=pkg_data.get('details')
                 )
                 db.session.add(package)
-                print(f"✅ Created package: {pkg_data.get('package_name')} for hall {hall.id}")
-            print(f"✅ Total {len(packages)} packages added to session for hall {hall.id}")
-        else:
-            print(f"⚠️ No packages found in new_data for hall {hall.id}")
+            print(f"Created {len(packages)} packages for hall {hall.id}")
         
         change_request.hall_id = hall.id
         
