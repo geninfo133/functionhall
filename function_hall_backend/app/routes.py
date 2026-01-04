@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, send_from_directory, current_app
 from app import db
-from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification, HallChangeRequest, AdminUser, HallPhoto
+from app.models import FunctionHall, Package, Customer, Booking, Inquiry, Notification, HallChangeRequest, AdminUser, HallPhoto, FunctionalRoom, GuestRoom
 from datetime import datetime, date
 from sms_utils import send_sms
 from app import otp_service
@@ -179,6 +179,26 @@ def add_hall():
             print(f"📦 Final packages_data to store: {packages_data}")
             print(f"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
             
+            # Parse functional rooms if provided
+            functional_rooms_data = None
+            if 'functional_rooms' in data:
+                try:
+                    functional_rooms_data = json.loads(data['functional_rooms']) if isinstance(data['functional_rooms'], str) else data['functional_rooms']
+                    print(f"✅ Parsed {len(functional_rooms_data)} functional rooms")
+                except Exception as e:
+                    print(f"❌ Error parsing functional rooms: {e}")
+                    functional_rooms_data = None
+            
+            # Parse guest rooms if provided
+            guest_rooms_data = None
+            if 'guest_rooms' in data:
+                try:
+                    guest_rooms_data = json.loads(data['guest_rooms']) if isinstance(data['guest_rooms'], str) else data['guest_rooms']
+                    print(f"✅ Parsed {len(guest_rooms_data)} guest room types")
+                except Exception as e:
+                    print(f"❌ Error parsing guest rooms: {e}")
+                    guest_rooms_data = None
+            
             # Create a change request for approval
             change_request = HallChangeRequest(
                 vendor_id=vendor_id,
@@ -193,7 +213,9 @@ def add_hall():
                     'description': data.get('description'),
                     'vendor_id': vendor_id,
                     'photos': photo_paths,
-                    'packages': packages_data
+                    'packages': packages_data,
+                    'functional_rooms': functional_rooms_data,
+                    'guest_rooms': guest_rooms_data
                 }),
                 status='pending'
             )
@@ -297,6 +319,42 @@ def add_package():
     db.session.add(pkg)
     db.session.commit()
     return jsonify({"message": "Package added successfully!", "id": pkg.id}), 201
+
+
+# -------------------------
+# ROOMS
+# -------------------------
+@main.route('/api/halls/<int:hall_id>/rooms', methods=['GET'])
+def get_rooms_by_hall(hall_id):
+    # Get functional rooms
+    functional_rooms = FunctionalRoom.query.filter_by(hall_id=hall_id).all()
+    functional_rooms_data = [{
+        'id': r.id,
+        'room_type': r.room_type,
+        'room_name': r.room_name,
+        'price': r.price,
+        'capacity': r.capacity,
+        'amenities': r.amenities,
+        'description': r.description
+    } for r in functional_rooms]
+    
+    # Get guest rooms
+    guest_rooms = GuestRoom.query.filter_by(hall_id=hall_id).all()
+    guest_rooms_data = [{
+        'id': r.id,
+        'room_category': r.room_category,
+        'total_rooms': r.total_rooms,
+        'price_per_room': r.price_per_room,
+        'bed_type': r.bed_type,
+        'max_occupancy': r.max_occupancy,
+        'amenities': r.amenities,
+        'description': r.description
+    } for r in guest_rooms]
+    
+    return jsonify({
+        'functional_rooms': functional_rooms_data,
+        'guest_rooms': guest_rooms_data
+    })
 
 
 # -------------------------
@@ -984,6 +1042,39 @@ def approve_hall_request(request_id):
                 )
                 db.session.add(package)
             print(f"Created {len(packages)} packages for hall {hall.id}")
+        
+        # Create functional rooms if provided
+        functional_rooms = new_data.get('functional_rooms', [])
+        if functional_rooms:
+            for room_data in functional_rooms:
+                functional_room = FunctionalRoom(
+                    hall_id=hall.id,
+                    room_type=room_data.get('room_type'),
+                    room_name=room_data.get('room_name'),
+                    price=room_data.get('price'),
+                    capacity=room_data.get('capacity', 0),
+                    amenities=room_data.get('amenities'),
+                    description=room_data.get('description')
+                )
+                db.session.add(functional_room)
+            print(f"Created {len(functional_rooms)} functional rooms for hall {hall.id}")
+        
+        # Create guest rooms if provided
+        guest_rooms = new_data.get('guest_rooms', [])
+        if guest_rooms:
+            for room_data in guest_rooms:
+                guest_room = GuestRoom(
+                    hall_id=hall.id,
+                    room_category=room_data.get('room_category'),
+                    total_rooms=room_data.get('total_rooms'),
+                    price_per_room=room_data.get('price_per_room'),
+                    bed_type=room_data.get('bed_type'),
+                    max_occupancy=room_data.get('max_occupancy'),
+                    amenities=room_data.get('amenities'),
+                    description=room_data.get('description')
+                )
+                db.session.add(guest_room)
+            print(f"Created {len(guest_rooms)} guest room types for hall {hall.id}")
         
         change_request.hall_id = hall.id
         
