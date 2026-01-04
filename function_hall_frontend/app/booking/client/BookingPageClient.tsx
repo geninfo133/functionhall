@@ -229,7 +229,7 @@ function BookingPageContent() {
                   type="text"
                   value={customer.name}
                   disabled
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-50"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
                 />
               </div>
               <div>
@@ -241,7 +241,7 @@ function BookingPageContent() {
                   type="email"
                   value={customer.email}
                   disabled
-                  className="w-full px-4 py-2 border rounded-lg bg-gray-50"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-900"
                 />
               </div>
               {eventDate && (
