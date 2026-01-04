@@ -156,8 +156,12 @@ def add_hall():
             if 'packages' in data:
                 try:
                     packages_data = json.loads(data['packages']) if isinstance(data['packages'], str) else data['packages']
-                except:
+                    print(f"📦 Parsed packages data: {packages_data}")
+                except Exception as e:
+                    print(f"❌ Error parsing packages: {e}")
                     packages_data = None
+            else:
+                print(f"⚠️ No 'packages' key found in data. Keys: {data.keys()}")
             
             # Create a change request for approval
             change_request = HallChangeRequest(
@@ -259,7 +263,9 @@ def get_packages():
 @main.route('/api/halls/<int:hall_id>/packages', methods=['GET'])
 def get_packages_by_hall(hall_id):
     packages = Package.query.filter_by(hall_id=hall_id).all()
+    print(f"📦 GET /api/halls/{hall_id}/packages - Found {len(packages)} packages")
     result = [{'id': p.id, 'package_name': p.package_name, 'price': p.price, 'details': p.details} for p in packages]
+    print(f"📦 Returning packages: {result}")
     return jsonify(result)
 
 
@@ -952,8 +958,13 @@ def approve_hall_request(request_id):
         
         # Create packages if provided
         packages = new_data.get('packages', [])
+        print(f"📦 DEBUG - Packages in new_data: {packages}")
+        print(f"📦 DEBUG - Type of packages: {type(packages)}")
+        print(f"📦 DEBUG - new_data keys: {new_data.keys()}")
         if packages:
-            for pkg_data in packages:
+            print(f"📦 DEBUG - Processing {len(packages)} packages...")
+            for idx, pkg_data in enumerate(packages):
+                print(f"📦 DEBUG - Package {idx + 1}: {pkg_data}")
                 package = Package(
                     hall_id=hall.id,
                     package_name=pkg_data.get('package_name'),
@@ -961,7 +972,10 @@ def approve_hall_request(request_id):
                     details=pkg_data.get('details')
                 )
                 db.session.add(package)
-            print(f"✅ Created {len(packages)} packages for hall {hall.id}")
+                print(f"✅ Created package: {pkg_data.get('package_name')} for hall {hall.id}")
+            print(f"✅ Total {len(packages)} packages added to session for hall {hall.id}")
+        else:
+            print(f"⚠️ No packages found in new_data for hall {hall.id}")
         
         change_request.hall_id = hall.id
         
