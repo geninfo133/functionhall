@@ -315,7 +315,13 @@ function BookingPageContent() {
                 {packages.map((pkg) => (
                   <div
                     key={pkg.id}
-                    onClick={() => setSelectedPackage(pkg)}
+                    onClick={() => {
+                      if (selectedPackage?.id === pkg.id) {
+                        setSelectedPackage(null);
+                      } else {
+                        setSelectedPackage(pkg);
+                      }
+                    }}
                     className={`border-2 rounded-xl p-4 cursor-pointer transition hover:shadow-lg ${
                       selectedPackage?.id === pkg.id
                         ? "border-blue-500 bg-blue-50 shadow-md"
