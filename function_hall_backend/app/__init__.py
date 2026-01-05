@@ -34,7 +34,9 @@ def create_app():
     CORS(app, 
          resources={r"/*": {"origins": "*"}},
          allow_headers=['Content-Type', 'Authorization'],
-         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+         supports_credentials=True,
+         expose_headers=['Content-Type', 'Authorization'])
 
     # Configure Database - PostgreSQL
     # Use DATABASE_URL from environment (Railway or .env)

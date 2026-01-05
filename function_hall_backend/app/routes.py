@@ -1145,7 +1145,14 @@ def approve_hall_request(request_id):
     change_request.reviewed_at = datetime.utcnow()
     change_request.reviewed_by = admin_id
     
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print(f"Database commit error: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": f"Failed to approve request: {str(e)}"}), 500
     
     return jsonify({"message": f"Hall {change_request.action_type} request approved successfully!"}), 200
 
