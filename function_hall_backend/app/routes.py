@@ -73,9 +73,9 @@ def get_halls():
             'description': hall.description,
             'photos': photos,
             'packages': packages,
-            'has_basic_rooms': hall.has_basic_rooms if hasattr(hall, 'has_basic_rooms') else True,
-            'has_stage': hall.has_stage if hasattr(hall, 'has_stage') else True,
-            'basic_rooms_count': hall.basic_rooms_count if hasattr(hall, 'basic_rooms_count') else 2
+            'has_basic_rooms': getattr(hall, 'has_basic_rooms', True),
+            'has_stage': getattr(hall, 'has_stage', True),
+            'basic_rooms_count': getattr(hall, 'basic_rooms_count', 2)
         })
     return jsonify(result)
 
@@ -94,9 +94,9 @@ def get_hall(hall_id):
         'contact_number': hall.contact_number,
         'description': hall.description,
         'photos': photos,
-        'has_basic_rooms': hall.has_basic_rooms if hasattr(hall, 'has_basic_rooms') else True,
-        'has_stage': hall.has_stage if hasattr(hall, 'has_stage') else True,
-        'basic_rooms_count': hall.basic_rooms_count if hasattr(hall, 'basic_rooms_count') else 2
+        'has_basic_rooms': getattr(hall, 'has_basic_rooms', True),
+        'has_stage': getattr(hall, 'has_stage', True),
+        'basic_rooms_count': getattr(hall, 'basic_rooms_count', 2)
     })
 
 @main.route('/api/vendor/<int:vendor_id>/halls', methods=['GET'])
