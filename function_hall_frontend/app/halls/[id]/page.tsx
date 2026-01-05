@@ -11,6 +11,8 @@ export default function HallDetailsPage() {
   
   const [hall, setHall] = useState<any>(null);
   const [packages, setPackages] = useState<any[]>([]);
+  const [functionalRooms, setFunctionalRooms] = useState<any[]>([]);
+  const [guestRooms, setGuestRooms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
@@ -52,6 +54,22 @@ export default function HallDetailsPage() {
           console.error('❌ Fetch packages error:', err);
           setPackages([]);
         });
+      
+      // Fetch functional rooms
+      fetch(`${BACKEND_URL}/api/halls/${hallId}/functional-rooms`, {
+        cache: 'no-store'
+      })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => setFunctionalRooms(data))
+        .catch(() => setFunctionalRooms([]));
+      
+      // Fetch guest rooms
+      fetch(`${BACKEND_URL}/api/halls/${hallId}/guest-rooms`, {
+        cache: 'no-store'
+      })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => setGuestRooms(data))
+        .catch(() => setGuestRooms([]));
     }
   }, [hallId]);
 
@@ -280,6 +298,77 @@ export default function HallDetailsPage() {
                 </div>
               </div>
             </div>
+
+            {/* Room Facilities Section */}
+            {(functionalRooms.length > 0 || guestRooms.length > 0) && (
+              <div className="mt-6">
+                <h2 className="text-2xl font-bold text-[#20056a] mb-4">Room Facilities</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Functional Rooms */}
+                  {functionalRooms.length > 0 && (
+                    <div className="bg-white rounded-2xl shadow-lg p-6">
+                      <h3 className="text-xl font-bold text-purple-600 mb-4 flex items-center">
+                        <span className="text-2xl mr-2">🚪</span>
+                        Functional Rooms
+                      </h3>
+                      <div className="space-y-3">
+                        {functionalRooms.map((room, idx) => (
+                          <div key={idx} className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
+                            <h4 className="font-bold text-gray-800">{room.room_type}</h4>
+                            {room.capacity > 0 && (
+                              <p className="text-sm text-gray-600 mt-1">Capacity: {room.capacity} people</p>
+                            )}
+                            {room.amenities && (
+                              <p className="text-sm text-gray-600 mt-1">Amenities: {room.amenities}</p>
+                            )}
+                            {room.description && (
+                              <p className="text-xs text-gray-500 mt-2">{room.description}</p>
+                            )}
+                            <div className="mt-3 pt-3 border-t border-purple-300">
+                              <span className="text-purple-700 font-bold text-lg">₹{room.price.toLocaleString()}</span>
+                              <span className="text-xs text-gray-600 ml-2">per booking</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Guest Rooms */}
+                  {guestRooms.length > 0 && (
+                    <div className="bg-white rounded-2xl shadow-lg p-6">
+                      <h3 className="text-xl font-bold text-blue-600 mb-4 flex items-center">
+                        <span className="text-2xl mr-2">🛏️</span>
+                        Guest Accommodation
+                      </h3>
+                      <div className="space-y-3">
+                        {guestRooms.map((room, idx) => (
+                          <div key={idx} className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                            <div className="flex justify-between items-start">
+                              <h4 className="font-bold text-gray-800">{room.room_category}</h4>
+                              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">
+                                {room.total_rooms} room{room.total_rooms > 1 ? 's' : ''}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mt-1">{room.bed_type} • Max {room.max_occupancy} persons</p>
+                            {room.amenities && (
+                              <p className="text-sm text-gray-600 mt-1">Amenities: {room.amenities}</p>
+                            )}
+                            {room.description && (
+                              <p className="text-xs text-gray-500 mt-2">{room.description}</p>
+                            )}
+                            <div className="mt-3 pt-3 border-t border-blue-300">
+                              <span className="text-blue-700 font-bold text-lg">₹{room.price_per_room.toLocaleString()}</span>
+                              <span className="text-xs text-gray-600 ml-2">per room/night</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
           </div>
 
