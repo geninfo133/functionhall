@@ -27,6 +27,7 @@ function BookingPageContent() {
   const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [hallBookings, setHallBookings] = useState<any[]>([]);
   const [loadingPackages, setLoadingPackages] = useState(false);
+  const [functionType, setFunctionType] = useState("");
 
   useEffect(() => {
     console.log('🌐 BACKEND_URL:', BACKEND_URL);
@@ -123,8 +124,8 @@ function BookingPageContent() {
     e.preventDefault();
     setError("");
     setSuccess("");
-    if (!customer || !eventDate || !selectedHallId) {
-      setError("Please fill all required fields");
+    if (!customer || !eventDate || !selectedHallId || !functionType) {
+      setError("Please fill all required fields including function type");
       return;
     }
     if (availability && !availability.available) {
@@ -165,6 +166,7 @@ function BookingPageContent() {
           customer_id: customer.id,
           hall_id: parseInt(selectedHallId),
           event_date: eventDate,
+          function_type: functionType,
           status: "Pending",
           total_amount: totalAmount,
           advance_amount: advanceAmount
@@ -260,6 +262,29 @@ function BookingPageContent() {
               </div>
             )}
           </div>
+              <div>
+                <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
+                  <FaCalendarAlt className="text-[#20056a]" />
+                  <span>Type of Function *</span>
+                </label>
+                <select
+                  value={functionType}
+                  onChange={(e) => setFunctionType(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white text-gray-900"
+                  required
+                >
+                  <option value="">-- Select Function Type --</option>
+                  <option value="Wedding">Wedding</option>
+                  <option value="Birthday Party">Birthday Party</option>
+                  <option value="Corporate Event">Corporate Event</option>
+                  <option value="Conference">Conference</option>
+                  <option value="Anniversary">Anniversary</option>
+                  <option value="Reception">Reception</option>
+                  <option value="Engagement">Engagement</option>
+                  <option value="Baby Shower">Baby Shower</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
               <div>
                 <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 mb-1">
                   <FaUser className="text-[#20056a]" />

@@ -481,6 +481,7 @@ def add_booking():
         customer_id=customer_id,
         hall_id=data['hall_id'],
         event_date=datetime.strptime(data['event_date'], "%Y-%m-%d").date(),
+        function_type=data.get('function_type'),
         status=data.get('status', 'Pending'),
         total_amount=data.get('total_amount')
     )

@@ -173,6 +173,7 @@ class Booking(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
     hall_id = db.Column(db.Integer, db.ForeignKey('function_halls.id'), nullable=False)
     event_date = db.Column(db.Date, nullable=False)
+    function_type = db.Column(db.String(100))
     status = db.Column(db.String(20), default='Pending')
     total_amount = db.Column(db.Float)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
