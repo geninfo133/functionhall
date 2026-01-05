@@ -303,30 +303,19 @@ export default function HallDetailsPage() {
                         onMouseEnter={(e) => {
                           const marquee = document.getElementById('packageMarquee');
                           marquee?.classList.add('marquee-paused');
-                          const detailsDiv = e.currentTarget.querySelector('.package-details');
-                          if (detailsDiv) {
-                            (detailsDiv as HTMLElement).style.maxHeight = '500px';
-                            (detailsDiv as HTMLElement).style.opacity = '1';
-                          }
                         }}
                         onMouseLeave={(e) => {
                           const marquee = document.getElementById('packageMarquee');
                           marquee?.classList.remove('marquee-paused');
-                          const detailsDiv = e.currentTarget.querySelector('.package-details');
-                          if (detailsDiv) {
-                            (detailsDiv as HTMLElement).style.maxHeight = '0';
-                            (detailsDiv as HTMLElement).style.opacity = '0';
-                          }
                         }}
                       >
                         <h3 className="font-bold text-lg text-[#20056a]">{pkg.package_name}</h3>
                         <div className="text-2xl font-bold text-[#20056a] mt-2">₹{pkg.price?.toLocaleString()}</div>
-                        <div 
-                          className="package-details text-gray-600 text-xs whitespace-pre-line leading-relaxed mt-2 overflow-hidden transition-all duration-500"
-                          style={{ maxHeight: '0', opacity: '0' }}
-                        >
-                          {pkg.details}
-                        </div>
+                        {pkg.details && (
+                          <div className="text-gray-600 text-sm whitespace-pre-line leading-relaxed mt-3 pt-3 border-t border-gray-200">
+                            {pkg.details}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
