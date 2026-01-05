@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { BACKEND_URL } from "../../../lib/config";
 import Image from "next/image";
+import HallCalendar from "../../../components/HallCalendar";
 
 export default function HallDetailsPage() {
   const params = useParams();
@@ -15,6 +16,8 @@ export default function HallDetailsPage() {
   const [guestRooms, setGuestRooms] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [hallBookings, setHallBookings] = useState<any[]>([]);
 
   useEffect(() => {
     if (hallId) {
@@ -68,6 +71,14 @@ export default function HallDetailsPage() {
           setFunctionalRooms([]);
           setGuestRooms([]);
         });
+      
+      // Fetch bookings for calendar
+      fetch(`${BACKEND_URL}/api/bookings?hall_id=${hallId}`, {
+        cache: 'no-store'
+      })
+        .then(res => res.ok ? res.json() : [])
+        .then(data => setHallBookings(data))
+        .catch(() => setHallBookings([]));
     }
   }, [hallId]);
 
@@ -295,6 +306,53 @@ export default function HallDetailsPage() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Availability Calendar - Collapsible */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <div 
+                className="flex items-center justify-between cursor-pointer group"
+                onClick={() => setShowCalendar(!showCalendar)}
+              >
+                <h2 className="text-2xl font-bold text-[#20056a] flex items-center">
+                  <span className="text-3xl mr-2">📅</span>
+                  Check Availability Calendar
+                </h2>
+                <button className="text-3xl text-[#20056a] group-hover:scale-110 transition-transform">
+                  {showCalendar ? '▲' : '▼'}
+                </button>
+              </div>
+              
+              {showCalendar && (
+                <div className="mt-6 animate-fadeIn">
+                  <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-gray-700">
+                      <span className="font-semibold">Note:</span> View available, booked, and reserved dates below. 
+                      Select your preferred date when booking.
+                    </p>
+                    <div className="flex gap-4 mt-3 text-xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-white border-2 border-gray-300 rounded"></div>
+                        <span>Available</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-red-100 border-2 border-red-300 rounded"></div>
+                        <span>Booked</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 bg-yellow-100 border-2 border-yellow-300 rounded"></div>
+                        <span>Reserved</span>
+                      </div>
+                    </div>
+                  </div>
+                  <HallCalendar
+                    hallId={parseInt(hallId as string)}
+                    selectedDate={null}
+                    onDateSelect={() => {}}
+                    bookings={hallBookings}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Room Facilities Section */}
