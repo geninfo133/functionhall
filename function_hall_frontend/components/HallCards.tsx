@@ -188,9 +188,6 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                         <div key={idx} className="bg-gray-50 rounded-lg p-2">
                           <div className="flex justify-between items-start mb-1">
                             <span className="text-xs font-semibold text-[#20056a]">{pkg.package_name}</span>
-                            {pkg.price && (
-                              <span className="text-xs font-bold text-gray-900">₹{pkg.price.toLocaleString()}</span>
-                            )}
                           </div>
                           {pkg.details && (
                             <p className="text-xs text-gray-600 line-clamp-2">{pkg.details}</p>
