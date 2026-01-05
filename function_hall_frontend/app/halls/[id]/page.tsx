@@ -397,27 +397,41 @@ export default function HallDetailsPage() {
                     id="packageMarquee"
                   >
                     {/* Duplicate packages for seamless loop */}
-                    {[...packages, ...packages].map((pkg, index) => (
-                      <div
-                        key={`${pkg.id}-${index}`}
-                        className="border-2 border-blue-200 rounded-lg p-4 bg-white cursor-pointer transition-all duration-300 hover:border-blue-500 hover:shadow-xl hover:scale-105"
-                        onMouseEnter={(e) => {
-                          const marquee = document.getElementById('packageMarquee');
-                          marquee?.classList.add('marquee-paused');
-                        }}
-                        onMouseLeave={(e) => {
-                          const marquee = document.getElementById('packageMarquee');
-                          marquee?.classList.remove('marquee-paused');
-                        }}
-                      >
-                        <h3 className="font-bold text-lg text-[#20056a]">{pkg.package_name}</h3>
-                        {pkg.details && (
-                          <div className="text-gray-600 text-sm whitespace-pre-line leading-relaxed mt-3 pt-3 border-t border-gray-200">
-                            {pkg.details}
+                    {[...packages, ...packages].map((pkg, index) => {
+                      const colors = [
+                        { bg: 'bg-gradient-to-br from-blue-50 to-blue-100', border: 'border-blue-300', hover: 'hover:border-blue-500', text: 'text-blue-800', titleBg: 'bg-blue-200' },
+                        { bg: 'bg-gradient-to-br from-purple-50 to-purple-100', border: 'border-purple-300', hover: 'hover:border-purple-500', text: 'text-purple-800', titleBg: 'bg-purple-200' },
+                        { bg: 'bg-gradient-to-br from-green-50 to-green-100', border: 'border-green-300', hover: 'hover:border-green-500', text: 'text-green-800', titleBg: 'bg-green-200' },
+                        { bg: 'bg-gradient-to-br from-orange-50 to-orange-100', border: 'border-orange-300', hover: 'hover:border-orange-500', text: 'text-orange-800', titleBg: 'bg-orange-200' },
+                        { bg: 'bg-gradient-to-br from-pink-50 to-pink-100', border: 'border-pink-300', hover: 'hover:border-pink-500', text: 'text-pink-800', titleBg: 'bg-pink-200' },
+                        { bg: 'bg-gradient-to-br from-indigo-50 to-indigo-100', border: 'border-indigo-300', hover: 'hover:border-indigo-500', text: 'text-indigo-800', titleBg: 'bg-indigo-200' },
+                      ];
+                      const colorScheme = colors[index % colors.length];
+                      
+                      return (
+                        <div
+                          key={`${pkg.id}-${index}`}
+                          className={`border-2 ${colorScheme.border} ${colorScheme.bg} rounded-lg p-4 cursor-pointer transition-all duration-300 ${colorScheme.hover} hover:shadow-xl hover:scale-105`}
+                          onMouseEnter={(e) => {
+                            const marquee = document.getElementById('packageMarquee');
+                            marquee?.classList.add('marquee-paused');
+                          }}
+                          onMouseLeave={(e) => {
+                            const marquee = document.getElementById('packageMarquee');
+                            marquee?.classList.remove('marquee-paused');
+                          }}
+                        >
+                          <div className={`inline-block ${colorScheme.titleBg} px-3 py-1 rounded-full mb-2`}>
+                            <h3 className={`font-bold text-base ${colorScheme.text}`}>{pkg.package_name}</h3>
                           </div>
-                        )}
-                      </div>
-                    ))}
+                          {pkg.details && (
+                            <div className="text-gray-700 text-sm whitespace-pre-line leading-relaxed mt-3 pt-3 border-t border-gray-300">
+                              {pkg.details}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               ) : (

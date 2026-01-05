@@ -327,31 +327,44 @@ function BookingPageContent() {
                 💡 Packages include decorations, catering, and additional services. Contact us for pricing details.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {packages.map((pkg) => (
-                  <div
-                    key={pkg.id}
-                    onClick={() => {
-                      if (selectedPackage?.id === pkg.id) {
-                        setSelectedPackage(null);
-                      } else {
-                        setSelectedPackage(pkg);
-                      }
-                    }}
-                    className={`border-2 rounded-xl p-4 cursor-pointer transition hover:shadow-lg ${
-                      selectedPackage?.id === pkg.id
-                        ? "border-blue-500 bg-blue-50 shadow-md"
-                        : "border-gray-200 hover:border-blue-300"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-bold text-lg text-gray-800">{pkg.package_name}</h3>
-                      {selectedPackage?.id === pkg.id && (
-                        <FaCheckCircle className="text-[#20056a] text-xl" />
-                      )}
+                {packages.map((pkg, index) => {
+                  const colors = [
+                    { bg: 'bg-gradient-to-br from-blue-50 to-blue-100', border: 'border-blue-300', hover: 'hover:border-blue-500', selected: 'border-blue-500 bg-gradient-to-br from-blue-100 to-blue-200', text: 'text-blue-800' },
+                    { bg: 'bg-gradient-to-br from-purple-50 to-purple-100', border: 'border-purple-300', hover: 'hover:border-purple-500', selected: 'border-purple-500 bg-gradient-to-br from-purple-100 to-purple-200', text: 'text-purple-800' },
+                    { bg: 'bg-gradient-to-br from-green-50 to-green-100', border: 'border-green-300', hover: 'hover:border-green-500', selected: 'border-green-500 bg-gradient-to-br from-green-100 to-green-200', text: 'text-green-800' },
+                    { bg: 'bg-gradient-to-br from-orange-50 to-orange-100', border: 'border-orange-300', hover: 'hover:border-orange-500', selected: 'border-orange-500 bg-gradient-to-br from-orange-100 to-orange-200', text: 'text-orange-800' },
+                    { bg: 'bg-gradient-to-br from-pink-50 to-pink-100', border: 'border-pink-300', hover: 'hover:border-pink-500', selected: 'border-pink-500 bg-gradient-to-br from-pink-100 to-pink-200', text: 'text-pink-800' },
+                    { bg: 'bg-gradient-to-br from-indigo-50 to-indigo-100', border: 'border-indigo-300', hover: 'hover:border-indigo-500', selected: 'border-indigo-500 bg-gradient-to-br from-indigo-100 to-indigo-200', text: 'text-indigo-800' },
+                  ];
+                  const colorScheme = colors[index % colors.length];
+                  const isSelected = selectedPackage?.id === pkg.id;
+                  
+                  return (
+                    <div
+                      key={pkg.id}
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedPackage(null);
+                        } else {
+                          setSelectedPackage(pkg);
+                        }
+                      }}
+                      className={`border-2 rounded-xl p-4 cursor-pointer transition hover:shadow-lg ${
+                        isSelected
+                          ? `${colorScheme.selected} shadow-md`
+                          : `${colorScheme.bg} ${colorScheme.border} ${colorScheme.hover}`
+                      }`}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className={`font-bold text-lg ${colorScheme.text}`}>{pkg.package_name}</h3>
+                        {isSelected && (
+                          <FaCheckCircle className={`${colorScheme.text} text-xl`} />
+                        )}
+                      </div>
+                      <p className="text-gray-700 text-sm mt-2 mb-3">{pkg.details}</p>
                     </div>
-                    <p className="text-gray-600 text-sm mt-2 mb-3">{pkg.details}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               {selectedPackage && (
                 <div className="mt-4 p-4 bg-green-50 border-2 border-green-200 rounded-xl">
