@@ -164,7 +164,10 @@ export default function VendorDashboardPage() {
       capacity: hall.capacity.toString(),
       contact_number: hall.contact_number,
       price_per_day: hall.price_per_day.toString(),
-      description: hall.description || ""
+      description: hall.description || "",
+      has_basic_rooms: hall.has_basic_rooms !== undefined ? hall.has_basic_rooms.toString() : "true",
+      has_stage: hall.has_stage !== undefined ? hall.has_stage.toString() : "true",
+      basic_rooms_count: hall.basic_rooms_count ? hall.basic_rooms_count.toString() : "2"
     });
     setPhotoFiles([]);
     setPhotoPreviews([]);
@@ -188,6 +191,9 @@ export default function VendorDashboardPage() {
       formData.append("contact_number", form.contact_number);
       formData.append("description", form.description);
       formData.append("vendor_id", vendorData.id);
+      formData.append("has_basic_rooms", form.has_basic_rooms);
+      formData.append("has_stage", form.has_stage);
+      formData.append("basic_rooms_count", form.basic_rooms_count);
 
       photoFiles.forEach(file => {
         formData.append("photos", file);
@@ -209,7 +215,10 @@ export default function VendorDashboardPage() {
           capacity: "",
           contact_number: "",
           price_per_day: "",
-          description: ""
+          description: "",
+          has_basic_rooms: "true",
+          has_stage: "true",
+          basic_rooms_count: "2"
         });
         photoPreviews.forEach(url => URL.revokeObjectURL(url));
         setPhotoFiles([]);
@@ -306,7 +315,10 @@ export default function VendorDashboardPage() {
           capacity: "",
           contact_number: "",
           price_per_day: "",
-          description: ""
+          description: "",
+          has_basic_rooms: "true",
+          has_stage: "true",
+          basic_rooms_count: "2"
         });
         // Clear photos and packages
         photoPreviews.forEach(url => URL.revokeObjectURL(url));
