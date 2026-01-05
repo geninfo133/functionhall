@@ -224,7 +224,9 @@ export default function VendorDashboardPage() {
           description: "",
           has_basic_rooms: "true",
           has_stage: "true",
-          basic_rooms_count: "2"
+          basic_rooms_count: "2",
+          has_dining_hall: "true",
+          has_kitchen: "true"
         });
         photoPreviews.forEach(url => URL.revokeObjectURL(url));
         setPhotoFiles([]);
@@ -326,7 +328,9 @@ export default function VendorDashboardPage() {
           description: "",
           has_basic_rooms: "true",
           has_stage: "true",
-          basic_rooms_count: "2"
+          basic_rooms_count: "2",
+          has_dining_hall: "true",
+          has_kitchen: "true"
         });
         // Clear photos and packages
         photoPreviews.forEach(url => URL.revokeObjectURL(url));
