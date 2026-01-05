@@ -47,6 +47,11 @@ class FunctionHall(db.Model):
     vendor_id = db.Column(db.Integer, db.ForeignKey('admin_users.id'), nullable=True)  # Link to vendor
     is_approved = db.Column(db.Boolean, default=False)  # Super admin approval required
     approval_status = db.Column(db.String(20), default='pending')  # pending, approved, rejected
+    
+    # Facilities included in hall price
+    has_basic_rooms = db.Column(db.Boolean, default=True)  # Basic preparation rooms available
+    has_stage = db.Column(db.Boolean, default=True)  # Stage/Platform available
+    basic_rooms_count = db.Column(db.Integer, default=2)  # Number of basic preparation rooms
 
     # Relationships
     packages = db.relationship('Package', backref='hall', lazy=True)

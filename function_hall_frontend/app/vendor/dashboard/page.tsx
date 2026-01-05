@@ -23,7 +23,10 @@ export default function VendorDashboardPage() {
     capacity: "",
     contact_number: "",
     price_per_day: "",
-    description: ""
+    description: "",
+    has_basic_rooms: "true",
+    has_stage: "true",
+    basic_rooms_count: "2"
   });
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
@@ -248,6 +251,9 @@ export default function VendorDashboardPage() {
       formData.append('contact_number', form.contact_number || '');
       formData.append('description', form.description || '');
       formData.append('vendor_id', vendorData.id.toString());
+      formData.append('has_basic_rooms', form.has_basic_rooms);
+      formData.append('has_stage', form.has_stage);
+      formData.append('basic_rooms_count', form.basic_rooms_count);
       
       // Append selected packages as JSON
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -540,6 +546,48 @@ export default function VendorDashboardPage() {
                     rows={3}
                     className="w-full px-4 py-2 border border-gray-300 bg-white text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none resize-none placeholder-gray-400"
                   />
+                </div>
+
+                {/* Facilities Included in Hall Price */}
+                <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                  <h3 className="text-sm font-bold text-[#20056a] mb-3">Facilities Included in Hall Price</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          name="has_basic_rooms"
+                          checked={form.has_basic_rooms === "true"}
+                          onChange={(e) => setForm({...form, has_basic_rooms: e.target.checked ? "true" : "false"})}
+                          className="w-4 h-4 text-[#20056a] rounded"
+                        />
+                        <span className="text-sm text-gray-700">Basic Preparation Rooms</span>
+                      </label>
+                      {form.has_basic_rooms === "true" && (
+                        <input
+                          type="number"
+                          name="basic_rooms_count"
+                          value={form.basic_rooms_count}
+                          onChange={handleInput}
+                          min="1"
+                          max="10"
+                          placeholder="Count"
+                          className="w-20 px-2 py-1 text-sm border border-gray-300 bg-white text-gray-900 rounded"
+                        />
+                      )}
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="has_stage"
+                        checked={form.has_stage === "true"}
+                        onChange={(e) => setForm({...form, has_stage: e.target.checked ? "true" : "false"})}
+                        className="w-4 h-4 text-[#20056a] rounded mr-2"
+                      />
+                      <label className="text-sm text-gray-700">Stage/Platform</label>
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-600 mt-2">✅ Chairs for all guests are always included</p>
                 </div>
                 
                 {/* Package Selection */}

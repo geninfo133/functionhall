@@ -135,8 +135,12 @@ export default function HallDetailsPage() {
                     <p className="text-xs font-semibold text-[#20056a] mb-2">✅ Included in Hall Price:</p>
                     <ul className="text-xs text-gray-700 space-y-1">
                       <li>• Chairs for {hall.capacity} guests</li>
-                      <li>• Basic preparation rooms</li>
-                      <li>• Stage/Platform (if available)</li>
+                      {hall.has_basic_rooms && (
+                        <li>• {hall.basic_rooms_count || 2} Basic preparation room{(hall.basic_rooms_count || 2) > 1 ? 's' : ''}</li>
+                      )}
+                      {hall.has_stage && (
+                        <li>• Stage/Platform</li>
+                      )}
                     </ul>
                   </div>
 

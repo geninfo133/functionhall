@@ -225,7 +225,11 @@ function BookingPageContent() {
                   </p>
                   <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
                     <p className="text-xs font-semibold text-[#20056a] mb-1">✅ Included:</p>
-                    <p className="text-xs text-gray-700">• {hall.capacity} chairs • Basic rooms • Stage</p>
+                    <p className="text-xs text-gray-700">
+                      • {hall.capacity} chairs
+                      {hall.has_basic_rooms && ` • ${hall.basic_rooms_count || 2} basic room${(hall.basic_rooms_count || 2) > 1 ? 's' : ''}`}
+                      {hall.has_stage && ' • Stage'}
+                    </p>
                     <p className="text-xs font-semibold text-amber-700 mt-2">⚡ Not Included:</p>
                     <p className="text-xs text-gray-700">• Electricity charges (as per usage)</p>
                   </div>
@@ -514,7 +518,11 @@ function BookingPageContent() {
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <span className="text-gray-700">Hall Rent (per day):</span>
-                    <p className="text-xs text-gray-500">Includes: {hall.capacity} chairs, basic rooms, stage</p>
+                    <p className="text-xs text-gray-500">
+                      Includes: {hall.capacity} chairs
+                      {hall.has_basic_rooms && `, ${hall.basic_rooms_count || 2} basic room${(hall.basic_rooms_count || 2) > 1 ? 's' : ''}`}
+                      {hall.has_stage && ', stage'}
+                    </p>
                   </div>
                   <span className="font-semibold text-gray-900 ml-2">₹{hall.price_per_day.toLocaleString()}</span>
                 </div>

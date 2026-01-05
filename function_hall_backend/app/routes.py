@@ -72,7 +72,10 @@ def get_halls():
             'contact_number': hall.contact_number,
             'description': hall.description,
             'photos': photos,
-            'packages': packages
+            'packages': packages,
+            'has_basic_rooms': hall.has_basic_rooms if hasattr(hall, 'has_basic_rooms') else True,
+            'has_stage': hall.has_stage if hasattr(hall, 'has_stage') else True,
+            'basic_rooms_count': hall.basic_rooms_count if hasattr(hall, 'basic_rooms_count') else 2
         })
     return jsonify(result)
 
@@ -90,7 +93,10 @@ def get_hall(hall_id):
         'price_per_day': hall.price_per_day,
         'contact_number': hall.contact_number,
         'description': hall.description,
-        'photos': photos
+        'photos': photos,
+        'has_basic_rooms': hall.has_basic_rooms if hasattr(hall, 'has_basic_rooms') else True,
+        'has_stage': hall.has_stage if hasattr(hall, 'has_stage') else True,
+        'basic_rooms_count': hall.basic_rooms_count if hasattr(hall, 'basic_rooms_count') else 2
     })
 
 @main.route('/api/vendor/<int:vendor_id>/halls', methods=['GET'])
@@ -217,7 +223,10 @@ def add_hall():
                     'photos': photo_paths,
                     'packages': packages_data,
                     'functional_rooms': functional_rooms_data,
-                    'guest_rooms': guest_rooms_data
+                    'guest_rooms': guest_rooms_data,
+                    'has_basic_rooms': data.get('has_basic_rooms', 'true').lower() == 'true',
+                    'has_stage': data.get('has_stage', 'true').lower() == 'true',
+                    'basic_rooms_count': int(data.get('basic_rooms_count', 2))
                 }),
                 status='pending'
             )
@@ -241,7 +250,10 @@ def add_hall():
         description=data.get('description'),
         vendor_id=vendor_id,
         is_approved=True,
-        approval_status='approved'
+        approval_status='approved',
+        has_basic_rooms=data.get('has_basic_rooms', True) if isinstance(data.get('has_basic_rooms'), bool) else str(data.get('has_basic_rooms', 'true')).lower() == 'true',
+        has_stage=data.get('has_stage', True) if isinstance(data.get('has_stage'), bool) else str(data.get('has_stage', 'true')).lower() == 'true',
+        basic_rooms_count=int(data.get('basic_rooms_count', 2))
     )
     db.session.add(hall)
     db.session.flush()  # Get hall.id before creating packages
