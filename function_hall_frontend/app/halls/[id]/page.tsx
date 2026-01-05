@@ -55,21 +55,19 @@ export default function HallDetailsPage() {
           setPackages([]);
         });
       
-      // Fetch functional rooms
-      fetch(`${BACKEND_URL}/api/halls/${hallId}/functional-rooms`, {
+      // Fetch functional and guest rooms
+      fetch(`${BACKEND_URL}/api/halls/${hallId}/rooms`, {
         cache: 'no-store'
       })
-        .then(res => res.ok ? res.json() : [])
-        .then(data => setFunctionalRooms(data))
-        .catch(() => setFunctionalRooms([]));
-      
-      // Fetch guest rooms
-      fetch(`${BACKEND_URL}/api/halls/${hallId}/guest-rooms`, {
-        cache: 'no-store'
-      })
-        .then(res => res.ok ? res.json() : [])
-        .then(data => setGuestRooms(data))
-        .catch(() => setGuestRooms([]));
+        .then(res => res.ok ? res.json() : { functional_rooms: [], guest_rooms: [] })
+        .then(data => {
+          setFunctionalRooms(data.functional_rooms || []);
+          setGuestRooms(data.guest_rooms || []);
+        })
+        .catch(() => {
+          setFunctionalRooms([]);
+          setGuestRooms([]);
+        });
     }
   }, [hallId]);
 
