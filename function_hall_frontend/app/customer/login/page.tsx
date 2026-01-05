@@ -40,7 +40,7 @@ export default function CustomerLogin() {
         // Store token and customer info
         localStorage.setItem("customerToken", data.token);
         localStorage.setItem("customerInfo", JSON.stringify(data.customer));
-        router.push("/home");
+        router.push("/customer/dashboard");
       } else {
         setError(data.error || "Login failed");
       }

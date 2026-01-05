@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { FaBuilding, FaInfoCircle, FaPhone, FaSignInAlt, FaSignOutAlt, FaUserPlus, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaChevronDown, FaUserShield, FaTachometerAlt, FaSearch, FaEnvelope } from "react-icons/fa";
+import { FaBuilding, FaInfoCircle, FaPhone, FaSignOutAlt, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaTachometerAlt, FaSearch, FaEnvelope } from "react-icons/fa";
 
 export default function MainNavbar() {
   const router = useRouter();
@@ -16,10 +16,6 @@ export default function MainNavbar() {
   const [customerName, setCustomerName] = useState("");
   const [vendorName, setVendorName] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [registerDropdownOpen, setRegisterDropdownOpen] = useState(false);
-  const [loginDropdownOpen, setLoginDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const loginDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Check if vendor is logged in first
@@ -60,20 +56,7 @@ export default function MainNavbar() {
     }
   }, [pathname]);
 
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setRegisterDropdownOpen(false);
-      }
-      if (loginDropdownRef.current && !loginDropdownRef.current.contains(event.target as Node)) {
-        setLoginDropdownOpen(false);
-      }
-    };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
 
   const handleLogout = () => {
     if (isAdminPage) {
@@ -163,80 +146,7 @@ export default function MainNavbar() {
                   Admin
                   <FaBars className="ml-2" />
                 </button>
-              ) : (
-                <>
-                  {/* Login Dropdown */}
-                  <div className="relative" ref={loginDropdownRef}>
-                    <button
-                      onClick={() => setLoginDropdownOpen(!loginDropdownOpen)}
-                      className="text-gray-300 hover:text-white transition font-medium flex items-center gap-2"
-                    >
-                      <FaSignInAlt />
-                      Login
-                      <FaChevronDown className={`text-xs transition-transform ${loginDropdownOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    
-                    {loginDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50">
-                        <Link
-                          href="/customer/login"
-                          onClick={() => setLoginDropdownOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition text-gray-700"
-                        >
-                          <FaUser className="text-[#20056a]" />
-                          <span className="font-medium">Customer</span>
-                        </Link>
-                        <div className="border-t border-gray-200"></div>
-                        <Link
-                          href="/vendor/login"
-                          onClick={() => setLoginDropdownOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition text-gray-700"
-                        >
-                          <FaBuilding className="text-green-600" />
-                          <span className="font-medium">Vendor</span>
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Register Dropdown */}
-                  <div className="relative" ref={dropdownRef}>
-                    <button
-                      onClick={() => setRegisterDropdownOpen(!registerDropdownOpen)}
-                      className="text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2"
-                      style={{ backgroundColor: '#20056a' }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#150442'}
-                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#20056a'}
-                    >
-                      <FaUserPlus />
-                      Register
-                      <FaChevronDown className={`text-xs transition-transform ${registerDropdownOpen ? 'rotate-180' : ''}`} />
-                    </button>
-                    
-                    {registerDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50">
-                        <Link
-                          href="/customer/phone-verify"
-                          onClick={() => setRegisterDropdownOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition text-gray-700"
-                        >
-                          <FaUser className="text-[#20056a]" />
-                          <span className="font-medium">Customer</span>
-                        </Link>
-                        <div className="border-t border-gray-200"></div>
-                        <Link
-                          href="/vendor/phone-verify"
-                          onClick={() => setRegisterDropdownOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition text-gray-700"
-                        >
-                          <FaBuilding className="text-green-600" />
-                          <span className="font-medium">Vendor</span>
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
+              ) : null}
             </div>
 
             {/* Mobile Menu Button */}
