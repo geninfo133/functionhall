@@ -134,8 +134,10 @@ function BookingPageContent() {
     
     // Calculate total amount including hall, package, and rooms
     let totalAmount = hall?.price_per_day || 0;
+    
+    // Add package cost (if selected)
     if (selectedPackage) {
-      totalAmount = selectedPackage.price;
+      totalAmount += selectedPackage.price;
     }
     
     // Add functional rooms cost
@@ -307,10 +309,13 @@ function BookingPageContent() {
             </div>
           ) : packages.length > 0 ? (
             <div>
-              <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-3">
+              <label className="flex items-center space-x-2 text-sm font-semibold text-gray-700 mb-2">
                 <FaBox className="text-[#20056a]" />
                 <span>Select Package (Optional)</span>
               </label>
+              <p className="text-xs text-gray-600 mb-3 bg-blue-50 p-2 rounded-lg">
+                💡 Package prices are <strong>additional</strong> to the hall rent. Packages include decorations, catering, etc.
+              </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {packages.map((pkg) => (
                   <div
@@ -336,8 +341,8 @@ function BookingPageContent() {
                     </div>
                     <p className="text-gray-600 text-sm mt-2 mb-3">{pkg.details}</p>
                     <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-                      <span className="text-gray-500 text-xs font-medium">Package Price</span>
-                      <span className="text-[#20056a] font-bold text-lg">₹{pkg.price.toLocaleString()}</span>
+                      <span className="text-gray-500 text-xs font-medium">Additional Cost</span>
+                      <span className="text-[#20056a] font-bold text-lg">+₹{pkg.price.toLocaleString()}</span>
                     </div>
                   </div>
                 ))}
@@ -349,8 +354,9 @@ function BookingPageContent() {
                       <p className="text-sm text-gray-600">Selected Package</p>
                       <p className="font-bold text-lg text-green-800">{selectedPackage.package_name}</p>
                     </div>
-                    <p className="text-green-600 font-bold text-xl">₹{selectedPackage.price.toLocaleString()}</p>
+                    <p className="text-green-600 font-bold text-xl">+₹{selectedPackage.price.toLocaleString()}</p>
                   </div>
+                  <p className="text-xs text-gray-600 mt-2">This will be added to the hall rent</p>
                 </div>
               )}
             </div>
@@ -488,6 +494,61 @@ function BookingPageContent() {
                   ))}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Total Price Breakdown */}
+          {hall && (
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-200 rounded-xl p-5 space-y-2">
+              <h3 className="text-lg font-bold text-[#20056a] mb-3 flex items-center">
+                <FaRupeeSign className="mr-2" />
+                Booking Summary
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Hall Rent (per day):</span>
+                  <span className="font-semibold text-gray-900">₹{hall.price_per_day.toLocaleString()}</span>
+                </div>
+                {selectedPackage && (
+                  <div className="flex justify-between items-center bg-white/70 p-2 rounded">
+                    <span className="text-gray-700">Package ({selectedPackage.package_name}):</span>
+                    <span className="font-semibold text-[#20056a]">+₹{selectedPackage.price.toLocaleString()}</span>
+                  </div>
+                )}
+                {selectedFunctionalRooms.length > 0 && (
+                  <>
+                    {selectedFunctionalRooms.map(room => (
+                      <div key={room.id} className="flex justify-between items-center bg-white/70 p-2 rounded">
+                        <span className="text-gray-700">{room.room_type}:</span>
+                        <span className="font-semibold text-purple-600">+₹{room.price.toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+                {selectedGuestRooms.length > 0 && (
+                  <>
+                    {selectedGuestRooms.map(item => (
+                      <div key={item.room.id} className="flex justify-between items-center bg-white/70 p-2 rounded">
+                        <span className="text-gray-700">{item.room.room_category} x{item.quantity}:</span>
+                        <span className="font-semibold text-green-600">+₹{(item.room.price_per_room * item.quantity).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+                <div className="border-t-2 border-blue-300 pt-2 mt-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-[#20056a]">Total Amount:</span>
+                    <span className="text-2xl font-bold text-[#20056a]">
+                      ₹{(
+                        (hall?.price_per_day || 0) +
+                        (selectedPackage?.price || 0) +
+                        selectedFunctionalRooms.reduce((sum, room) => sum + (room.price || 0), 0) +
+                        selectedGuestRooms.reduce((sum, item) => sum + (item.room.price_per_room * item.quantity), 0)
+                      ).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
