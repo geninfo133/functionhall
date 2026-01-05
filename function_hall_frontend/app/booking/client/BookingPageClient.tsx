@@ -223,6 +223,12 @@ function BookingPageContent() {
                     <FaRupeeSign />
                     <span>{hall.price_per_day}/day</span>
                   </p>
+                  <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                    <p className="text-xs font-semibold text-[#20056a] mb-1">✅ Included:</p>
+                    <p className="text-xs text-gray-700">• {hall.capacity} chairs • Basic rooms • Stage</p>
+                    <p className="text-xs font-semibold text-amber-700 mt-2">⚡ Not Included:</p>
+                    <p className="text-xs text-gray-700">• Electricity charges (as per usage)</p>
+                  </div>
                 </div>
               </div>
             )}
@@ -505,9 +511,16 @@ function BookingPageContent() {
                 Booking Summary
               </h3>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-700">Hall Rent (per day):</span>
-                  <span className="font-semibold text-gray-900">₹{hall.price_per_day.toLocaleString()}</span>
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <span className="text-gray-700">Hall Rent (per day):</span>
+                    <p className="text-xs text-gray-500">Includes: {hall.capacity} chairs, basic rooms, stage</p>
+                  </div>
+                  <span className="font-semibold text-gray-900 ml-2">₹{hall.price_per_day.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center bg-amber-50 p-2 rounded text-xs">
+                  <span className="text-amber-800">⚡ Electricity charges:</span>
+                  <span className="font-semibold text-amber-800">As per usage</span>
                 </div>
                 {selectedPackage && (
                   <div className="flex justify-between items-center bg-white/70 p-2 rounded">

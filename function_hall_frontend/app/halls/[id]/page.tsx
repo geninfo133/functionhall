@@ -127,10 +127,20 @@ export default function HallDetailsPage() {
                     <div>
                       <p className="text-sm text-gray-500">Price Per Day</p>
                       <p className="font-semibold text-[#20056a] text-2xl">₹{hall.price_per_day.toLocaleString()}</p>
+                      <p className="text-xs text-amber-600 mt-1">⚡ Electricity charges extra (as per usage)</p>
                     </div>
                   </div>
 
-                  <div className="flex items-start">
+                  <div className="bg-blue-50 rounded-lg p-3 mt-4">
+                    <p className="text-xs font-semibold text-[#20056a] mb-2">✅ Included in Hall Price:</p>
+                    <ul className="text-xs text-gray-700 space-y-1">
+                      <li>• Chairs for {hall.capacity} guests</li>
+                      <li>• Basic preparation rooms</li>
+                      <li>• Stage/Platform (if available)</li>
+                    </ul>
+                  </div>
+
+                  <div className="flex items-start mt-4">
                     <span className="text-2xl mr-3">📞</span>
                     <div>
                       <p className="text-sm text-gray-500">Contact</p>
