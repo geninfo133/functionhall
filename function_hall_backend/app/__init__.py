@@ -30,9 +30,11 @@ def create_app():
     # Create upload folder if it doesn't exist
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     
-    # Configure CORS to support credentials - include both localhost and 127.0.0.1
-    # TEMP: Allow all origins for CORS debugging
-    CORS(app, supports_credentials=True)
+    # Configure CORS - Allow all origins for now
+    CORS(app, 
+         resources={r"/*": {"origins": "*"}},
+         allow_headers=['Content-Type', 'Authorization'],
+         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 
     # Configure Database - PostgreSQL
     # Use DATABASE_URL from environment (Railway or .env)
