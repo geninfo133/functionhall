@@ -1035,7 +1035,12 @@ def approve_hall_request(request_id):
             description=new_data.get('description'),
             vendor_id=change_request.vendor_id,
             is_approved=True,
-            approval_status='approved'
+            approval_status='approved',
+            has_basic_rooms=new_data.get('has_basic_rooms', True),
+            has_stage=new_data.get('has_stage', True),
+            basic_rooms_count=new_data.get('basic_rooms_count', 2),
+            has_dining_hall=new_data.get('has_dining_hall', True),
+            has_kitchen=new_data.get('has_kitchen', True)
         )
         db.session.add(hall)
         db.session.flush()  # Get hall.id before creating photos
@@ -1111,6 +1116,11 @@ def approve_hall_request(request_id):
             hall.price_per_day = new_data.get('price_per_day')
             hall.contact_number = new_data.get('contact_number')
             hall.description = new_data.get('description')
+            hall.has_basic_rooms = new_data.get('has_basic_rooms', True)
+            hall.has_stage = new_data.get('has_stage', True)
+            hall.basic_rooms_count = new_data.get('basic_rooms_count', 2)
+            hall.has_dining_hall = new_data.get('has_dining_hall', True)
+            hall.has_kitchen = new_data.get('has_kitchen', True)
             
             # Add new photos if provided
             photos = new_data.get('photos', [])
