@@ -12,22 +12,22 @@ PACKAGE_TEMPLATES = [
     {
         "package_name": "Basic Package",
         "price": 50000,
-        "details": "Includes: Hall rental, Basic lighting, Tables & chairs, Air conditioning"
+        "details": "Includes: Basic lighting, Tables & chairs, Air conditioning"
     },
     {
         "package_name": "Standard Package",
         "price": 75000,
-        "details": "Includes: Hall rental, Premium lighting, Tables & chairs, Air conditioning, Sound system, Stage setup"
+        "details": "Includes: Premium lighting, Tables & chairs, Air conditioning, Sound system, Stage setup"
     },
     {
         "package_name": "Premium Package",
         "price": 100000,
-        "details": "Includes: Hall rental, Premium lighting & effects, Decorated tables & chairs, Air conditioning, Professional sound system, Stage with backdrop, Complementary parking"
+        "details": "Includes: Premium lighting & effects, Decorated tables & chairs, Air conditioning, Professional sound system, Stage with backdrop, Complementary parking"
     },
     {
         "package_name": "Wedding Package",
         "price": 200000,
-        "details": "Includes: Hall rental for 2 days, Complete wedding lighting & decoration, Premium furniture, Central AC, Professional sound & music, Mandap setup, Valet parking, Welcome area setup, Green room facilities"
+        "details": "Includes: Complete wedding lighting & decoration, Premium furniture, Central AC, Professional sound & music, Mandap setup, Valet parking, Welcome area setup, Green room facilities"
     }
 ]
 
