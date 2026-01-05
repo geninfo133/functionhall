@@ -75,7 +75,9 @@ def get_halls():
             'packages': packages,
             'has_basic_rooms': getattr(hall, 'has_basic_rooms', True),
             'has_stage': getattr(hall, 'has_stage', True),
-            'basic_rooms_count': getattr(hall, 'basic_rooms_count', 2)
+            'basic_rooms_count': getattr(hall, 'basic_rooms_count', 2),
+            'has_dining_hall': getattr(hall, 'has_dining_hall', True),
+            'has_kitchen': getattr(hall, 'has_kitchen', True)
         })
     return jsonify(result)
 
@@ -96,7 +98,9 @@ def get_hall(hall_id):
         'photos': photos,
         'has_basic_rooms': getattr(hall, 'has_basic_rooms', True),
         'has_stage': getattr(hall, 'has_stage', True),
-        'basic_rooms_count': getattr(hall, 'basic_rooms_count', 2)
+        'basic_rooms_count': getattr(hall, 'basic_rooms_count', 2),
+        'has_dining_hall': getattr(hall, 'has_dining_hall', True),
+        'has_kitchen': getattr(hall, 'has_kitchen', True)
     })
 
 @main.route('/api/vendor/<int:vendor_id>/halls', methods=['GET'])
@@ -253,7 +257,9 @@ def add_hall():
         approval_status='approved',
         has_basic_rooms=data.get('has_basic_rooms', True) if isinstance(data.get('has_basic_rooms'), bool) else str(data.get('has_basic_rooms', 'true')).lower() == 'true',
         has_stage=data.get('has_stage', True) if isinstance(data.get('has_stage'), bool) else str(data.get('has_stage', 'true')).lower() == 'true',
-        basic_rooms_count=int(data.get('basic_rooms_count', 2))
+        basic_rooms_count=int(data.get('basic_rooms_count', 2)),
+        has_dining_hall=data.get('has_dining_hall', True) if isinstance(data.get('has_dining_hall'), bool) else str(data.get('has_dining_hall', 'true')).lower() == 'true',
+        has_kitchen=data.get('has_kitchen', True) if isinstance(data.get('has_kitchen'), bool) else str(data.get('has_kitchen', 'true')).lower() == 'true'
     )
     db.session.add(hall)
     db.session.flush()  # Get hall.id before creating packages

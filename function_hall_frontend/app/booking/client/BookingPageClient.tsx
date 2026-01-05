@@ -231,6 +231,8 @@ function BookingPageContent() {
                       • {hall.capacity} chairs
                       {hall.has_basic_rooms && ` • ${hall.basic_rooms_count || 2} basic room${(hall.basic_rooms_count || 2) > 1 ? 's' : ''}`}
                       {hall.has_stage && ' • Stage'}
+                      {hall.has_dining_hall && ' • Dining hall'}
+                      {hall.has_kitchen && ' • Kitchen with utensils'}
                     </p>
                     <p className="text-xs font-semibold text-amber-700 mt-2">⚡ Not Included:</p>
                     <p className="text-xs text-gray-700">• Electricity charges (as per usage)</p>
@@ -555,6 +557,8 @@ function BookingPageContent() {
                       Includes: {hall.capacity} chairs
                       {hall.has_basic_rooms && `, ${hall.basic_rooms_count || 2} basic room${(hall.basic_rooms_count || 2) > 1 ? 's' : ''}`}
                       {hall.has_stage && ', stage'}
+                      {hall.has_dining_hall && ', dining hall'}
+                      {hall.has_kitchen && ', kitchen with utensils'}
                     </p>
                   </div>
                   <span className="font-semibold text-gray-900 ml-2">₹{hall.price_per_day.toLocaleString()}</span>

@@ -168,6 +168,12 @@ export default function HallDetailsPage() {
                       {hall.has_stage && (
                         <li>• Stage/Platform</li>
                       )}
+                      {hall.has_dining_hall && (
+                        <li>• Dining Hall</li>
+                      )}
+                      {hall.has_kitchen && (
+                        <li>• Kitchen with utensils</li>
+                      )}
                     </ul>
                   </div>
 
