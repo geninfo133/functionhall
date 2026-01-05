@@ -5,8 +5,9 @@ Script to remove 'Hall rental' text from existing package descriptions
 import psycopg2
 import os
 
-# Use Railway DB URL or local
-DB_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:tQOEqfExiGKGYKWOdHJKtYYLMUAoAWRM@yamabiko.proxy.rlwy.net:14904/railway')
+# Use Railway DB URL
+DB_URL = 'postgresql://postgres:tQOEqfExiGKGYKWOdHJKtYYLMUAoAWRM@yamabiko.proxy.rlwy.net:14904/railway'
+print(f"Connecting to: {DB_URL[:50]}...")
 
 def update_package_descriptions():
     conn = psycopg2.connect(DB_URL)

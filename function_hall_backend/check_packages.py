@@ -3,9 +3,8 @@
 Check existing packages in the database
 """
 import psycopg2
-import os
 
-DB_URL = os.getenv('DATABASE_URL', 'postgresql://postgres:tQOEqfExiGKGYKWOdHJKtYYLMUAoAWRM@yamabiko.proxy.rlwy.net:14904/railway')
+DB_URL = 'postgresql://postgres:tQOEqfExiGKGYKWOdHJKtYYLMUAoAWRM@yamabiko.proxy.rlwy.net:14904/railway'
 
 def check_packages():
     conn = psycopg2.connect(DB_URL)
