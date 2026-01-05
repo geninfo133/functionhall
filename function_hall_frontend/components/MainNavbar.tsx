@@ -116,6 +116,10 @@ export default function MainNavbar() {
                     <FaPhone />
                     Contact
                   </Link>
+                  <Link href="/vendor/login" className="text-gray-300 hover:text-white transition font-medium flex items-center gap-2 border border-green-500 px-3 py-1.5 rounded-lg hover:bg-green-600 hover:border-green-600">
+                    <FaBuilding />
+                    List Your Hall
+                  </Link>
                   <Link href="/customer/login" className="bg-[#20056a] hover:bg-[#150442] text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-2">
                     <FaUser />
                     Login
