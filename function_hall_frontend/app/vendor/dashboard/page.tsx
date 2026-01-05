@@ -26,7 +26,9 @@ export default function VendorDashboardPage() {
     description: "",
     has_basic_rooms: "true",
     has_stage: "true",
-    basic_rooms_count: "2"
+    basic_rooms_count: "2",
+    has_dining_hall: "true",
+    has_kitchen: "true"
   });
   const [photoFiles, setPhotoFiles] = useState<File[]>([]);
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
@@ -167,7 +169,9 @@ export default function VendorDashboardPage() {
       description: hall.description || "",
       has_basic_rooms: hall.has_basic_rooms !== undefined ? hall.has_basic_rooms.toString() : "true",
       has_stage: hall.has_stage !== undefined ? hall.has_stage.toString() : "true",
-      basic_rooms_count: hall.basic_rooms_count ? hall.basic_rooms_count.toString() : "2"
+      basic_rooms_count: hall.basic_rooms_count ? hall.basic_rooms_count.toString() : "2",
+      has_dining_hall: hall.has_dining_hall !== undefined ? hall.has_dining_hall.toString() : "true",
+      has_kitchen: hall.has_kitchen !== undefined ? hall.has_kitchen.toString() : "true"
     });
     setPhotoFiles([]);
     setPhotoPreviews([]);
@@ -194,6 +198,8 @@ export default function VendorDashboardPage() {
       formData.append("has_basic_rooms", form.has_basic_rooms);
       formData.append("has_stage", form.has_stage);
       formData.append("basic_rooms_count", form.basic_rooms_count);
+      formData.append("has_dining_hall", form.has_dining_hall);
+      formData.append("has_kitchen", form.has_kitchen);
 
       photoFiles.forEach(file => {
         formData.append("photos", file);
@@ -263,6 +269,8 @@ export default function VendorDashboardPage() {
       formData.append('has_basic_rooms', form.has_basic_rooms);
       formData.append('has_stage', form.has_stage);
       formData.append('basic_rooms_count', form.basic_rooms_count);
+      formData.append('has_dining_hall', form.has_dining_hall);
+      formData.append('has_kitchen', form.has_kitchen);
       
       // Append selected packages as JSON
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -597,6 +605,26 @@ export default function VendorDashboardPage() {
                         className="w-4 h-4 text-[#20056a] rounded mr-2"
                       />
                       <label className="text-sm text-gray-700">Stage/Platform</label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="has_dining_hall"
+                        checked={form.has_dining_hall === "true"}
+                        onChange={(e) => setForm({...form, has_dining_hall: e.target.checked ? "true" : "false"})}
+                        className="w-4 h-4 text-[#20056a] rounded mr-2"
+                      />
+                      <label className="text-sm text-gray-700">Dining Hall</label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="has_kitchen"
+                        checked={form.has_kitchen === "true"}
+                        onChange={(e) => setForm({...form, has_kitchen: e.target.checked ? "true" : "false"})}
+                        className="w-4 h-4 text-[#20056a] rounded mr-2"
+                      />
+                      <label className="text-sm text-gray-700">Kitchen with Utensils</label>
                     </div>
                   </div>
                   <p className="text-xs text-gray-600 mt-2">✅ Chairs for all guests are always included</p>
