@@ -135,7 +135,7 @@ function BookingPageContent() {
     // Calculate total amount including hall, package, and rooms
     let totalAmount = hall?.price_per_day || 0;
     
-    // Add package cost (if selected)
+    // Add package cost (if selected) - included in calculation but not displayed separately
     if (selectedPackage) {
       totalAmount += selectedPackage.price;
     }
@@ -324,7 +324,7 @@ function BookingPageContent() {
                 <span>Select Package (Optional)</span>
               </label>
               <p className="text-xs text-gray-600 mb-3 bg-blue-50 p-2 rounded-lg">
-                💡 Package prices are <strong>additional</strong> to the hall rent. Packages include decorations, catering, etc.
+                💡 Packages include decorations, catering, and additional services. Contact us for pricing details.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {packages.map((pkg) => (
@@ -350,10 +350,6 @@ function BookingPageContent() {
                       )}
                     </div>
                     <p className="text-gray-600 text-sm mt-2 mb-3">{pkg.details}</p>
-                    <div className="flex items-center justify-between pt-3 border-t border-gray-200">
-                      <span className="text-gray-500 text-xs font-medium">Additional Cost</span>
-                      <span className="text-[#20056a] font-bold text-lg">+₹{pkg.price.toLocaleString()}</span>
-                    </div>
                   </div>
                 ))}
               </div>
@@ -364,9 +360,8 @@ function BookingPageContent() {
                       <p className="text-sm text-gray-600">Selected Package</p>
                       <p className="font-bold text-lg text-green-800">{selectedPackage.package_name}</p>
                     </div>
-                    <p className="text-green-600 font-bold text-xl">+₹{selectedPackage.price.toLocaleString()}</p>
                   </div>
-                  <p className="text-xs text-gray-600 mt-2">This will be added to the hall rent</p>
+                  <p className="text-xs text-gray-600 mt-2">Package details included in your booking</p>
                 </div>
               )}
             </div>
@@ -533,7 +528,7 @@ function BookingPageContent() {
                 {selectedPackage && (
                   <div className="flex justify-between items-center bg-white/70 p-2 rounded">
                     <span className="text-gray-700">Package ({selectedPackage.package_name}):</span>
-                    <span className="font-semibold text-[#20056a]">+₹{selectedPackage.price.toLocaleString()}</span>
+                    <span className="font-semibold text-[#20056a]">Included</span>
                   </div>
                 )}
                 {selectedFunctionalRooms.length > 0 && (
