@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
-import { FaBuilding, FaInfoCircle, FaPhone, FaSignOutAlt, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaTachometerAlt, FaSearch, FaEnvelope } from "react-icons/fa";
+import { FaBuilding, FaInfoCircle, FaPhone, FaSignOutAlt, FaUser, FaCalendarAlt, FaBars, FaTimes, FaCalendarPlus, FaTachometerAlt, FaSearch, FaEnvelope, FaHome } from "react-icons/fa";
 
 export default function MainNavbar() {
   const router = useRouter();
@@ -99,7 +99,7 @@ export default function MainNavbar() {
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-6">
               <Link href="/home" className="text-gray-300 hover:text-white transition font-medium flex items-center gap-2">
-                <FaBuilding />
+                <FaHome />
                 Home
               </Link>
               <Link href="/halls" className="text-gray-300 hover:text-white transition font-medium flex items-center gap-2">
