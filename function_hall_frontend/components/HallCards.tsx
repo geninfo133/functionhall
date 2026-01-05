@@ -179,6 +179,31 @@ export default function HallCards({ halls: propHalls, loading: propLoading, onEd
                   </div>
                 )}
 
+                {/* Packages */}
+                {hall.packages && hall.packages.length > 0 && (
+                  <div className="mb-4 border-t border-gray-100 pt-3">
+                    <h4 className="text-sm font-bold text-gray-900 mb-2">Available Packages:</h4>
+                    <div className="space-y-2">
+                      {hall.packages.slice(0, 2).map((pkg: any, idx: number) => (
+                        <div key={idx} className="bg-gray-50 rounded-lg p-2">
+                          <div className="flex justify-between items-start mb-1">
+                            <span className="text-xs font-semibold text-[#20056a]">{pkg.package_name}</span>
+                            {pkg.price && (
+                              <span className="text-xs font-bold text-gray-900">₹{pkg.price.toLocaleString()}</span>
+                            )}
+                          </div>
+                          {pkg.details && (
+                            <p className="text-xs text-gray-600 line-clamp-2">{pkg.details}</p>
+                          )}
+                        </div>
+                      ))}
+                      {hall.packages.length > 2 && (
+                        <p className="text-xs text-gray-500 italic">+{hall.packages.length - 2} more packages</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Action Buttons */}
                 <div className="flex gap-3 mt-auto pt-3">
                   {onEdit && onDelete ? (

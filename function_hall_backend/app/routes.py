@@ -61,6 +61,7 @@ def get_halls():
     result = []
     for hall in halls:
         photos = [photo.url for photo in hall.photos]
+        packages = [{'id': p.id, 'package_name': p.package_name, 'price': p.price, 'details': p.details} for p in hall.packages]
         result.append({
             'id': hall.id,
             'name': hall.name,
@@ -70,7 +71,8 @@ def get_halls():
             'price_per_day': hall.price_per_day,
             'contact_number': hall.contact_number,
             'description': hall.description,
-            'photos': photos
+            'photos': photos,
+            'packages': packages
         })
     return jsonify(result)
 
