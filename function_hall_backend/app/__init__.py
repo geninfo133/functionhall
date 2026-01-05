@@ -41,6 +41,7 @@ def create_app():
     # Configure Database - PostgreSQL
     # Use DATABASE_URL from environment (Railway or .env)
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     print("DB URI:", app.config['SQLALCHEMY_DATABASE_URI'])  # Debug: Print the DB URI being used
     # Initialize extensions
     db.init_app(app)
