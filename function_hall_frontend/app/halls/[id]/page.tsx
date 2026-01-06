@@ -563,7 +563,6 @@ export default function HallDetailsPage() {
           </div>
         </div>
       )}
-      </main>
     </div>
   );
 }
