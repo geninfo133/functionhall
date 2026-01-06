@@ -11,6 +11,7 @@ interface SidebarProps {
 
 const sidebarOptions: Record<Role, { label: string; href: string; icon: ReactElement }[]> = {
   customer: [
+    { label: "Dashboard", href: "/customer/dashboard", icon: <FaTachometerAlt /> },
     { label: "Home", href: "/home", icon: <FaHome /> },
     { label: "Send Enquiry", href: "/customer/enquiry", icon: <FaEnvelope /> },
     { label: "My Bookings", href: "/my-bookings", icon: <FaCalendarCheck /> },
