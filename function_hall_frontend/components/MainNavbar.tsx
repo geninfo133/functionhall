@@ -284,6 +284,15 @@ export default function MainNavbar() {
                 ) : (
                   <>
                     <Link
+                      href="/customer/dashboard"
+                      onClick={() => setSidebarOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
+                    >
+                      <FaTachometerAlt size={18} />
+                      <span className="font-medium">Dashboard</span>
+                    </Link>
+
+                    <Link
                       href="/profile"
                       onClick={() => setSidebarOpen(false)}
                       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-[#20056a] rounded-lg transition mb-2"
