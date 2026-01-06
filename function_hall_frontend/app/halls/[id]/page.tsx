@@ -116,10 +116,10 @@ export default function HallDetailsPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-8">
+      <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Side - Photos and Hall Info */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3">
             {/* Hall Information and Action Buttons - Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               {/* Hall Information Card */}
@@ -215,7 +215,7 @@ export default function HallDetailsPage() {
               </div>
             </div>
 
-            {/* Gallery, Location Map, and About This Hall */}
+            {/* Gallery and About This Hall - Side by Side */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Gallery */}
               {hall.photos && hall.photos.length > 0 ? (
@@ -244,43 +244,10 @@ export default function HallDetailsPage() {
                 </div>
               )}
 
-              {/* Google Map Location */}
+              {/* About This Hall */}
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
-                  <span className="text-3xl mr-2">📍</span>
-                  Location
-                </h2>
-                <div className="rounded-xl overflow-hidden shadow-md">
-                  <iframe
-                    src={`https://maps.google.com/maps?q=${encodeURIComponent(hall.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                    width="100%"
-                    height="280"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Hall Location Map"
-                  ></iframe>
-                </div>
-                <div className="mt-3 flex items-start">
-                  <span className="text-lg mr-2">📍</span>
-                  <p className="text-gray-700 text-sm">{hall.location}</p>
-                </div>
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hall.location)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 block w-full bg-blue-500 hover:bg-blue-600 text-white text-center py-2 rounded-lg font-semibold text-sm transition"
-                >
-                  🗺️ Open in Google Maps
-                </a>
-              </div>
-            </div>
-
-            {/* About This Hall */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-              <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
-                <span className="text-3xl mr-2">🏛️</span>
+                  <span className="text-3xl mr-2">🏛️</span>
                   About This Hall
                 </h2>
                 
@@ -342,7 +309,7 @@ export default function HallDetailsPage() {
             </div>
 
             {/* Availability Calendar - Collapsible */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
               <div 
                 className="flex items-center justify-between cursor-pointer group"
                 onClick={() => setShowCalendar(!showCalendar)}
@@ -390,20 +357,17 @@ export default function HallDetailsPage() {
 
             {/* Room Facilities Section */}
             {(functionalRooms.length > 0 || guestRooms.length > 0) && (
-              <div className="bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-bold text-[#20056a] mb-6 flex items-center">
-                  <span className="text-3xl mr-2">🏠</span>
-                  Room Facilities
-                </h2>
-                <div className="flex flex-col lg:flex-row gap-6">
+              <div className="mt-6">
+                <h2 className="text-2xl font-bold text-[#20056a] mb-4">Room Facilities</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Functional Rooms */}
                   {functionalRooms.length > 0 && (
-                    <div className="flex-1 bg-gradient-to-br from-purple-50 to-white rounded-xl shadow-md p-6 border-2 border-purple-100">
-                      <h3 className="text-xl font-bold text-purple-700 mb-4 flex items-center">
+                    <div className="bg-white rounded-2xl shadow-lg p-6">
+                      <h3 className="text-xl font-bold text-purple-600 mb-4 flex items-center">
                         <span className="text-2xl mr-2">🚪</span>
                         Functional Rooms
                       </h3>
-                      <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="space-y-3">
                         {functionalRooms.map((room, idx) => (
                           <div key={idx} className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
                             <h4 className="font-bold text-gray-800">{room.room_type}</h4>
@@ -428,17 +392,17 @@ export default function HallDetailsPage() {
 
                   {/* Guest Rooms */}
                   {guestRooms.length > 0 && (
-                    <div className="flex-1 bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-md p-6 border-2 border-blue-100">
-                      <h3 className="text-xl font-bold text-blue-700 mb-4 flex items-center">
+                    <div className="bg-white rounded-2xl shadow-lg p-6">
+                      <h3 className="text-xl font-bold text-blue-600 mb-4 flex items-center">
                         <span className="text-2xl mr-2">🛏️</span>
                         Guest Accommodation
                       </h3>
-                      <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="space-y-3">
                         {guestRooms.map((room, idx) => (
                           <div key={idx} className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
-                            <div className="flex justify-between items-start gap-3">
-                              <h4 className="font-bold text-gray-800 flex-1 min-w-0">{room.room_category}</h4>
-                              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded whitespace-nowrap flex-shrink-0">
+                            <div className="flex justify-between items-start">
+                              <h4 className="font-bold text-gray-800">{room.room_category}</h4>
+                              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">
                                 {room.total_rooms} room{room.total_rooms > 1 ? 's' : ''}
                               </span>
                             </div>
@@ -474,7 +438,7 @@ export default function HallDetailsPage() {
               
               {packages.length > 0 ? (
                 <div className="relative h-[780px] overflow-hidden">
-                  <style>{`
+                  <style jsx>{`
                     @keyframes marquee {
                       0% { transform: translateY(0); }
                       100% { transform: translateY(-50%); }
@@ -542,7 +506,7 @@ export default function HallDetailsPage() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
       {/* Image Lightbox Modal */}
       {selectedImage && (
@@ -566,6 +530,7 @@ export default function HallDetailsPage() {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 }
