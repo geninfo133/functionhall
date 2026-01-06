@@ -252,14 +252,14 @@ export default function HallDetailsPage() {
                 </h2>
                 <div className="rounded-xl overflow-hidden shadow-md">
                   <iframe
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(hall.location)}&output=embed`}
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(hall.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
                     width="100%"
                     height="280"
                     style={{ border: 0 }}
                     allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
-                    className="rounded-xl"
+                    title="Hall Location Map"
                   ></iframe>
                 </div>
                 <div className="mt-3 flex items-start">
