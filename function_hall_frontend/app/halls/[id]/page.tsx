@@ -539,7 +539,7 @@ export default function HallDetailsPage() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* Image Lightbox Modal */}
       {selectedImage && (
