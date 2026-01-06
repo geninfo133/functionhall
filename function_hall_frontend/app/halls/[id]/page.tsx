@@ -342,7 +342,7 @@ export default function HallDetailsPage() {
             </div>
 
             {/* Availability Calendar - Collapsible */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
               <div 
                 className="flex items-center justify-between cursor-pointer group"
                 onClick={() => setShowCalendar(!showCalendar)}
@@ -390,7 +390,7 @@ export default function HallDetailsPage() {
 
             {/* Room Facilities Section */}
             {(functionalRooms.length > 0 || guestRooms.length > 0) && (
-              <div className="bg-white rounded-2xl shadow-lg p-6 mt-6">
+              <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-[#20056a] mb-6 flex items-center">
                   <span className="text-3xl mr-2">🏠</span>
                   Room Facilities
