@@ -488,6 +488,10 @@ export default function HallDetailsPage() {
                           <div className={`inline-block ${colorScheme.titleBg} px-3 py-1 rounded-full mb-2`}>
                             <h3 className={`font-bold text-base ${colorScheme.text}`}>{pkg.package_name}</h3>
                           </div>
+                          <div className="mt-2 mb-3">
+                            <span className={`font-bold text-2xl ${colorScheme.text}`}>₹{pkg.price.toLocaleString()}</span>
+                            <span className="text-xs text-gray-600 ml-2">per event</span>
+                          </div>
                           {pkg.details && (
                             <div className="text-gray-700 text-sm whitespace-pre-line leading-relaxed mt-3 pt-3 border-t border-gray-300">
                               {pkg.details}

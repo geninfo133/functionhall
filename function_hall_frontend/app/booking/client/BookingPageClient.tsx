@@ -351,7 +351,7 @@ function BookingPageContent() {
                 <span>Select Package (Optional)</span>
               </label>
               <p className="text-xs text-gray-600 mb-3 bg-blue-50 p-2 rounded-lg">
-                💡 Packages include decorations, catering, and additional services. Contact us for pricing details.
+                💡 Packages include decorations, catering, and additional services.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {packages.map((pkg, index) => {
@@ -388,6 +388,10 @@ function BookingPageContent() {
                           <FaCheckCircle className={`${colorScheme.text} text-xl`} />
                         )}
                       </div>
+                      <div className="mb-3">
+                        <span className={`font-bold text-xl ${colorScheme.text}`}>₹{pkg.price.toLocaleString()}</span>
+                        <span className="text-xs text-gray-600 ml-2">per event</span>
+                      </div>
                       <p className="text-gray-700 text-sm mt-2 mb-3">{pkg.details}</p>
                     </div>
                   );
@@ -399,6 +403,10 @@ function BookingPageContent() {
                     <div>
                       <p className="text-sm text-gray-600">Selected Package</p>
                       <p className="font-bold text-lg text-green-800">{selectedPackage.package_name}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-bold text-xl text-green-800">₹{selectedPackage.price.toLocaleString()}</p>
+                      <p className="text-xs text-gray-600">per event</p>
                     </div>
                   </div>
                   <p className="text-xs text-gray-600 mt-2">Package details included in your booking</p>
