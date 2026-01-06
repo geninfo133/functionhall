@@ -438,7 +438,7 @@ export default function HallDetailsPage() {
               
               {packages.length > 0 ? (
                 <div className="relative h-[780px] overflow-hidden">
-                  <style jsx>{`
+                  <style>{`
                     @keyframes marquee {
                       0% { transform: translateY(0); }
                       100% { transform: translateY(-50%); }

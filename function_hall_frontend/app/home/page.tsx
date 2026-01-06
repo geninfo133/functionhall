@@ -154,7 +154,7 @@ function HomePageContent() {
 
           {/* Stats Marquee */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 mb-12 overflow-hidden py-4">
-            <div className="flex items-center gap-12 animate-marquee whitespace-nowrap">
+            <div className="flex items-center gap-12 whitespace-nowrap" style={{ animation: 'marquee 30s linear infinite' }}>
               <div className="flex items-center gap-3 px-6">
                 <div className="text-2xl font-bold text-[#20056a]">{halls.length}</div>
                 <p className="text-gray-600 font-medium">Premium Halls</p>
@@ -191,16 +191,10 @@ function HomePageContent() {
             </div>
           </div>
 
-          <style jsx>{`
+          <style>{`
             @keyframes marquee {
               0% { transform: translateX(0); }
               100% { transform: translateX(-50%); }
-            }
-            .animate-marquee {
-              animation: marquee 30s linear infinite;
-            }
-            .animate-marquee:hover {
-              animation-play-state: paused;
             }
           `}</style>
 
