@@ -308,6 +308,99 @@ export default function HallDetailsPage() {
               </div>
             </div>
 
+            {/* Contact & Location Section */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
+                <span className="text-3xl mr-2">📍</span>
+                Contact & Location
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Google Map */}
+                <div>
+                  <div className="rounded-xl overflow-hidden shadow-md">
+                    <iframe
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(hall.location)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                      width="100%"
+                      height="280"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title="Hall Location Map"
+                    ></iframe>
+                  </div>
+                </div>
+
+                {/* Contact Details */}
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <span className="text-2xl mr-3">📍</span>
+                    <div>
+                      <p className="text-xs text-gray-500 font-semibold">Address</p>
+                      <p className="text-sm text-gray-700">{hall.location}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start">
+                    <span className="text-2xl mr-3">📞</span>
+                    <div>
+                      <p className="text-xs text-gray-500 font-semibold">Contact Number</p>
+                      <a 
+                        href={`tel:${hall.contact_number}`}
+                        className="text-sm text-[#20056a] font-semibold hover:underline"
+                      >
+                        {hall.contact_number}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Social Media Links */}
+                  <div>
+                    <p className="text-xs text-gray-500 font-semibold mb-2">Follow Us</p>
+                    <div className="flex gap-3">
+                      <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-semibold transition"
+                      >
+                        <span className="text-xl">📺</span>
+                        YouTube
+                      </a>
+                      <a
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-pink-50 hover:bg-pink-100 text-pink-600 px-4 py-2 rounded-lg text-sm font-semibold transition"
+                      >
+                        <span className="text-xl">📸</span>
+                        Instagram
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="grid grid-cols-2 gap-3 pt-2">
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hall.location)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#20056a] hover:bg-[#150442] text-white text-center py-3 px-4 rounded-lg font-semibold text-sm transition shadow-lg"
+                    >
+                      🗺️ Open Google Maps
+                    </a>
+                    <button
+                      onClick={() => router.push(`/customer/enquiry`)}
+                      className="bg-[#20056a] text-white py-3 px-4 rounded-lg font-semibold text-sm hover:bg-[#150442] transition shadow-lg"
+                    >
+                      ✉️ Send Enquiry
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Availability Calendar - Collapsible */}
             <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
               <div 
