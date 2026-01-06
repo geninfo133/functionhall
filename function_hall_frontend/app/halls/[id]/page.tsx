@@ -257,21 +257,21 @@ export default function HallDetailsPage() {
 
                 {/* Key Highlights */}
                 <div className="grid grid-cols-2 gap-2 mt-4">
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border border-blue-200">
                     <div className="text-2xl mb-1">✨</div>
-                    <p className="text-xs font-semibold text-[#20056a]">Premium Ambiance</p>
+                    <p className="text-xs font-semibold text-blue-700">Premium Ambiance</p>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg border border-purple-200">
                     <div className="text-2xl mb-1">🎵</div>
-                    <p className="text-xs font-semibold text-[#20056a]">Sound & Lighting</p>
+                    <p className="text-xs font-semibold text-purple-700">Sound & Lighting</p>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2 bg-gradient-to-br from-green-50 to-green-100 rounded-lg border border-green-200">
                     <div className="text-2xl mb-1">🍽️</div>
-                    <p className="text-xs font-semibold text-[#20056a]">Catering</p>
+                    <p className="text-xs font-semibold text-green-700">Catering</p>
                   </div>
-                  <div className="text-center p-2 bg-blue-50 rounded-lg">
+                  <div className="text-center p-2 bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg border border-amber-200">
                     <div className="text-2xl mb-1">🅿️</div>
-                    <p className="text-xs font-semibold text-[#20056a]">Parking</p>
+                    <p className="text-xs font-semibold text-amber-700">Parking</p>
                   </div>
                 </div>
 
@@ -456,13 +456,23 @@ export default function HallDetailsPage() {
                   {/* Functional Rooms */}
                   {functionalRooms.length > 0 && (
                     <div className="bg-white rounded-2xl shadow-lg p-6">
-                      <h3 className="text-xl font-bold text-purple-600 mb-4 flex items-center">
+                      <h3 className="text-xl font-bold text-emerald-600 mb-4 flex items-center">
                         <span className="text-2xl mr-2">🚪</span>
                         Functional Rooms
                       </h3>
                       <div className="space-y-3">
-                        {functionalRooms.map((room, idx) => (
-                          <div key={idx} className="border-2 border-purple-200 rounded-lg p-4 bg-purple-50">
+                        {functionalRooms.map((room, idx) => {
+                          const colors = [
+                            { bg: 'bg-gradient-to-br from-emerald-50 to-green-50', border: 'border-emerald-200', text: 'text-emerald-700', divider: 'border-emerald-300' },
+                            { bg: 'bg-gradient-to-br from-purple-50 to-violet-50', border: 'border-purple-200', text: 'text-purple-700', divider: 'border-purple-300' },
+                            { bg: 'bg-gradient-to-br from-orange-50 to-amber-50', border: 'border-orange-200', text: 'text-orange-700', divider: 'border-orange-300' },
+                            { bg: 'bg-gradient-to-br from-rose-50 to-pink-50', border: 'border-rose-200', text: 'text-rose-700', divider: 'border-rose-300' },
+                            { bg: 'bg-gradient-to-br from-cyan-50 to-blue-50', border: 'border-cyan-200', text: 'text-cyan-700', divider: 'border-cyan-300' },
+                          ];
+                          const colorScheme = colors[idx % colors.length];
+                          
+                          return (
+                            <div key={idx} className={`border-2 ${colorScheme.border} rounded-lg p-4 ${colorScheme.bg}`}>
                             <h4 className="font-bold text-gray-800">{room.room_type}</h4>
                             {room.capacity > 0 && (
                               <p className="text-sm text-gray-600 mt-1">Capacity: {room.capacity} people</p>
@@ -473,12 +483,13 @@ export default function HallDetailsPage() {
                             {room.description && (
                               <p className="text-xs text-gray-500 mt-2">{room.description}</p>
                             )}
-                            <div className="mt-3 pt-3 border-t border-purple-300">
-                              <span className="text-purple-700 font-bold text-lg">₹{room.price.toLocaleString()}</span>
+                            <div className={`mt-3 pt-3 border-t ${colorScheme.divider}`}>
+                              <span className={`${colorScheme.text} font-bold text-lg`}>₹{room.price.toLocaleString()}</span>
                               <span className="text-xs text-gray-600 ml-2">per booking</span>
                             </div>
                           </div>
-                        ))}
+                        );
+                        })}
                       </div>
                     </div>
                   )}
