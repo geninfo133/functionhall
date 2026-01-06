@@ -103,12 +103,6 @@ export default function HallDetailsPage() {
       <main className="p-4 sm:p-6 lg:p-8">
       {/* Hero Section */}
       <div className="relative h-32 bg-[#0d316cff] rounded-2xl overflow-hidden shadow-lg">
-        <div className="flex items-center justify-center h-full">
-          <div className="text-center">
-            <div className="text-white text-8xl mb-4">🏛️</div>
-          </div>
-        </div>
-        
         {/* Hall Name Overlay */}
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <h1 className="text-2xl font-bold text-white flex items-center">
