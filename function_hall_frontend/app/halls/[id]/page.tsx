@@ -604,18 +604,18 @@ export default function HallDetailsPage() {
       {/* Image Lightbox Modal */}
       {selectedImage && (
         <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative max-w-5xl max-h-full" onClick={(e) => e.stopPropagation()}>
+          <div className="relative w-full h-full max-w-7xl flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <img
               src={selectedImage}
               alt="Full size"
-              className="max-w-full max-h-[90vh] object-contain rounded-xl shadow-2xl border-4 border-white"
+              className="w-full h-full object-contain"
             />
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-4 -right-4 bg-white text-gray-800 rounded-full w-12 h-12 flex items-center justify-center text-3xl font-bold hover:bg-gray-200 transition shadow-xl"
+              className="absolute top-4 right-4 bg-white text-gray-800 rounded-full w-14 h-14 flex items-center justify-center text-4xl font-bold hover:bg-gray-200 transition shadow-2xl"
               aria-label="Close"
             >
               ×
