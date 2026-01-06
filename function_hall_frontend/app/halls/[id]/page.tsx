@@ -215,7 +215,7 @@ export default function HallDetailsPage() {
               </div>
             </div>
 
-            {/* Gallery and About This Hall - Side by Side */}
+            {/* Gallery, Location Map, and About This Hall */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Gallery */}
               {hall.photos && hall.photos.length > 0 ? (
@@ -244,10 +244,43 @@ export default function HallDetailsPage() {
                 </div>
               )}
 
-              {/* About This Hall */}
+              {/* Google Map Location */}
               <div className="bg-white rounded-2xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
-                  <span className="text-3xl mr-2">🏛️</span>
+                  <span className="text-3xl mr-2">📍</span>
+                  Location
+                </h2>
+                <div className="rounded-xl overflow-hidden shadow-md">
+                  <iframe
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(hall.location)}&output=embed`}
+                    width="100%"
+                    height="280"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="rounded-xl"
+                  ></iframe>
+                </div>
+                <div className="mt-3 flex items-start">
+                  <span className="text-lg mr-2">📍</span>
+                  <p className="text-gray-700 text-sm">{hall.location}</p>
+                </div>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hall.location)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block w-full bg-blue-500 hover:bg-blue-600 text-white text-center py-2 rounded-lg font-semibold text-sm transition"
+                >
+                  🗺️ Open in Google Maps
+                </a>
+              </div>
+            </div>
+
+            {/* About This Hall */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+              <h2 className="text-2xl font-bold text-[#20056a] mb-4 flex items-center">
+                <span className="text-3xl mr-2">🏛️</span>
                   About This Hall
                 </h2>
                 
