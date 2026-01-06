@@ -390,13 +390,16 @@ export default function HallDetailsPage() {
 
             {/* Room Facilities Section */}
             {(functionalRooms.length > 0 || guestRooms.length > 0) && (
-              <div className="mt-6">
-                <h2 className="text-2xl font-bold text-[#20056a] mb-4">Room Facilities</h2>
+              <div className="bg-white rounded-2xl shadow-lg p-6 mt-6">
+                <h2 className="text-2xl font-bold text-[#20056a] mb-6 flex items-center">
+                  <span className="text-3xl mr-2">🏠</span>
+                  Room Facilities
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Functional Rooms */}
                   {functionalRooms.length > 0 && (
-                    <div className="bg-white rounded-2xl shadow-lg p-6">
-                      <h3 className="text-xl font-bold text-purple-600 mb-4 flex items-center">
+                    <div className="bg-gradient-to-br from-purple-50 to-white rounded-xl shadow-md p-6 border-2 border-purple-100">
+                      <h3 className="text-xl font-bold text-purple-700 mb-4 flex items-center">
                         <span className="text-2xl mr-2">🚪</span>
                         Functional Rooms
                       </h3>
@@ -425,8 +428,8 @@ export default function HallDetailsPage() {
 
                   {/* Guest Rooms */}
                   {guestRooms.length > 0 && (
-                    <div className="bg-white rounded-2xl shadow-lg p-6">
-                      <h3 className="text-xl font-bold text-blue-600 mb-4 flex items-center">
+                    <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl shadow-md p-6 border-2 border-blue-100">
+                      <h3 className="text-xl font-bold text-blue-700 mb-4 flex items-center">
                         <span className="text-2xl mr-2">🛏️</span>
                         Guest Accommodation
                       </h3>
