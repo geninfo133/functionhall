@@ -205,68 +205,67 @@ export default function AdminHallsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <main className="p-4 sm:p-6 lg:p-8 w-full">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-[#20056a]">All Halls</h2>
-            <div className="flex gap-3">
-              <Link href="/admin/hall-requests" className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg font-semibold shadow transition flex items-center gap-2">
-                <span>⏳</span> Pending Approvals
-              </Link>
-              <button className="bg-[#20056a] text-white px-5 py-2 rounded-lg font-semibold shadow hover:bg-[#150442] transition" onClick={handleAdd}>+ Add New Hall</button>
-            </div>
-          </div>
-
+        <div className="max-w-6xl mx-auto">
           {/* Search Filters */}
-          <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg bg-gradient-to-r from-blue-600 to-blue-700">
-            <div className="px-6 sm:px-8 lg:px-12 py-3">
-              <div className="max-w-6xl mx-auto">
-                <div className="text-center">
-                  <h2 className="text-base sm:text-lg font-bold text-white leading-tight">
-                    Search Function Halls
-                  </h2>
-                  <p className="text-xs text-blue-100 mt-1 max-w-2xl mx-auto">
-                    Find and manage your function halls
-                  </p>
+          <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg" style={{ backgroundColor: '#0d316cff' }}>
+            <div className="px-6 sm:px-8 lg:px-12 py-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <FaUsers className="text-white text-3xl" />
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                      All Halls
+                    </h2>
+                    <p className="text-base sm:text-lg text-blue-100">
+                      Find and manage your function halls
+                    </p>
+                  </div>
                 </div>
-
-                <div className="mt-2">
-                  <div className="bg-white rounded-xl shadow-lg p-3 max-w-5xl mx-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="flex gap-3">
+                  <Link href="/admin/hall-requests" className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-semibold shadow transition flex items-center gap-2">
+                    <span>⏳</span> Pending
+                  </Link>
+                  <button className="bg-white text-[#20056a] px-4 py-2 rounded-lg font-semibold shadow hover:bg-blue-50 transition" onClick={handleAdd}>+ Add Hall</button>
+                </div>
+              </div>
+                  <div className="bg-white rounded-xl shadow-lg p-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Location</label>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Location</label>
                         <input
                           type="text"
                           placeholder="City or area"
                           value={searchLocation}
                           onChange={(e) => setSearchLocation(e.target.value)}
-                          className="pl-2.5 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-3 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                         />
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Event Date</label>
                         <input
                           type="date"
                           value={searchDate}
                           onChange={(e) => setSearchDate(e.target.value)}
-                          className="pl-2.5 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-3 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                         />
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Guests</label>
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Guests</label>
                         <input
                           type="number"
                           placeholder="How many?"
                           value={searchCapacity}
                           onChange={(e) => setSearchCapacity(e.target.value)}
-                          className="pl-2.5 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-3 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                         />
                       </div>
 
                       <div className="flex gap-2 items-end">
                         <button
                           type="button"
-                          className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
+                          className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
                         >
                           Search
                         </button>
@@ -274,7 +273,7 @@ export default function AdminHallsPage() {
                           <button
                             type="button"
                             onClick={handleClearFilters}
-                            className="px-2.5 py-1.5 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+                            className="px-3 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
                           >
                             Clear
                           </button>
@@ -287,13 +286,12 @@ export default function AdminHallsPage() {
                       </div>
                     )}
                   </div>
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Display halls using HallCards component */}
           <HallCards halls={filteredHalls} loading={loading} onEdit={handleEdit} onDelete={handleDelete} />
+          </div>
 
           {/* Add Modal */}
           {showAddModal && (

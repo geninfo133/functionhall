@@ -85,12 +85,11 @@ export default function EnquiryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      <main className="p-4 sm:p-6 lg:p-8">
+        <div className="max-w-6xl mx-auto">
         {/* Header Card */}
-        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-3xl shadow-2xl p-8 mb-8 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+        <div style={{ backgroundColor: '#0d316cff' }} className="rounded-3xl shadow-2xl p-8 mb-8 text-white relative overflow-hidden">
           <div className="relative">
             <button
               onClick={() => router.back()}
@@ -246,7 +245,7 @@ export default function EnquiryPage() {
 
             <button 
               type="submit" 
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-2xl transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3" 
+              className="w-full bg-[#20056a] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-[#150442] hover:shadow-2xl transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3" 
               disabled={loading}
             >
               <FaPaperPlane className="text-xl" />
@@ -254,7 +253,8 @@ export default function EnquiryPage() {
             </button>
           </form>
         </div>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

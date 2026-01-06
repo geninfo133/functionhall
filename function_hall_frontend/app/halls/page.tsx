@@ -48,19 +48,25 @@ export default function BrowseHallsPage() {
 
   return (
     <div className="min-h-screen">
-      <main className="px-4 sm:px-6 lg:px-8 pt-2 sm:pt-3 lg:pt-4 pb-4 sm:pb-6 lg:pb-8">
+      <main className="p-4 sm:p-6 lg:p-8">
+        <div className="max-w-6xl mx-auto">
         {/* Hero Banner with Search */}
-        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg" style={{ backgroundColor: '#0d316c' }}>
-          <div className="px-6 py-3">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-3">
-                <h1 className="text-lg sm:text-xl font-bold text-white">
+        <div className="relative rounded-2xl overflow-hidden mb-8 shadow-lg" style={{ backgroundColor: '#0d316cff' }}>
+          <div className="px-6 sm:px-8 lg:px-12 py-8">
+            <div className="flex items-center gap-3 mb-6">
+              <FaSearch className="text-white text-3xl" />
+              <div>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
                   Browse Function Halls
                 </h1>
+                <p className="text-base sm:text-lg text-blue-100 font-light">
+                  Find the perfect venue for your special event
+                </p>
               </div>
+            </div>
 
               <div>
-                <div className="bg-white rounded-xl shadow-lg p-4 max-w-5xl mx-auto">
+                <div className="bg-white/95 backdrop-blur-sm rounded-xl shadow-lg p-4">
                   <form onSubmit={handleSearch}>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       <div className="relative">
@@ -120,7 +126,6 @@ export default function BrowseHallsPage() {
                   </form>
                 </div>
               </div>
-            </div>
           </div>
         </div>
 
@@ -135,6 +140,7 @@ export default function BrowseHallsPage() {
 
         {/* Hall Cards */}
         <HallCards halls={halls} loading={loading} />
+        </div>
       </main>
     </div>
   );

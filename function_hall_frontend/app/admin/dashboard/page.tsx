@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { FaUsers, FaBuilding, FaClipboardList, FaRupeeSign, FaCheckCircle, FaTimesCircle, FaClock } from "react-icons/fa";
+import { FaUsers, FaBuilding, FaClipboardList, FaRupeeSign, FaCheckCircle, FaTimesCircle, FaClock, FaTachometerAlt } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import { BACKEND_URL } from "../../../lib/config";
 
@@ -219,18 +219,21 @@ export default function AdminDashboard() {
         <div>
           {/* Welcome Banner */}
           <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
-            <div className="px-6 sm:px-8 lg:px-12 py-4">
-              <div className="max-w-5xl mx-auto">
-                <div className="text-center relative z-10">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
-                    Admin Dashboard
-                  </h1>
-                  <p className="text-base text-blue-50 mb-1 font-light">
-                    Welcome, {admin.name}!
-                  </p>
-                  <p className="text-sm text-blue-200 italic">
-                    Manage your function halls, bookings, and more with ease.
-                  </p>
+            <div className="px-6 sm:px-8 lg:px-12 py-8">
+              <div className="max-w-6xl mx-auto">
+                <div className="flex items-center gap-3">
+                  <FaTachometerAlt className="text-white text-3xl" />
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+                      Admin Dashboard
+                    </h1>
+                    <p className="text-base sm:text-lg text-blue-100 font-light">
+                      Welcome, {admin.name}!
+                    </p>
+                    <p className="text-sm text-blue-200 italic">
+                      Manage your function halls, bookings, and more with ease.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

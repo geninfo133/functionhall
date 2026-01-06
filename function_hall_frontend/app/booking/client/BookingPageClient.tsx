@@ -190,20 +190,28 @@ function BookingPageContent() {
 
   return (
     <>
-      <div className="bg-gradient-to-br from-blue-50 to-white min-h-screen">
-        <main className="p-8 max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <FaCalendarAlt className="text-3xl text-[#20056a]" />
+      <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 min-h-screen">
+        <main className="p-4 sm:p-6 lg:p-8">
+          <div className="max-w-6xl mx-auto">
+          {/* Hero Section */}
+          <div style={{ backgroundColor: '#0d316cff' }} className="rounded-2xl overflow-hidden mb-8 shadow-lg">
+            <div className="px-6 sm:px-8 lg:px-12 py-10">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
+                  <FaCalendarAlt className="text-white text-3xl" />
+                </div>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">Book a Function Hall</h1>
+                  <p className="text-white/80 mt-1">Select your hall and date to book</p>
+                </div>
+              </div>
             </div>
-            <h1 className="text-3xl font-bold text-[#20056a] mb-2">Book a Function Hall</h1>
-            <p className="text-gray-600">Select your hall and date to book</p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Column - Booking Form */}
           <div>
             {hall && (
-              <div className="bg-white rounded-xl shadow p-6 mb-6">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200 rounded-xl shadow p-6 mb-6">
                 <div className="flex items-center space-x-2 mb-4">
                   <FaBuilding className="text-[#20056a] text-2xl" />
                   <h2 className="text-2xl font-bold text-[#20056a]">{hall.name}</h2>
@@ -240,7 +248,7 @@ function BookingPageContent() {
                 </div>
               </div>
             )}
-            <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-200 rounded-xl shadow p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">              Select Hall *
             </label>
@@ -639,7 +647,7 @@ function BookingPageContent() {
           </div>
           {/* Right Column - Calendar */}
           <div className="lg:sticky lg:top-8 lg:self-start">
-            <div className="bg-white rounded-xl shadow p-6">
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-xl shadow p-6">
               <h2 className="text-xl font-bold text-[#20056a] mb-4">Select Event Date</h2>
               {selectedHallId ? (
                 <HallCalendar
@@ -655,6 +663,7 @@ function BookingPageContent() {
               )}
             </div>
           </div>
+        </div>
         </div>
       </main>
       </div>

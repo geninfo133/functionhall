@@ -71,50 +71,53 @@ function HomePageContent() {
           {/* Hero Banner with Search */}
           <div className="relative rounded-2xl overflow-hidden mb-12" style={{ backgroundColor: '#0d316c' }}>
 
-            <div className="px-6 sm:px-8 lg:px-12 py-4">
+            <div className="px-6 sm:px-8 lg:px-12 py-8">
               <div className="max-w-6xl mx-auto">
-                <div className="text-center">
-                  <h1 className="text-base sm:text-lg font-bold text-white leading-tight">
-                    Find Your Perfect Venue
-                  </h1>
-                  <p className="text-xs text-blue-100 mt-1 max-w-2xl mx-auto">
-                    Discover beautiful function halls for weddings, corporate events, and celebrations
-                  </p>
+                <div className="flex items-center gap-3 mb-6">
+                  <FaSearch className="text-white text-3xl" />
+                  <div>
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                      Find Your Perfect Venue
+                    </h1>
+                    <p className="text-base sm:text-lg text-blue-100">
+                      Discover beautiful function halls for weddings, corporate events, and celebrations
+                    </p>
+                  </div>
                 </div>
 
-                <div className="mt-3">
-                  <div className="bg-white rounded-xl shadow-lg p-3 max-w-5xl mx-auto">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div>
+                  <div className="bg-white rounded-xl shadow-lg p-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Location</label>
-                        <FaMapMarkerAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Location</label>
+                        <FaMapMarkerAlt className="absolute left-3 top-8 text-gray-400 text-sm" />
                         <input
                           type="text"
                           placeholder="City or area"
-                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                           value={location}
                           onChange={e => setLocation(e.target.value)}
                         />
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
-                        <FaCalendarAlt className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Event Date</label>
+                        <FaCalendarAlt className="absolute left-3 top-8 text-gray-400 text-sm" />
                         <input
                           type="date"
-                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                           value={date}
                           onChange={e => setDate(e.target.value)}
                         />
                       </div>
 
                       <div className="relative">
-                        <label className="block text-xs font-medium text-gray-700 mb-1">Guests</label>
-                        <FaUsers className="absolute left-2.5 top-7 text-gray-400 text-xs" />
+                        <label className="block text-xs font-semibold text-gray-700 mb-1.5">Guests</label>
+                        <FaUsers className="absolute left-3 top-8 text-gray-400 text-sm" />
                         <input
                           type="number"
                           placeholder="How many?"
-                          className="pl-8 pr-2.5 py-1.5 text-xs rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                          className="pl-9 pr-3 py-2 text-sm rounded-lg border border-gray-300 bg-white text-gray-900 w-full placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                           value={guests}
                           onChange={e => setGuests(e.target.value)}
                         />
@@ -123,10 +126,7 @@ function HomePageContent() {
                       <div className="flex gap-2 items-end">
                         <button
                           onClick={handleSearch}
-                          className="flex-1 text-white font-semibold py-1.5 text-xs rounded-lg transition flex items-center justify-center gap-1.5"
-                          style={{ backgroundColor: '#20056a' }}
-                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#150442'}
-                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#20056a'}
+                          className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white font-semibold py-2 text-sm rounded-lg transition flex items-center justify-center gap-2"
                         >
                           <FaSearch className="text-xs" />
                           Search
@@ -139,7 +139,7 @@ function HomePageContent() {
                               setDate("");
                               setGuests("");
                             }}
-                            className="px-2.5 py-1.5 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
+                            className="px-3 py-2 text-sm bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition"
                           >
                             Clear
                           </button>

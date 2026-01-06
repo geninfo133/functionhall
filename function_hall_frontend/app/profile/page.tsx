@@ -86,9 +86,7 @@ export default function ProfilePage() {
         <div>
         {/* Header Card */}
         <div style={{ backgroundColor: '#0d316cff' }} className="rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24 blur-2xl"></div>
-          <div className="relative flex items-center justify-center gap-4">
+          <div className="relative flex items-center gap-4">
             <div className="relative">
               <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-xl bg-white">
                 <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
@@ -109,38 +107,38 @@ export default function ProfilePage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-blue-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Total Bookings</p>
-                <p className="text-3xl font-bold text-indigo-600">0</p>
+                <p className="text-blue-700 text-sm font-medium mb-1">Total Bookings</p>
+                <p className="text-3xl font-bold text-blue-800">0</p>
               </div>
-              <div className="w-14 h-14 bg-indigo-100 rounded-2xl flex items-center justify-center">
-                <FaCalendarAlt className="text-2xl text-indigo-600" />
+              <div className="w-14 h-14 bg-blue-300 rounded-2xl flex items-center justify-center">
+                <FaCalendarAlt className="text-2xl text-blue-700" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+          <div className="bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-violet-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Inquiries Sent</p>
-                <p className="text-3xl font-bold text-purple-600">0</p>
+                <p className="text-violet-700 text-sm font-medium mb-1">Inquiries Sent</p>
+                <p className="text-3xl font-bold text-violet-800">0</p>
               </div>
-              <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center">
-                <FaSearch className="text-2xl text-purple-600" />
+              <div className="w-14 h-14 bg-violet-300 rounded-2xl flex items-center justify-center">
+                <FaSearch className="text-2xl text-violet-700" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-gray-100">
+          <div className="bg-gradient-to-br from-rose-100 to-rose-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-rose-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Venues Viewed</p>
-                <p className="text-3xl font-bold text-pink-600">0</p>
+                <p className="text-rose-700 text-sm font-medium mb-1">Venues Viewed</p>
+                <p className="text-3xl font-bold text-rose-800">0</p>
               </div>
-              <div className="w-14 h-14 bg-pink-100 rounded-2xl flex items-center justify-center">
-                <FaUsers className="text-2xl text-pink-600" />
+              <div className="w-14 h-14 bg-rose-300 rounded-2xl flex items-center justify-center">
+                <FaUsers className="text-2xl text-rose-700" />
               </div>
             </div>
           </div>
@@ -153,7 +151,7 @@ export default function ProfilePage() {
             {!editing && (
               <button
                 onClick={() => setEditing(true)}
-                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition transform hover:scale-105"
+                className="flex items-center gap-2 bg-[#20056a] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#150442] hover:shadow-lg transition transform hover:scale-105"
               >
                 <FaEdit />
                 <span>Edit Profile</span>
@@ -163,38 +161,38 @@ export default function ProfilePage() {
 
           {!editing ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-gradient-to-br from-indigo-50 to-indigo-100/50 rounded-2xl p-6 hover:shadow-md transition">
+                  <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl p-6 hover:shadow-md transition border border-cyan-200">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
                         <FaUser className="text-white text-lg" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">Full Name</p>
-                        <p className="text-xl font-bold text-gray-800">{customer.name}</p>
+                        <p className="text-sm text-cyan-700 font-medium">Full Name</p>
+                        <p className="text-xl font-bold text-cyan-900">{customer.name}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl p-6 hover:shadow-md transition">
+                  <div className="bg-gradient-to-br from-teal-50 to-teal-100 rounded-2xl p-6 hover:shadow-md transition border border-teal-200">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg">
                         <FaEnvelope className="text-white text-lg" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">Email Address</p>
-                        <p className="text-xl font-bold text-gray-800">{customer.email}</p>
+                        <p className="text-sm text-teal-700 font-medium">Email Address</p>
+                        <p className="text-xl font-bold text-teal-900">{customer.email}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-pink-50 to-pink-100/50 rounded-2xl p-6 hover:shadow-md transition">
+                  <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 hover:shadow-md transition border border-amber-200">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="w-12 h-12 bg-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg">
                         <FaPhone className="text-white text-lg" />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600 font-medium">Phone Number</p>
-                        <p className="text-xl font-bold text-gray-800">{customer.phone || "Not provided"}</p>
+                        <p className="text-sm text-amber-700 font-medium">Phone Number</p>
+                        <p className="text-xl font-bold text-amber-900">{customer.phone || "Not provided"}</p>
                       </div>
                     </div>
                   </div>

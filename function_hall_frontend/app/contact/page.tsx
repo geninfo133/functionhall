@@ -35,19 +35,21 @@ export default function ContactPage() {
         <div>
         {/* Hero Section */}
         <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
-          <div className="px-6 sm:px-8 lg:px-12 py-4">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center relative z-10">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight flex items-center justify-center gap-3">
-                  <span className="text-3xl">📞</span>
-                  Contact Us
-                </h1>
-                <p className="text-base text-blue-50 mb-1 font-light">
-                  Get in Touch with GenS Services
-                </p>
-                <p className="text-sm text-blue-200 italic">
-                  We're here to help you plan the perfect event
-                </p>
+          <div className="px-6 sm:px-8 lg:px-12 py-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center gap-3">
+                <span className="text-4xl">📞</span>
+                <div>
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+                    Contact Us
+                  </h1>
+                  <p className="text-base sm:text-lg text-blue-100 font-light">
+                    Get in Touch with GenS Services
+                  </p>
+                  <p className="text-sm text-blue-200 italic">
+                    We're here to help you plan the perfect event
+                  </p>
+                </div>
               </div>
             </div>
           </div>

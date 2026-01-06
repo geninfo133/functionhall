@@ -104,15 +104,12 @@ export default function VendorProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <main className="p-4 sm:p-6 lg:p-8">
-        <div>
+        <div className="max-w-6xl mx-auto">
         {/* Hero Header with Gradient */}
-        <div style={{ backgroundColor: '#0d316cff' }} className="rounded-2xl shadow-xl p-6 mb-6 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24 blur-2xl"></div>
-          
-          <div className="relative flex items-center justify-center gap-4">
+        <div style={{ backgroundColor: '#0d316cff' }} className="rounded-2xl shadow-xl p-6 mb-8 text-white relative overflow-hidden">
+          <div className="relative flex items-center gap-4">
             <div className="relative">
               <div className="w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-xl bg-white">
                 <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
@@ -155,66 +152,66 @@ export default function VendorProfilePage() {
 
         {/* Stats Dashboard */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-blue-100">
+          <div className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border-2 border-blue-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Total Halls</p>
-                <p className="text-3xl font-bold text-[#20056a]">{stats.totalHalls}</p>
+                <p className="text-blue-700 text-sm font-medium mb-1">Total Halls</p>
+                <p className="text-3xl font-bold text-blue-800">{stats.totalHalls}</p>
               </div>
-              <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center">
-                <Building2 size={24} className="text-[#20056a]" />
+              <div className="w-14 h-14 bg-blue-300 rounded-2xl flex items-center justify-center">
+                <Building2 size={24} className="text-blue-700" />
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-1 text-xs text-gray-500">
-              <TrendingUp size={14} className="text-green-600" />
+            <div className="mt-3 flex items-center gap-1 text-xs text-blue-600">
+              <TrendingUp size={14} className="text-blue-700" />
               <span>Approved venues</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-yellow-100">
+          <div className="bg-gradient-to-br from-amber-100 to-amber-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border-2 border-amber-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Pending Requests</p>
-                <p className="text-3xl font-bold text-yellow-600">{stats.pendingRequests}</p>
+                <p className="text-amber-700 text-sm font-medium mb-1">Pending Requests</p>
+                <p className="text-3xl font-bold text-amber-800">{stats.pendingRequests}</p>
               </div>
-              <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center">
-                <Clock size={24} className="text-yellow-600" />
+              <div className="w-14 h-14 bg-amber-300 rounded-2xl flex items-center justify-center">
+                <Clock size={24} className="text-amber-700" />
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-1 text-xs text-gray-500">
-              <FileText size={14} className="text-yellow-600" />
+            <div className="mt-3 flex items-center gap-1 text-xs text-amber-600">
+              <FileText size={14} className="text-amber-700" />
               <span>Awaiting approval</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-green-100">
+          <div className="bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border-2 border-emerald-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Active Bookings</p>
-                <p className="text-3xl font-bold text-green-600">{stats.activeBookings}</p>
+                <p className="text-emerald-700 text-sm font-medium mb-1">Active Bookings</p>
+                <p className="text-3xl font-bold text-emerald-800">{stats.activeBookings}</p>
               </div>
-              <div className="w-14 h-14 bg-green-100 rounded-2xl flex items-center justify-center">
-                <Calendar size={24} className="text-green-600" />
+              <div className="w-14 h-14 bg-emerald-300 rounded-2xl flex items-center justify-center">
+                <Calendar size={24} className="text-emerald-700" />
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-1 text-xs text-gray-500">
-              <Calendar size={14} className="text-green-600" />
+            <div className="mt-3 flex items-center gap-1 text-xs text-emerald-600">
+              <Calendar size={14} className="text-emerald-700" />
               <span>Current reservations</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition border border-purple-100">
+          <div className="bg-gradient-to-br from-violet-100 to-violet-200 rounded-2xl shadow-lg p-6 hover:shadow-xl transition border-2 border-violet-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm font-medium mb-1">Total Revenue</p>
-                <p className="text-3xl font-bold text-purple-600">₹{stats.totalRevenue.toLocaleString()}</p>
+                <p className="text-violet-700 text-sm font-medium mb-1">Total Revenue</p>
+                <p className="text-3xl font-bold text-violet-800">₹{stats.totalRevenue.toLocaleString()}</p>
               </div>
-              <div className="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center">
-                <IndianRupee size={24} className="text-purple-600" />
+              <div className="w-14 h-14 bg-violet-300 rounded-2xl flex items-center justify-center">
+                <IndianRupee size={24} className="text-violet-700" />
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-1 text-xs text-gray-500">
-              <TrendingUp size={14} className="text-green-600" />
+            <div className="mt-3 flex items-center gap-1 text-xs text-violet-600">
+              <TrendingUp size={14} className="text-violet-700" />
               <span>Lifetime earnings</span>
             </div>
           </div>
@@ -231,14 +228,14 @@ export default function VendorProfilePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Business Name */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
+            <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 border-2 border-cyan-200 rounded-2xl p-6 hover:shadow-lg transition group">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                <div className="w-14 h-14 bg-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
                   <Building2 size={24} className="text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-600 font-medium mb-1">Business Name</p>
-                  <p className="text-xl font-bold text-gray-800 truncate">
+                  <p className="text-sm text-cyan-700 font-medium mb-1">Business Name</p>
+                  <p className="text-xl font-bold text-cyan-900 truncate">
                     {vendor.business_name || vendor.name}
                   </p>
                 </div>
@@ -246,7 +243,7 @@ export default function VendorProfilePage() {
             </div>
 
             {/* Contact Person */}
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl p-6 hover:shadow-lg transition group">
+            <div className="bg-gradient-to-br from-teal-50 to-teal-100 border-2 border-teal-200 rounded-2xl p-6 hover:shadow-lg transition group">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition">
                   <User size={24} className="text-white" />

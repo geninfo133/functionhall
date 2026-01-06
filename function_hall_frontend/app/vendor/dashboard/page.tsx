@@ -387,16 +387,17 @@ export default function VendorDashboardPage() {
       <div className="flex-1">
         {/* Main Content */}
         <main className="p-4 sm:p-6 lg:p-8">
-        <div>
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="rounded-2xl shadow-lg overflow-hidden mb-12 relative" style={{ backgroundColor: '#0d316c' }}>
-          <div className="px-6 sm:px-8 lg:px-12 py-4">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center relative z-10">
-                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 tracking-tight">
+        <div className="rounded-2xl shadow-lg overflow-hidden mb-8 relative" style={{ backgroundColor: '#0d316cff' }}>
+          <div className="px-6 sm:px-8 lg:px-12 py-8">
+            <div className="flex items-center gap-3">
+              <FaTachometerAlt className="text-white text-3xl" />
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                   Vendor Dashboard
                 </h1>
-                <p className="text-base text-blue-50 mb-1 font-light">
+                <p className="text-base text-blue-100 font-light">
                   Welcome, {vendorData?.name} - {vendorData?.business_name}
                 </p>
               </div>
@@ -406,21 +407,21 @@ export default function VendorDashboardPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="text-3xl font-bold text-[#20056a]">{halls.length}</div>
-            <div className="text-gray-600 mt-1">Approved Halls</div>
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl shadow p-6">
+            <div className="text-3xl font-bold text-blue-700">{halls.length}</div>
+            <div className="text-gray-700 mt-1">Approved Halls</div>
           </div>
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="text-3xl font-bold text-yellow-600">{hallRequests.length}</div>
-            <div className="text-gray-600 mt-1">Pending Approval</div>
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow p-6">
+            <div className="text-3xl font-bold text-amber-700">{hallRequests.length}</div>
+            <div className="text-gray-700 mt-1">Pending Approval</div>
           </div>
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="text-3xl font-bold text-green-600">0</div>
-            <div className="text-gray-600 mt-1">Active Bookings</div>
+          <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow p-6">
+            <div className="text-3xl font-bold text-emerald-700">0</div>
+            <div className="text-gray-700 mt-1">Active Bookings</div>
           </div>
-          <div className="bg-white rounded-xl shadow p-6">
-            <div className="text-3xl font-bold text-purple-600">₹0</div>
-            <div className="text-gray-600 mt-1">Total Revenue</div>
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow p-6">
+            <div className="text-3xl font-bold text-purple-700">₹0</div>
+            <div className="text-gray-700 mt-1">Total Revenue</div>
           </div>
         </div>
 
