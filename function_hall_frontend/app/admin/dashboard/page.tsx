@@ -333,13 +333,13 @@ export default function AdminDashboard() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => approveRequest(request.id, request.action_type)}
-                        className="flex-1 bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-1"
+                        className="flex-1 bg-[#20056a] hover:bg-[#150442] text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-1"
                       >
                         <FaCheckCircle /> Approve
                       </button>
                       <button
                         onClick={() => rejectRequest(request.id, request.action_type)}
-                        className="flex-1 bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-1"
+                        className="flex-1 bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-lg font-semibold text-sm transition flex items-center justify-center gap-1"
                       >
                         <FaTimesCircle /> Reject
                       </button>
