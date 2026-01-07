@@ -7,21 +7,21 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Custom Scrollbar Styles */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
+@layer utilities {
+  /* Custom Scrollbar Styles - Using Tailwind color tokens */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
-  border-radius: 4px;
-}
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded;
+  }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
-  border-radius: 4px;
-}
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-slate-300 rounded;
+  }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400;
+  }
 }
